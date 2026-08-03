@@ -1,0 +1,273 @@
+.sectionBlock {
+  background-color: #ffffff; 
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+  margin-bottom: 2rem;
+}
+
+.blockTitle {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1.25rem;
+}
+
+.blockTitleSub {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1rem;
+}
+
+.separatorLine {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 1.75rem 0;
+}
+
+/* Location Cards */
+.locationCardsGrid {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.locationCard {
+  width: 130px;
+  cursor: pointer;
+}
+
+.locationImgWrapper {
+  width: 130px;
+  height: 130px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+
+.locationImgWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.daysBadge {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.5rem;
+}
+
+.activeLocation .locationImgWrapper {
+  border-color: #e60000;
+}
+
+.locationContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.locationName {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.2rem;
+}
+
+.locationOldPrice {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+
+.locationPrice {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Package Options Pills */
+.packagePills {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.packagePill {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.activePackagePill {
+  border-color: #e60000;
+  color: #e60000;
+  background-color: #fef2f2;
+}
+
+.activePillBadge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background-color: #e60000;
+  color: #fff;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+/* Month Tabs */
+.monthTabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.monthTab {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+}
+
+.activeMonth {
+  border-color: #e60000;
+  color: #e60000;
+}
+
+.activeMonthBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #e60000;
+  color: #fff;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dates List */
+.datesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dateRow {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.85rem 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.activeDateRow {
+  border-color: #e60000;
+  background-color: #fef2f2; /* Light red */
+}
+
+.dateInfo {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex: 2;
+}
+
+.dateColBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.dateColBlock strong {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.activeTextRed {
+  color: #e60000 !important;
+}
+
+.dayLabel {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.dateArrow {
+  color: #94a3b8;
+  font-size: 1rem;
+}
+
+.availabilityCol {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.availPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: #bbf7d0;
+  color: #166534;
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.datePriceBlock {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.datePrice {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.activeDateRow .datePrice {
+  color: #e60000;
+}
+
+.taxSub {
+  font-size: 0.7rem;
+  color: #64748b;
+}

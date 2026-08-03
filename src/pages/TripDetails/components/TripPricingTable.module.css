@@ -1,0 +1,123 @@
+.sectionBlock {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.blockTitle {
+  font-family: var(--font-heading, 'Inter', sans-serif);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1.25rem;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.compTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 0.88rem;
+}
+
+.compTable th {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  font-weight: 700;
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+}
+
+.compTable th:last-child {
+  border-right: none;
+  color: #ef4444; /* Red color for Discounted Price header */
+}
+
+.compTable td {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  vertical-align: middle;
+  color: #1e293b;
+}
+
+.compTable td:last-child {
+  border-right: none;
+}
+
+.compTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.packageCol {
+  text-align: center;
+}
+
+.pkgTitle {
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.pkgDays {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.regularPriceCol {
+  text-align: center;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+  color: #0f172a;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.discountText {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.discountPriceCol {
+  text-align: center;
+  background-color: #f8fafc;
+}
+
+.finalPrice {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
+}
+
+.perPerson {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+
+.selectedBadge {
+  font-size: 0.75rem;
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.selectedRow td {
+  /* Optional highlight for the entire row if selected */
+}
+
+.tableNote {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  margin-top: 0.85rem;
+}

@@ -1,0 +1,6 @@
+{
+  "name": "DreamTrail",
+  "description": "Production-ready Travel Website for trip planning, holiday packages, group trips, and travel itineraries.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

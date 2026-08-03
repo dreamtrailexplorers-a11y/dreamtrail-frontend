@@ -1,0 +1,165 @@
+.tripHeader {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff; /* Re-added white card */
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+  margin-bottom: 1.5rem;
+}
+
+.tagRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.durationTag {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748b; /* Grey text like Avian */
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.2;
+  margin: 0.2rem 0 0.4rem 0;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #0f172a; /* Black text like Avian */
+  margin-bottom: 1.5rem;
+}
+
+.metaChipsRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.metaChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #64748b; /* Grey text */
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.shareBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: auto;
+}
+
+.shareBtn:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modalContent {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  width: 400px;
+  max-width: 90%;
+  position: relative;
+}
+.modalClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+.modalTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+.shareCard {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  align-items: center;
+}
+.shareImg {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+.shareInfo h4 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+  color: #0f172a;
+}
+.shareInfo p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #475569;
+}
+.shareActions {
+  display: flex;
+  gap: 10px;
+}
+.actionBtn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+  color: #0f172a;
+}
+.actionBtn:hover {
+  background: #f8fafc;
+}
+.actionBtn.whatsapp {
+  border: 2px solid #000;
+  font-weight: 600;
+}

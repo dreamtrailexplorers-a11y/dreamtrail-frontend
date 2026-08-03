@@ -1,0 +1,409 @@
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+/* Hero Banner */
+.heroBanner {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 400px;
+  max-height: 600px;
+}
+
+.heroImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-align: center;
+  padding: 0 1.5rem;
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.heroSubtitle {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.heroButtons {
+  display: flex;
+  gap: 1rem;
+}
+
+.heroBtnOutline {
+  background: rgba(255, 255, 255, 0.9);
+  color: #0f172a;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.heroBtnOutline:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Main Content Container */
+.mainContainer {
+  max-width: 1536px; /* Match standard container width */
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  width: 100%;
+}
+
+/* Content Sections */
+.contentSections {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.contentBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contentHeading {
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #e11d48; /* Red color matching screenshot */
+  margin: 0;
+}
+
+.redBar {
+  width: 4px;
+  height: 24px;
+  background-color: #e11d48;
+  margin-right: 12px;
+  border-radius: 2px;
+}
+
+.contentText {
+  font-size: 0.95rem;
+  color: #334155;
+  line-height: 1.7;
+}
+
+.contentText ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contentText li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.contentText li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #e11d48;
+}
+
+.contentText p {
+  margin-bottom: 1rem;
+}
+
+/* Sections */
+.section {
+  margin-bottom: 4rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.navButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.navBtn {
+  background: #f1f5f9;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.2s;
+}
+
+.navBtn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* Trips Grid */
+.tripsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+/* Similar Attractions Grid */
+.similarGrid {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scrollbar-width: none;
+}
+
+.similarGrid::-webkit-scrollbar {
+  display: none;
+}
+
+.similarCard {
+  min-width: 200px;
+  height: 140px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.similarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.similarCard:hover .similarImg {
+  transform: scale(1.05);
+}
+
+.similarTitle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Activities Grid */
+.activitiesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.activityCard {
+  display: flex;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  border: 1px solid #f1f5f9;
+  padding: 0.75rem;
+  gap: 1.5rem;
+  height: 170px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.activityCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+.activityImg {
+  width: 150px;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.activityInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.25rem 0;
+}
+
+.activityTop {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.activityTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.activityDuration {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.activityBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.activitySaveBadge {
+  color: #10b981;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #ecfdf5;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
+  border: 1px solid #a7f3d0;
+}
+
+.activityPriceRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.activityPrice {
+  color: #e11d48;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.activityOldPrice {
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-size: 0.85rem;
+}
+
+.activityArrow {
+  color: #e11d48;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+/* Why Choose Us */
+.whyChooseSection {
+  background-color: transparent;
+  padding: 2rem 0;
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.featureItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.featureIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.featureTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.featureDesc {
+  font-size: 0.85rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+  .tripsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .featuresGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .activitiesGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .tripsGrid {
+    grid-template-columns: 1fr;
+  }
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+}

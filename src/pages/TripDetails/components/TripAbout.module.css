@@ -1,0 +1,35 @@
+.sectionBlock {
+  background-color: #ffffff; /* Re-added white box */
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+  margin-bottom: 2rem;
+}
+
+.blockTitle {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1.25rem;
+}
+
+.aboutText {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.aboutTextExtra {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.6;
+  margin-top: 0.75rem;
+}
+
+.readMoreBtn {
+  color: #e60000;
+  font-weight: 700;
+  cursor: pointer;
+}

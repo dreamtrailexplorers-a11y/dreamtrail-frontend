@@ -1,0 +1,205 @@
+.stickySidebar {
+  position: sticky;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Green header with scalloped (stamp) bottom edge */
+.saveHeaderPill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background-color: #22c55e;
+  color: #ffffff;
+  padding: 0.75rem 1rem 1rem 1rem;
+  border-radius: 12px 12px 0 0;
+  font-size: 0.85rem;
+  font-weight: 800;
+  margin-bottom: -1rem; /* Pull up price container slightly */
+  position: relative;
+  z-index: 2; /* Needs to be above price container */
+  /* Scalloped edge using mask */
+  mask-image: radial-gradient(circle at 6px 100%, transparent 6px, black 6.5px);
+  mask-size: 12px 100%;
+  mask-repeat: repeat-x;
+  mask-position: bottom;
+  -webkit-mask-image: radial-gradient(circle at 6px 100%, transparent 6px, black 6.5px);
+  -webkit-mask-size: 12px 100%;
+  -webkit-mask-repeat: repeat-x;
+  -webkit-mask-position: bottom;
+}
+
+.priceContainer {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 2rem 1.75rem 1.75rem 1.75rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  position: relative;
+  z-index: 1; /* Below the scalloped header */
+}
+
+.startFromLabel {
+  display: block;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.sidebarPriceRow {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.mainPrice {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.sidebarOldPrice {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-weight: 600;
+}
+
+.perPersonSub {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.packageDetailSub {
+  font-size: 0.8rem;
+  color: #475569;
+  line-height: 1.6;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 1.25rem;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1.25rem;
+}
+
+.packageDetailSub p {
+  margin: 0.2rem 0;
+}
+
+.sidebarEnquireBtn {
+  width: 100%;
+  background-color: #e60000;
+  color: #ffffff;
+  padding: 0.85rem;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(230, 0, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+.sidebarEnquireBtn:hover {
+  background-color: #cc0000;
+  transform: translateY(-1px);
+}
+
+.privateTripsCard {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.25rem;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.privateTripsCard h4 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
+}
+
+.privateTripsCard p {
+  font-size: 0.85rem;
+  color: #475569;
+  margin-bottom: 1.25rem;
+}
+
+.requestCallbackBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.requestCallbackBtn:hover {
+  background-color: #f1f5f9;
+}
+
+.actionBtnsRow {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.whatsappActionBtn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background-color: #ffffff;
+  border: 1px solid #10b981;
+  color: #10b981;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.whatsappActionBtn:hover {
+  background-color: #f0fdf4;
+}
+
+.pdfActionBtn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pdfActionBtn:hover {
+  background-color: #f1f5f9;
+}

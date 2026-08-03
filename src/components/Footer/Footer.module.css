@@ -1,0 +1,264 @@
+.footerWrapper {
+  background-color: var(--dark-bg);
+  color: #a0aec0;
+  margin-top: 4rem;
+}
+
+/* Pre-footer Social & Contact Bar */
+.preFooterBar {
+  max-width: 1200px;
+  margin: 0 auto;
+  transform: translateY(-50%);
+  background-color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  border: 1px solid #edf2f7;
+}
+
+.contactGroup {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.whatsappIcon {
+  width: 50px;
+  height: 50px;
+  background-color: #25d366;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+
+.contactText {
+  display: flex;
+  flex-direction: column;
+}
+
+.contactLabel {
+  font-size: 0.82rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.phoneNum {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: -0.5px;
+}
+
+.socialGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.6rem;
+}
+
+.socialLabel {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.socialIcons {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.socialIconBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.socialIconBtn:hover {
+  transform: translateY(-3px);
+}
+
+.instagram { background-color: #e1306c; }
+.youtube { background-color: #ff0000; }
+.facebook { background-color: #1877f2; }
+.twitter { background-color: #000000; }
+.linkedin { background-color: #0a66c2; }
+
+/* Main Footer Container */
+.mainFooter {
+  max-width: 1536px;
+  margin: -1rem auto 0;
+  padding: 3rem 1.5rem 2rem;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.2fr;
+  gap: 3rem;
+}
+
+.companyCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.brandLogo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #ffffff;
+}
+
+.logoIcon {
+  width: 40px;
+  height: 40px;
+  background: var(--primary-color);
+  color: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoTitle {
+  font-family: var(--font-sans-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.logoHighlight {
+  color: var(--primary-color);
+}
+
+.addressBox {
+  display: flex;
+  gap: 0.8rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.colHeading {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.linksList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 1.5rem;
+}
+
+.linkItem {
+  font-size: 0.88rem;
+  color: #cbd5e1;
+  transition: color 0.2s ease;
+}
+
+.linkItem:hover {
+  color: var(--primary-color);
+}
+
+.newsletterCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.newsletterDesc {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  line-height: 1.5;
+}
+
+.newsletterForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.emailInput {
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid #475569;
+  background-color: #272b30;
+  color: #ffffff;
+  outline: none;
+  font-size: 0.88rem;
+}
+
+.emailInput:focus {
+  border-color: var(--primary-color);
+}
+
+.subscribeBtn {
+  padding: 0.8rem;
+  border-radius: var(--radius-md);
+  background-color: var(--primary-color);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+}
+
+.subscribeBtn:hover {
+  background-color: var(--primary-hover);
+  color: #ffffff;
+}
+
+/* Bottom Copyright Bar */
+.bottomBar {
+  border-top: 1px solid #334155;
+  padding: 1.5rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1536px;
+  margin: 0 auto;
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+.indiaTag {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+@media (max-width: 900px) {
+  .preFooterBar {
+    flex-direction: column;
+    text-align: center;
+    transform: translateY(-20%);
+    gap: 1.2rem;
+  }
+  .socialGroup {
+    align-items: center;
+  }
+  .mainFooter {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .bottomBar {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+}

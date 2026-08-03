@@ -1,0 +1,126 @@
+.page {
+  background-color: #fff;
+  min-height: 100vh;
+}
+
+.heroSection {
+  position: relative;
+  height: 60vh;
+  min-height: 400px;
+  overflow: hidden;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 3rem;
+}
+
+.heroContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 2rem;
+  color: white;
+  text-align: center;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.breadcrumb {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.breadcrumb a {
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.breadcrumb span {
+  color: #fff;
+}
+
+.mainContainer {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.contentWrapper {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  padding: 3rem;
+  margin-top: -8rem;
+  position: relative;
+  z-index: 10;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.sectionTitle {
+  color: #e60000;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  border-left: 4px solid #e60000;
+  padding-left: 1rem;
+}
+
+.text {
+  color: #475569;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+.itemList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.itemList li {
+  margin-bottom: 1rem;
+  color: #475569;
+  line-height: 1.6;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.itemList li::before {
+  content: '•';
+  color: #e60000;
+  font-size: 1.5rem;
+  position: absolute;
+  left: 0;
+  top: -0.2rem;
+}
+
+.itemList li strong {
+  color: #0f172a;
+}
