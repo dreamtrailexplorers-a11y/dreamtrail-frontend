@@ -39,13 +39,32 @@ const Banner = () => {
     }
   };
 
+  // Helper to convert Google Drive links to playable raw video stream links
+  const getPlayableVideoUrl = (url) => {
+    if (!url) return '';
+    if (url.includes('drive.google.com')) {
+      let fileId = '';
+      if (url.includes('id=')) {
+        fileId = url.split('id=')[1].split('&')[0];
+      } else if (url.includes('/d/')) {
+        fileId = url.split('/d/')[1].split('/')[0];
+      }
+      if (fileId) {
+        return `https://drive.google.com/uc?export=download&id=${fileId}`;
+      }
+    }
+    return url;
+  };
+
+  const videoUrl = getPlayableVideoUrl(settings?.bannerVideoUrl);
+
   return (
     <section className={styles.bannerSection}>
       <div className={styles.bannerCard}>
         {/* Background Video */}
-        {settings?.bannerVideoUrl ? (
+        {videoUrl ? (
           <video
-            key={settings.bannerVideoUrl}
+            key={videoUrl}
             ref={videoRef}
             className={styles.bannerVideo}
             autoPlay
@@ -54,7 +73,7 @@ const Banner = () => {
             playsInline
             poster="https://images.unsplash.com/photo-1581791538302-03537b9c97bf?auto=format&fit=crop&w=1600&q=80"
           >
-            <source src={settings.bannerVideoUrl} type="video/mp4" />
+            <source src={videoUrl} type="video/mp4" />
             Your browser does not support HTML5 video.
           </video>
         ) : (
