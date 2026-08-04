@@ -38,28 +38,8 @@ const TripAbout = ({ trip }) => {
     );
   }
 
-  // Fallback to hardcoded text if aboutTrip is empty
-  return (
-    <div className={styles.sectionBlock}>
-      <h2 className={styles.blockTitle}>About this Trip</h2>
-      <p className={styles.aboutText}>
-        The <strong>{trip.title}</strong> is one of India's most iconic high-altitude motorcycle adventures.
-        Riding through dramatic Himalayan terrain, ancient monasteries, remote villages, and moon-like landscapes,
-        this journey is a dream for every biker.
-        {!readMoreAbout && (
-          <span className={styles.readMoreBtn} onClick={() => setReadMoreAbout(true)}> ...Read More</span>
-        )}
-      </p>
-      {readMoreAbout && (
-        <p className={styles.aboutTextExtra}>
-          This <strong>{trip.duration} {trip.title}</strong> by DreamTrail is crafted for riders who want
-          a perfect balance of adventure, safety, breathtaking views, and seamless execution. Equipped with backup vehicles,
-          expert trip marshals, medical oxygen support, and comfortable mountain stays, you can focus purely on the joy of riding!
-          <span className={styles.readMoreBtn} onClick={() => setReadMoreAbout(false)}> Show Less</span>
-        </p>
-      )}
-    </div>
-  );
+  // Render nothing if aboutTrip is empty
+  return null;
 };
 
 export default TripAbout;

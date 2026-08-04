@@ -16,7 +16,7 @@ const ArrayInput = ({ title, fields, data = [], onChange }) => {
     if(!file) return;
     try {
       const res = await uploadFile(file);
-      const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       handleChange(i, field, fullUrl);
     } catch(err) {
       alert('Upload failed');
@@ -141,7 +141,7 @@ const StringArrayInput = ({ title, data = [], onChange, isImage = false, maxItem
     if(!file) return;
     try {
       const res = await uploadFile(file);
-      const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       handleChange(i, fullUrl);
     } catch(err) {
       alert('Upload failed');
@@ -192,7 +192,7 @@ const PackageOptionsInput = ({ data = [], onChange }) => {
     if(!file) return;
     try {
       const res = await uploadFile(file);
-      const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       handleChangeOption(i, 'image', fullUrl);
     } catch(err) {
       alert('Upload failed');
@@ -370,7 +370,7 @@ const StayDetailsInput = ({ data = [], onChange }) => {
     if(!file) return;
     try {
       const res = await uploadFile(file);
-      const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       handleChangeHotel(locIndex, hotelIndex, 'image', fullUrl);
     } catch(err) {
       alert('Upload failed');
@@ -518,7 +518,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     if(!file) return;
     try {
       const res = await uploadFile(file);
-      const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       setFormData({ ...formData, image: fullUrl });
     } catch(err) {
       alert('Upload failed');
@@ -604,8 +604,17 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     let gallery = trip.galleryImages && trip.galleryImages.length > 0 
       ? [...trip.galleryImages] 
       : [''];
+      
+    const overrideTrip = { ...trip };
+    if (overrideTrip.title === 'New Package (Edit Title)') overrideTrip.title = '';
+    if (overrideTrip.slug && overrideTrip.slug.startsWith('new-package-')) overrideTrip.slug = '';
+    if (overrideTrip.route === 'TBD') overrideTrip.route = '';
+    if (overrideTrip.duration === 'TBD') overrideTrip.duration = '';
+    if (overrideTrip.originalPrice === 0) overrideTrip.originalPrice = '';
+    if (overrideTrip.discountedPrice === 0) overrideTrip.discountedPrice = '';
+    if (overrideTrip.image === 'https://placehold.co/600x400?text=Upload+Image') overrideTrip.image = '';
     
-    setFormData({ ...initialForm, ...trip, galleryImages: gallery });
+    setFormData({ ...initialForm, ...overrideTrip, galleryImages: gallery });
     setShowFullForm(true);
   };
 
@@ -679,7 +688,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
                   <div className={styles.formGrid}>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Title</label>
-            <input name="title" value={formData.title} onChange={handleChange} placeholder="Trip Title" required className={styles.inputField} />
+            <input name="title" value={formData.title} onChange={handleChange} placeholder="New Package (Edit Title)" required className={styles.inputField} />
           </div>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Slug</label>
