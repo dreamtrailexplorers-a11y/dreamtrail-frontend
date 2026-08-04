@@ -94,8 +94,8 @@ const ManageDestinations = () => {
       setNewDestName('');
       setNewDestType('domestic');
       setNewDestImage('');
-      // Open the new destination in the popup immediately instead of navigating
-      setEditingDestId(res.data._id);
+      // Refresh the list instead of opening the edit popup
+      fetchDestinations();
     } catch (err) {
       console.error(err);
       alert('Error creating destination: ' + (err.response?.data?.message || err.message));
