@@ -20,7 +20,7 @@ const StringArrayInput = ({ title, data = [], onChange }) => {
     if (!file) return;
     try {
       const res = await uploadFile(file);
-      const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       onChange([...data, fullUrl]);
     } catch (err) {
       alert('Upload failed');
@@ -89,7 +89,7 @@ const ManageSiteSettings = () => {
     if (!file) return;
     try {
       const res = await uploadFile(file);
-      const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       setFormData({ ...formData, [fieldName]: fullUrl });
     } catch (err) {
       alert('Upload failed');
@@ -117,7 +117,7 @@ const ManageSiteSettings = () => {
     if (!file) return;
     try {
       const res = await uploadFile(file);
-      const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       handleBannerArrayChange(index, 'image', fullUrl);
     } catch (err) {
       alert('Upload failed');
