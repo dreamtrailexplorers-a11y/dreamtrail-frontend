@@ -254,7 +254,7 @@ const ManageAttractions = () => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
         {attractions.map(attraction => (
           <div key={attraction._id} className={styles.card} style={{ margin: 0, padding: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-            <div style={{ height: '160px', backgroundColor: '#e2e8f0', backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}${attraction.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+            <div style={{ height: '160px', backgroundColor: '#e2e8f0', backgroundImage: `url(${attraction.image?.startsWith('http') ? attraction.image : `${import.meta.env.VITE_BACKEND_URL}${attraction.image}`})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
               {!attraction.image && <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>No Image</div>}
             </div>
             

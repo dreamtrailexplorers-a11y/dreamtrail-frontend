@@ -4,6 +4,7 @@ import { getBlogs } from '../../services/api';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import styles from './BlogDetailsPage.module.css';
+import { cleanImageUrl } from '../../utils/cleanUrl';
 
 const BlogDetailsPage = () => {
   const { slug } = useParams();
@@ -44,7 +45,7 @@ const BlogDetailsPage = () => {
           <h1 className={styles.title}>{blog.title}</h1>
           <div className={styles.authorMeta}>
             <img
-              src={blog.authorAvatar}
+              src={cleanImageUrl(blog.authorAvatar)}
               alt={blog.author}
               className={styles.authorAvatar}
               style={{ width: '32px', height: '32px', borderRadius: '50%', marginRight: '8px', objectFit: 'cover' }}
@@ -62,7 +63,7 @@ const BlogDetailsPage = () => {
           
           {/* Main Cover (from the blog schema) */}
           <figure className={styles.fullImageBlock} style={{ marginBottom: '30px' }}>
-            <img src={blog.image} alt={blog.title} className={styles.image} />
+            <img src={cleanImageUrl(blog.image)} alt={blog.title} className={styles.image} />
           </figure>
 
           {/* Intro Excerpt */}
@@ -82,7 +83,7 @@ const BlogDetailsPage = () => {
             if (block.type === 'image-full') {
               return (
                 <figure key={idx} className={styles.fullImageBlock}>
-                  <img src={block.url} alt={block.caption || 'Blog image'} className={styles.image} />
+                  <img src={cleanImageUrl(block.url)} alt={block.caption || 'Blog image'} className={styles.image} />
                   {block.caption && <figcaption className={styles.caption}>{block.caption}</figcaption>}
                 </figure>
               );
@@ -91,7 +92,7 @@ const BlogDetailsPage = () => {
               return (
                 <div key={idx} className={styles.halfImageGrid}>
                   {block.images && block.images.map((img, i) => (
-                    <img key={i} src={img} alt={`Grid ${i}`} className={styles.image} />
+                    <img key={i} src={cleanImageUrl(img)} alt={`Grid ${i}`} className={styles.image} />
                   ))}
                 </div>
               );
@@ -100,7 +101,7 @@ const BlogDetailsPage = () => {
               return (
                 <div key={idx} className={styles.twoByTwoGrid}>
                   {block.images && block.images.map((img, i) => (
-                    <img key={i} src={img} alt={`Grid ${i}`} className={styles.image} />
+                    <img key={i} src={cleanImageUrl(img)} alt={`Grid ${i}`} className={styles.image} />
                   ))}
                 </div>
               );
@@ -114,7 +115,7 @@ const BlogDetailsPage = () => {
           <h3 className={styles.publishedByTitle}>Published By</h3>
           <div className={styles.authorProfile}>
             <img 
-              src={blog.authorAvatar} 
+              src={cleanImageUrl(blog.authorAvatar)} 
               alt={blog.author} 
               className={styles.authorAvatarLg} 
               style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover' }}

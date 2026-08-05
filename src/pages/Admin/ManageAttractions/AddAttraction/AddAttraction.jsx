@@ -243,7 +243,7 @@ const AddAttraction = () => {
             <label>Hero Image</label>
             <input type="file" onChange={handleImageUpload} accept="image/*" className={styles.input} />
             {uploadingImage && <p style={{color: 'blue'}}>Uploading image, please wait...</p>}
-            {formData.image && <img src={`${import.meta.env.VITE_BACKEND_URL}${formData.image}`} alt="Preview" className={styles.previewImage} />}
+            {formData.image && <img src={formData.image?.startsWith('http') ? formData.image : `${import.meta.env.VITE_BACKEND_URL}${formData.image}`} alt="Preview" className={styles.previewImage} />}
           </div>
         </div>
 
@@ -282,3 +282,4 @@ const AddAttraction = () => {
 };
 
 export default AddAttraction;
+

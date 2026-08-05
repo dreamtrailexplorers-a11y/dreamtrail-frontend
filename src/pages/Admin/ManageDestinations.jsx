@@ -40,8 +40,8 @@ const ManageDestinations = () => {
     const file = e.target.files[0];
     if (!file) return;
     try {
-      const res = await uploadFile(file);
-      setNewDestImage(`${import.meta.env.VITE_BACKEND_URL}${res.data.url}`);
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      setNewDestImage(fullUrl);
     } catch (err) {
       alert('Image upload failed');
     }
@@ -51,8 +51,8 @@ const ManageDestinations = () => {
     const file = e.target.files[0];
     if (!file) return;
     try {
-      const res = await uploadFile(file);
-      setPackageForm(prev => ({ ...prev, image: `${import.meta.env.VITE_BACKEND_URL}${res.data.url}` }));
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      setPackageForm(prev => ({ ...prev, image: fullUrl }));
     } catch (err) {
       alert('Image upload failed');
     }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getBlogs, createBlog, updateBlog, deleteBlog, uploadFile } from '../../services/api';
 import styles from './Admin.module.css';
+import { cleanImageUrl } from '../../utils/cleanUrl';
 
 const ManageBlogs = () => {
   const initialForm = {
@@ -49,7 +50,7 @@ const ManageBlogs = () => {
     if(!file) return;
     try {
       const res = await uploadFile(file);
-      const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       setFormData({ ...formData, [fieldName]: fullUrl });
     } catch(err) {
       alert('Upload failed');
@@ -61,7 +62,7 @@ const ManageBlogs = () => {
     if(!file) return;
     try {
       const res = await uploadFile(file);
-      const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       if (arrayIndex !== null) {
         const updatedBlocks = [...formData.contentBlocks];
         const newImages = [...(updatedBlocks[index].images || ['', ''])];
@@ -148,7 +149,7 @@ const ManageBlogs = () => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
         {blogs.map(blog => (
           <div key={blog._id} className={styles.card} style={{ margin: 0, padding: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-            <div style={{ height: '160px', backgroundColor: '#e2e8f0', backgroundImage: `url(${blog.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+            <div style={{ height: '160px', backgroundColor: '#e2e8f0', backgroundImage: `url(${cleanImageUrl(blog.image)})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
               {!blog.image && <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>No Image</div>}
             </div>
             
@@ -157,7 +158,7 @@ const ManageBlogs = () => {
               
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
                 {blog.authorAvatar ? (
-                  <img src={blog.authorAvatar} alt="author" style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }} />
+                  <img src={cleanImageUrl(blog.authorAvatar)} alt="author" style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }} />
                 ) : (
                   <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#cbd5e1' }}></div>
                 )}

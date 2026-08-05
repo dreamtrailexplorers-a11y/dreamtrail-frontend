@@ -16,7 +16,7 @@ const StringArrayInput = ({ title, data = [], onChange, isImage = false, uploadF
     if(!file) return;
     try {
       const res = await uploadFile(file);
-      const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       handleChange(i, fullUrl);
     } catch(err) {
       alert('Upload failed');
@@ -119,7 +119,7 @@ const ManageCreatorTrips = () => {
     if(!file) return;
     try {
       const res = await uploadFile(file);
-      const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       setFormData(prev => ({ ...prev, curatorAvatar: fullUrl }));
     } catch(err) {
       alert('Upload failed');
@@ -328,3 +328,4 @@ const ManageCreatorTrips = () => {
 };
 
 export default ManageCreatorTrips;
+

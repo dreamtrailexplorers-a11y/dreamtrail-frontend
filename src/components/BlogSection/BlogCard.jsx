@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './BlogSection.module.css';
+import { cleanImageUrl } from '../../utils/cleanUrl';
 
 const BlogCard = ({ blog }) => {
   const blogSlug = blog.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
@@ -10,7 +11,7 @@ const BlogCard = ({ blog }) => {
       <div className={styles.cardContainer}>
         <div className={styles.imageWrapper}>
           <img 
-            src={blog.image || "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80"} 
+            src={cleanImageUrl(blog.image) || "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80"} 
             alt={blog.title} 
             onError={(e) => e.target.src = "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80"}
             className={styles.cardImage} 
@@ -23,7 +24,7 @@ const BlogCard = ({ blog }) => {
 
           <div className={styles.authorFooter}>
             <img
-              src={blog.authorAvatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80"}
+              src={cleanImageUrl(blog.authorAvatar) || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80"}
               alt={blog.author}
               onError={(e) => e.target.src = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80"}
               className={styles.authorAvatar}

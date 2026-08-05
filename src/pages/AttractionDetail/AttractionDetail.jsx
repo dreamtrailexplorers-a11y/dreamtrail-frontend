@@ -61,7 +61,7 @@ const AttractionDetail = () => {
       
       {/* Hero Section */}
       <div className={styles.heroSection}>
-        <img src={`${import.meta.env.VITE_BACKEND_URL}${attraction.image}`} alt={attraction.title} className={styles.heroImage} />
+        <img src={attraction.image?.startsWith('http') ? attraction.image : `${import.meta.env.VITE_BACKEND_URL}${attraction.image}`} alt={attraction.title} className={styles.heroImage} />
         <div className={styles.heroOverlay}>
           <div className={styles.heroContent}>
             <h1 className={styles.heroTitle}>{attraction.title}</h1>
@@ -103,3 +103,4 @@ const AttractionDetail = () => {
 };
 
 export default AttractionDetail;
+

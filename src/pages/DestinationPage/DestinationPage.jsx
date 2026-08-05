@@ -232,7 +232,7 @@ const DestinationPage = () => {
                   <Link key={idx} to={`/attractions/${place.slug}`} style={{ textDecoration: 'none' }}>
                     <div className={styles.placeCard}>
                       <div className={styles.placeImgWrapper}>
-                        <img src={`${import.meta.env.VITE_BACKEND_URL}${place.image}`} alt={place.title} className={styles.placeImg} />
+                        <img src={place.image?.startsWith('http') ? place.image : `${import.meta.env.VITE_BACKEND_URL}${place.image}`} alt={place.title} className={styles.placeImg} />
                         <div className={styles.placeTitleOverlay}>{place.title}</div>
                       </div>
                       <div className={styles.placeInfo}>
@@ -350,3 +350,4 @@ const DestinationPage = () => {
 };
 
 export default DestinationPage;
+
