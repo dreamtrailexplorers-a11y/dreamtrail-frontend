@@ -6,6 +6,16 @@ const TripPackageOptions = ({ trip, options = [], selectedOptionIndex, onSelectO
   if (!options || options.length === 0) return null;
 
   const currentOption = options[selectedOptionIndex] || options[0];
+  const variants = trip?.variants || [];
+  const validVariants = variants.filter(v => v.name && v.name.trim() !== '');
+
+  let selectedVariantAddon = 0;
+  if (validVariants.length > 0) {
+    const selectedVariant = selectedSubOptionIndex !== null ? validVariants[selectedSubOptionIndex] : null;
+    if (selectedVariant) {
+      selectedVariantAddon = Number(selectedVariant.price) || 0;
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -14,23 +24,20 @@ const TripPackageOptions = ({ trip, options = [], selectedOptionIndex, onSelectO
       <div className={styles.categoriesGrid}>
         {options.map((opt, index) => {
           const isActive = selectedOptionIndex === index;
-          const validSubOptions = opt.subOptions ? opt.subOptions.filter(sub => sub.name && sub.name.trim() !== '') : [];
           
-          const displayPrice = (isActive && validSubOptions.length > 0 && validSubOptions[selectedSubOptionIndex])
-            ? validSubOptions[selectedSubOptionIndex].price
-            : opt.price;
-          
-          let displayOrigPrice = (isActive && validSubOptions.length > 0 && validSubOptions[selectedSubOptionIndex])
-            ? (validSubOptions[selectedSubOptionIndex].originalPrice || opt.originalPrice || trip?.originalPrice)
-            : (opt.originalPrice || trip?.originalPrice);
+          let displayPrice = (Number(opt.price) || 0) + selectedVariantAddon;
+          let displayOrigPrice = opt.originalPrice || trip?.originalPrice;
+          if (displayOrigPrice) {
+            displayOrigPrice = Number(displayOrigPrice) + selectedVariantAddon;
+          }
 
           return (
             <div 
               key={index} 
               className={`${styles.categoryCard} ${isActive ? styles.activeCard : ''}`}
               onClick={() => {
-                onSelectOption(index);
-                onSelectSubOption(0); // Reset sub-option when changing main option
+                onSelectOption(isActive ? null : index);
+                onSelectSubOption(null); // Reset sub-option when changing main option
               }}
             >
               <div className={styles.imageWrapper}>
@@ -54,29 +61,27 @@ const TripPackageOptions = ({ trip, options = [], selectedOptionIndex, onSelectO
       </div>
 
       {(() => {
-        const validCurrentSubOptions = currentOption?.subOptions ? currentOption.subOptions.filter(sub => sub.name && sub.name.trim() !== '') : [];
-        if (validCurrentSubOptions.length === 0) return null;
+        if (validVariants.length === 0) return null;
 
         return (
           <>
             <div className={styles.divider}></div>
             <h3 className={styles.sectionSubtitle}>Select Variant</h3>
             <div className={styles.optionsFlex}>
-              {validCurrentSubOptions.map((sub, j) => {
+              {validVariants.map((variant, j) => {
                 const isActive = selectedSubOptionIndex === j;
-                const subOrigPrice = sub.originalPrice || currentOption.originalPrice || trip?.originalPrice;
+                const extraPrice = Number(variant.price) || 0;
                 
                 return (
                   <button
                     key={j}
                     className={`${styles.optionPill} ${isActive ? styles.activePill : ''}`}
-                    onClick={() => onSelectSubOption(j)}
+                    onClick={() => onSelectSubOption(isActive ? null : j)}
                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
                   >
                     <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-                      <span>{sub.name} - </span>
-                      {subOrigPrice && <span className={styles.origPrice} style={{ fontSize: '0.85em' }}>₹{subOrigPrice}</span>}
-                      <span>₹{sub.price}</span>
+                      <span>{variant.name}</span>
+                      {extraPrice > 0 && <span style={{ fontWeight: '600' }}> (+₹{extraPrice})</span>}
                     </div>
                     {isActive && (
                       <div className={styles.checkBadge}>

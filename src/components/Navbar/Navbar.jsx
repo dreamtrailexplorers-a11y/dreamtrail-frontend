@@ -23,8 +23,7 @@ const Navbar = ({ sticky = true }) => {
           // Fallback if db is empty
           setNavLinks([
             { _id: '1', title: "Tour Packages", path: "/tour-packages" },
-            { _id: '2', title: "Group Trips", path: "/group-trips" },
-            { _id: '3', title: "Creator Trips", path: "/creator-trips" }
+            { _id: '2', title: "Group Trips", path: "/group-trips" }
           ]);
         }
       } catch (error) {

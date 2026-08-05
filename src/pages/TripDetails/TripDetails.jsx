@@ -16,12 +16,10 @@ import TripAbout from './components/TripAbout';
 import TripItinerary from './components/TripItinerary';
 import TripInclusions from './components/TripInclusions';
 import TripPackages from './components/TripPackages';
-import TripPricingTable from './components/TripPricingTable';
 import TripReviews from './components/TripReviews';
 import TripSidebar from './components/TripSidebar';
 import TripPackageOptions from './components/TripPackageOptions';
 import TripPageNav from './components/TripPageNav';
-import TripStayDetails from './components/TripStayDetails';
 
 // Reusing CreatorFaqs for clean layout
 import CreatorFaqs from '../CreatorTripDetails/components/CreatorFaqs';
@@ -30,8 +28,8 @@ const TripDetails = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
-  const [selectedSubOptionIndex, setSelectedSubOptionIndex] = useState(0);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
+  const [selectedSubOptionIndex, setSelectedSubOptionIndex] = useState(null);
   const [selectedDepartureDate, setSelectedDepartureDate] = useState(null);
 
   const [currentTrip, setCurrentTrip] = useState(null);
@@ -93,37 +91,40 @@ const TripDetails = () => {
   let selectedSidebarTitle = currentTrip.title;
   let selectedSidebarDuration = currentTrip.duration || "5 Days 4 Nights";
   
+  let variantAddon = 0;
+  const variants = currentTrip.variants || [];
+  const validVariants = variants.filter(v => v.name && v.name.trim() !== '');
+  const variant = selectedSubOptionIndex !== null ? validVariants[selectedSubOptionIndex] : null;
+  if (variant && variant.name) {
+    variantAddon = Number(variant.price) || 0;
+  }
+
   if (packageOptions && packageOptions.length > 0) {
-    const opt = packageOptions[selectedOptionIndex] || packageOptions[0];
+    const opt = selectedOptionIndex !== null ? packageOptions[selectedOptionIndex] : null;
     if (opt) {
-      let minPrice = Number(opt.price) || Infinity;
-      let minOrigPrice = opt.originalPrice || "";
+      let basePrice = Number(opt.price) || Number(currentTrip.discountedPrice) || 0;
+      let baseOrigPrice = Number(opt.originalPrice) || Number(currentTrip.originalPrice) || 0;
       
-      if (opt.subOptions && opt.subOptions.length > 0) {
-        const sub = opt.subOptions[selectedSubOptionIndex] || opt.subOptions[0];
-        if (sub && sub.name) {
-          selectedSidebarTitle = `${opt.title} Package with ${sub.name}`;
-        } else {
-          selectedSidebarTitle = `${opt.title} Package`;
-        }
-        
-        if (sub) {
-          minPrice = Number(sub.price) || Infinity;
-          minOrigPrice = sub.originalPrice || "";
-        }
+      if (variant && variant.name) {
+        selectedSidebarTitle = `${opt.title} Package with ${variant.name}`;
       } else {
         selectedSidebarTitle = `${opt.title} Package`;
       }
       
-      if (minPrice !== Infinity) {
-        displayDiscPrice = minPrice;
-        displayOrigPrice = Number(minOrigPrice) > 0 
-          ? minOrigPrice 
-          : (Number(opt.originalPrice) > 0 ? opt.originalPrice : currentTrip.originalPrice);
-      } else {
-        displayDiscPrice = opt.price || currentTrip.discountedPrice;
-        displayOrigPrice = Number(opt.originalPrice) > 0 ? opt.originalPrice : currentTrip.originalPrice;
+      displayDiscPrice = basePrice + variantAddon;
+      displayOrigPrice = baseOrigPrice > 0 ? baseOrigPrice + variantAddon : "";
+    } else {
+      displayDiscPrice = (Number(currentTrip.discountedPrice) || 0) + variantAddon;
+      displayOrigPrice = Number(currentTrip.originalPrice) > 0 ? (Number(currentTrip.originalPrice) + variantAddon) : "";
+      if (variant && variant.name) {
+        selectedSidebarTitle = `${currentTrip.title} with ${variant.name}`;
       }
+    }
+  } else {
+    displayDiscPrice = (Number(currentTrip.discountedPrice) || 0) + variantAddon;
+    displayOrigPrice = Number(currentTrip.originalPrice) > 0 ? (Number(currentTrip.originalPrice) + variantAddon) : "";
+    if (variant && variant.name) {
+      selectedSidebarTitle = `${currentTrip.title} with ${variant.name}`;
     }
   }
 
@@ -157,16 +158,14 @@ const TripDetails = () => {
               />
             </div>
 
-            <div id="stay" style={{ scrollMarginTop: '90px' }}>
-              <TripStayDetails stayDetails={currentTrip.stayDetails || []} />
-            </div>
+
 
             <div id="itinerary" style={{ scrollMarginTop: '90px' }}>
               <TripItinerary itineraryDays={itineraryDays} onOpenEnquiry={handleOpenEnquiry} />
             </div>
             
             <div id="inclusions" style={{ scrollMarginTop: '90px' }}>
-              <TripInclusions inclusions={inclusions} exclusions={exclusions} />
+              <TripInclusions inclusions={inclusions} exclusions={exclusions} mapImage={currentTrip.mapImage} />
             </div>
 
             {/* Trip Packages / Departure Dates */}
@@ -177,13 +176,8 @@ const TripDetails = () => {
                 selectedDepartureDate={selectedDepartureDate}
                 setSelectedDepartureDate={setSelectedDepartureDate}
               />
+              </div>
             </div>
-            <TripPricingTable 
-              trip={currentTrip}
-              selectedOptionIndex={selectedOptionIndex}
-              selectedSubOptionIndex={selectedSubOptionIndex}
-            />
-          </div>
 
           {/* Right Column (Sticky Pricing Sidebar) */}
           <div className={styles.rightColumn}>

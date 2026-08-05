@@ -79,11 +79,6 @@ const TripPackages = ({ departureDates, selectedDepartureDate, setSelectedDepart
                     <FiCheck size={12} /> {displayStatus}
                   </span>
                 </div>
-
-                <div className={styles.datePriceBlock}>
-                  {dateItem.price && <span className={styles.datePrice}>₹{dateItem.price}</span>}
-                  <span className={styles.taxSub}>+ taxes</span>
-                </div>
               </div>
             );
           })}

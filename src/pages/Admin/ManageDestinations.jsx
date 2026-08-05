@@ -40,9 +40,11 @@ const ManageDestinations = () => {
     const file = e.target.files[0];
     if (!file) return;
     try {
+      const res = await uploadFile(file);
       const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       setNewDestImage(fullUrl);
     } catch (err) {
+      console.error(err);
       alert('Image upload failed');
     }
   };
@@ -51,9 +53,11 @@ const ManageDestinations = () => {
     const file = e.target.files[0];
     if (!file) return;
     try {
+      const res = await uploadFile(file);
       const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       setPackageForm(prev => ({ ...prev, image: fullUrl }));
     } catch (err) {
+      console.error(err);
       alert('Image upload failed');
     }
   };
@@ -374,7 +378,6 @@ const ManageDestinations = () => {
                   <option value="Flight Package">Flight Package</option>
                   <option value="Honeymoon">Honeymoon</option>
                   <option value="Unique Experience">Unique Experience</option>
-                  <option value="Creator Trip">Creator Trip</option>
                 </select>
               </div>
               <div className={styles.inputGroup}>

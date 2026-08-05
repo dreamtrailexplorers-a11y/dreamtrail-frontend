@@ -144,7 +144,6 @@ const AdminHome = () => {
   const cards = [
     { title: 'Destinations', count: counts.destinations, icon: <FiMapPin />, link: '/admin/destinations', color: '#3b82f6' },
     { title: 'Packages', count: counts.packages, icon: <FiBriefcase />, link: '/admin/all-packages', color: '#10b981' },
-    { title: 'Creator Trips', count: counts.creatorTrips, icon: <FiCamera />, link: '/admin/creator-trips', color: '#8b5cf6' },
     { title: 'Attractions', count: counts.attractions, icon: <FiImage />, link: '/admin/attractions', color: '#f97316' },
     { title: 'Bookings', count: counts.bookings, icon: <FiShoppingCart />, link: '/admin/bookings', color: '#f59e0b' },
     { title: 'Enquiries', count: counts.enquiries, icon: <FiMessageCircle />, link: '/admin/enquiries', color: '#ef4444' },

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getTrips, createTrip, updateTrip, deleteTrip, uploadFile } from '../../services/api';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { cleanImageUrl } from '../../utils/cleanUrl';
 import styles from './Admin.module.css';
 
 const ArrayInput = ({ title, fields, data = [], onChange }) => {
@@ -199,94 +200,43 @@ const PackageOptionsInput = ({ data = [], onChange }) => {
     }
   };
 
-  const handleAddSubOption = (optIndex) => {
-    const newData = [...data];
-    const newSubOptions = newData[optIndex].subOptions ? [...newData[optIndex].subOptions] : [];
-    newSubOptions.push({ name: '', price: '', originalPrice: '' });
-    newData[optIndex] = { ...newData[optIndex], subOptions: newSubOptions };
-    onChange(newData);
-  };
-
-  const handleRemoveSubOption = (optIndex, subIndex) => {
-    const newData = [...data];
-    const newSubOptions = [...newData[optIndex].subOptions];
-    newSubOptions.splice(subIndex, 1);
-    newData[optIndex] = { ...newData[optIndex], subOptions: newSubOptions };
-    onChange(newData);
-  };
-
-  const handleChangeSubOption = (optIndex, subIndex, field, value) => {
-    const newData = [...data];
-    const newSubOptions = [...newData[optIndex].subOptions];
-    newSubOptions[subIndex] = { ...newSubOptions[subIndex], [field]: value };
-    newData[optIndex] = { ...newData[optIndex], subOptions: newSubOptions };
-    onChange(newData);
-  };
-
   return (
     <div className={styles.card} style={{ marginTop: '20px', padding: '15px' }}>
-      <h4 className={styles.cardTitle} style={{ fontSize: '1.1rem', marginBottom: '15px', color: '#1e293b' }}>Package Options (e.g. Own Bike, Rented Bike)</h4>
+      <h4 className={styles.cardTitle} style={{ fontSize: '1rem' }}>Package Options (e.g. Own Bike, Rented Bike)</h4>
       {data.map((opt, i) => (
-        <div key={i} style={{ border: '1px solid #e2e8f0', background: '#f8fafc', padding: '15px', marginBottom: '20px', borderRadius: '8px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-          <h5 style={{ margin: '0 0 10px 0', color: '#475569' }}>Main Option {i + 1}</h5>
+        <div key={i} style={{ border: '1px solid #e2e8f0', padding: '15px', marginBottom: '15px', borderRadius: '8px', background: '#fff' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+            <strong style={{ fontSize: '0.85rem', color: '#475569' }}>Main Option {i + 1}</strong>
+          </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '15px', marginBottom: '15px' }}>
+          <div className={styles.responsiveGrid} style={{ gridTemplateColumns: '2fr 1fr 1fr auto' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.8rem', color: '#64748b', marginBottom: '4px' }}>Option Title</label>
-              <input placeholder="e.g. Own Bike" value={opt.title} onChange={e => handleChangeOption(i, 'title', e.target.value)} className={styles.inputField} style={{ width: '100%' }} />
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>Option Title</label>
+              <input placeholder="e.g. Own Bike" value={opt.title} onChange={(e) => handleChangeOption(i, 'title', e.target.value)} className={styles.inputField} />
             </div>
-            <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontSize: '0.8rem', color: '#64748b', marginBottom: '4px' }}>Original Price (₹)</label>
-              <input type="number" placeholder="0" value={opt.originalPrice} onChange={e => handleChangeOption(i, 'originalPrice', e.target.value)} className={styles.inputField} style={{ width: '100%' }} />
+            <div>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>Original Price (₹)</label>
+              <input type="number" placeholder="0" value={opt.originalPrice} onChange={(e) => handleChangeOption(i, 'originalPrice', e.target.value)} className={styles.inputField} />
             </div>
-            <div style={{ flex: 1 }}>
-                <label style={{ display: 'block', fontSize: '0.8rem', color: '#64748b', marginBottom: '4px' }}>Discounted Price (₹)</label>
-                <input type="number" placeholder="0" value={opt.price} onChange={e => handleChangeOption(i, 'price', e.target.value)} required className={styles.inputField} style={{ width: '100%' }} />
+            <div>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>Discounted Price (₹)</label>
+              <input type="number" placeholder="0" value={opt.price} onChange={(e) => handleChangeOption(i, 'price', e.target.value)} className={styles.inputField} />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', gap: '5px' }}>
               <label style={{ cursor: 'pointer', background: '#3b82f6', color: 'white', padding: '9px', borderRadius: '6px', fontSize: '0.85rem', textAlign: 'center', transition: 'all 0.2s', fontWeight: 500, height: '42px', boxSizing: 'border-box' }}>
                 Upload Image
                 <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleUploadImage(e, i)} />
               </label>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-               <button type="button" onClick={() => handleRemoveOption(i)} className={styles.btnDanger} style={{ height: '42px', padding: '0 10px' }}>Remove Option</button>
+              <button type="button" onClick={() => handleRemoveOption(i)} className={styles.btnDanger} style={{ height: '42px' }}>Remove Option</button>
             </div>
           </div>
           
           {opt.image && (
-             <div style={{ marginBottom: '15px' }}>
-                <label style={{ display: 'block', fontSize: '0.8rem', color: '#64748b', marginBottom: '4px' }}>Uploaded Image URL</label>
-                <input value={opt.image} readOnly className={styles.inputField} style={{ width: '100%', backgroundColor: '#e2e8f0', color: '#475569' }} />
+             <div style={{ marginBottom: '15px', marginTop: '15px' }}>
+               <label style={{ display: 'block', fontSize: '0.8rem', color: '#64748b', marginBottom: '4px' }}>Uploaded Image URL</label>
+               <input value={opt.image} readOnly className={styles.inputField} style={{ width: '100%', backgroundColor: '#e2e8f0', color: '#475569' }} />
              </div>
           )}
-          
-          <div style={{ padding: '15px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '6px' }}>
-            <h5 style={{ fontSize: '0.9rem', color: '#334155', margin: '0 0 10px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              Variants / Sub-options (e.g. Solo Rider, 2 Sharing)
-            </h5>
-            
-            {(opt.subOptions || []).map((sub, j) => (
-              <div key={j} className={styles.responsiveGrid} style={{ gridTemplateColumns: '2fr 1fr 1fr auto', background: '#f8fafc', padding: '10px', borderRadius: '4px', border: '1px dashed #cbd5e1' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>Variant Name</label>
-                  <input placeholder="e.g. 2 person" value={sub.name} onChange={e => handleChangeSubOption(i, j, 'name', e.target.value)} className={styles.inputField} style={{ width: '100%', margin: 0 }} />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>Orig Price (₹)</label>
-                  <input type="number" placeholder="0" value={sub.originalPrice} onChange={e => handleChangeSubOption(i, j, 'originalPrice', e.target.value)} className={styles.inputField} style={{ width: '100%', margin: 0 }} />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>Disc Price (₹)</label>
-                  <input type="number" placeholder="0" value={sub.price} onChange={e => handleChangeSubOption(i, j, 'price', e.target.value)} className={styles.inputField} style={{ width: '100%', margin: 0 }} />
-                </div>
-                <div style={{ marginTop: '16px' }}>
-                  <button type="button" onClick={() => handleRemoveSubOption(i, j)} className={styles.btnDanger} style={{ padding: '8px 12px' }}>X</button>
-                </div>
-              </div>
-            ))}
-            <button type="button" onClick={() => handleAddSubOption(i)} className={styles.btnSecondary} style={{ fontSize: '0.85rem', padding: '6px 12px', marginTop: '5px' }}>+ Add Variant</button>
-          </div>
         </div>
       ))}
       <button type="button" onClick={handleAddOption} className={styles.btnPrimary} style={{ marginTop: '10px' }}>+ Add New Package Option</button>
@@ -430,9 +380,9 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
   const initialForm = {
     title: '', slug: '', duration: '', route: '', destination: destName || '', category: 'Tour Package',
     originalPrice: '', discountedPrice: '', saveAmount: '',
-    rating: '5', reviewsCount: '0', image: '', tag: 'Trending', type: 'tour',
-    galleryImages: ['', '', '', '', ''], itinerary: [], attractions: [], inclusions: [], exclusions: [], amenities: [], aboutTrip: '',
-    departureDates: [], faqs: [], packageOptions: [], pricingTable: [], stayDetails: [],
+    rating: '5', reviewsCount: '0', image: '', mapImage: '', tag: 'Trending', type: 'tour',
+    galleryImages: ['', '', '', '', ''], itinerary: [], attractions: [], inclusions: [], tourHighlights: [], exclusions: [], amenities: [], aboutTrip: '',
+    departureDates: [], faqs: [], packageOptions: [], variants: [], pricingTable: [], stayDetails: [],
     quickInfo: { packingList: [], bookFlight: [], knowBeforeYouGo: [], paymentPolicy: [], termsAndConditions: [], cancellationAndRefundPolicy: [] }
   };
   
@@ -525,6 +475,18 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     }
   };
 
+  const handleUploadMapImage = async (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    try {
+      const res = await uploadFile(file);
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      setFormData(prev => ({ ...prev, mapImage: fullUrl }));
+    } catch(err) {
+      alert('Upload failed');
+    }
+  };
+
   const handleBasicSubmit = async (e) => {
     e.preventDefault();
     if(!destName) {
@@ -605,14 +567,25 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
       ? [...trip.galleryImages] 
       : [''];
       
-    const overrideTrip = { ...trip };
+    let overrideTrip = { ...trip };
     if (overrideTrip.title === 'New Package (Edit Title)') overrideTrip.title = '';
     if (overrideTrip.slug && overrideTrip.slug.startsWith('new-package-')) overrideTrip.slug = '';
     if (overrideTrip.route === 'TBD') overrideTrip.route = '';
     if (overrideTrip.duration === 'TBD') overrideTrip.duration = '';
     if (overrideTrip.originalPrice === 0) overrideTrip.originalPrice = '';
     if (overrideTrip.discountedPrice === 0) overrideTrip.discountedPrice = '';
+    
+    overrideTrip.image = cleanImageUrl(overrideTrip.image);
     if (overrideTrip.image === 'https://placehold.co/600x400?text=Upload+Image') overrideTrip.image = '';
+    
+    gallery = gallery.map(img => cleanImageUrl(img));
+    
+    if (overrideTrip.packageOptions) {
+      overrideTrip.packageOptions = overrideTrip.packageOptions.map(opt => ({
+        ...opt,
+        image: cleanImageUrl(opt.image)
+      }));
+    }
     
     setFormData({ ...initialForm, ...overrideTrip, galleryImages: gallery });
     setShowFullForm(true);
@@ -761,10 +734,18 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
               <input name="image" value={formData.image} onChange={handleChange} placeholder="Cover Image URL" required className={styles.inputField} style={{ flex: 1, backgroundColor: '#f9f9f9' }} />
             </div>
           </div>
-          <div className={styles.inputGroup}>
-            <label className={styles.inputLabel}>Tag</label>
-            <input name="tag" value={formData.tag} onChange={handleChange} placeholder="Tag (e.g. Bestseller)" className={styles.inputField} />
-          </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel} style={{ marginBottom: '8px' }}>Trending Status</label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', background: '#f8fafc', padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
+                <input 
+                  type="checkbox" 
+                  checked={formData.tag === 'Trending'} 
+                  onChange={(e) => setFormData({ ...formData, tag: e.target.checked ? 'Trending' : '' })}
+                  style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                />
+                <span style={{ fontSize: '0.9rem', color: '#334155', fontWeight: '500' }}>Show in Trending Packages</span>
+              </label>
+            </div>
         </div>
 
         <StringArrayInput title="Gallery Images (Max 5 Images)" isImage={true} maxItems={5} data={formData.galleryImages} onChange={(d) => setFormData({...formData, galleryImages: d})} />
@@ -772,21 +753,26 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
         <PackageOptionsInput data={formData.packageOptions} onChange={(d) => setFormData({...formData, packageOptions: d})} />
         
         <ArrayInput 
+          title="Package Variants (Global Add-ons)" 
+          fields={[
+            { name: 'name', type: 'text', placeholder: 'Variant Name (e.g. Solo Rider)' },
+            { name: 'price', type: 'number', placeholder: 'Extra Price (₹)' }
+          ]} 
+          data={formData.variants || []} 
+          onChange={(d) => setFormData({...formData, variants: d})} 
+        />
+        
+        <ArrayInput 
           title="Departure Dates" 
           fields={[
             { name: 'start', type: 'date', placeholder: 'Start Date' },
             { name: 'end', type: 'date', placeholder: 'End Date' },
-            { name: 'status', type: 'select', options: ['Available', 'Filling Fast', 'Sold Out'] },
-            { name: 'price', type: 'number', placeholder: 'Price' }
+            { name: 'status', type: 'select', options: ['Available', 'Filling Fast', 'Sold Out'] }
           ]} 
           data={formData.departureDates || []} 
           onChange={(d) => setFormData({...formData, departureDates: d})} 
         />
 
-        <PricingTableInput data={formData.pricingTable} packageOptions={formData.packageOptions} onChange={(d) => setFormData({...formData, pricingTable: d})} />
-
-        <StayDetailsInput data={formData.stayDetails} onChange={(d) => setFormData({...formData, stayDetails: d})} />
-        
         <ArrayInput 
           title="Itinerary" 
           fields={[
@@ -799,22 +785,31 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
           onChange={(d) => setFormData({...formData, itinerary: d})} 
         />
         <StringArrayInput title="Inclusions" data={formData.inclusions} onChange={(d) => setFormData({...formData, inclusions: d})} />
+        <div className={styles.card} style={{ marginBottom: '20px' }}>
+          <div className={styles.inputGroup}>
+            <label className={styles.inputLabel}>About The Tour (Description)</label>
+            <textarea name="aboutTrip" value={formData.aboutTrip} onChange={handleChange} placeholder="Enter trip description for the 'About The Tour' section..." className={styles.inputField} style={{ minHeight: '100px', resize: 'vertical' }} />
+          </div>
+        </div>
+        
+        <StringArrayInput title="Tour Highlights" data={formData.tourHighlights} onChange={(d) => setFormData({...formData, tourHighlights: d})} />
+        
+        <div className={styles.card} style={{ marginBottom: '20px' }}>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel}>Map Image</label>
+            <div style={{ display: 'flex', gap: '5px' }}>
+              <label style={{ cursor: 'pointer', background: '#3498db', color: 'white', padding: '8px', borderRadius: '4px', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
+                Upload Map
+                <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleUploadMapImage(e)} />
+              </label>
+              <input name="mapImage" value={formData.mapImage || ''} onChange={handleChange} placeholder="Map Image URL (Optional)" className={styles.inputField} style={{ flex: 1, backgroundColor: '#f9f9f9' }} />
+            </div>
+          </div>
+        </div>
+        
         <StringArrayInput title="Exclusions" data={formData.exclusions} onChange={(d) => setFormData({...formData, exclusions: d})} />
         <AmenitiesCheckboxInput data={formData.amenities} onChange={(d) => setFormData({...formData, amenities: d})} />
           
-        <div className={styles.formGroup}>
-          <label className={styles.label}>About Trip (Description)</label>
-          <textarea 
-            name="aboutTrip"
-            value={formData.aboutTrip || ''}
-            onChange={handleChange}
-            className={styles.inputField}
-            rows={4}
-            style={{ width: '100%', minHeight: '100px', resize: 'vertical' }}
-            placeholder="Enter trip description for the 'About this Trip' section..."
-          />
-        </div>
-
         <ArrayInput title="FAQs" fields={['q', 'a']} data={formData.faqs} onChange={(d) => setFormData({...formData, faqs: d})} />
 
         <div style={{ marginTop: '30px', borderTop: '1px solid #eee', paddingTop: '20px' }}>

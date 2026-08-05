@@ -100,7 +100,6 @@ const AdminDashboard = () => {
           <NavLink to="/admin" end className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Dashboard</NavLink>
           <NavLink to="/admin/destinations" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Destinations</NavLink>
           <NavLink to="/admin/all-packages" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>All Packages</NavLink>
-          <NavLink to="/admin/creator-trips" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Creator Trips</NavLink>
           <NavLink to="/admin/blogs" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Blogs</NavLink>
           <NavLink to="/admin/attractions" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Attractions</NavLink>
           <NavLink to="/admin/bookings" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Bookings</NavLink>
