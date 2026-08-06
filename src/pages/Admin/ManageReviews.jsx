@@ -144,7 +144,7 @@ const ManageReviews = () => {
     try {
       const res = await uploadFile(file);
       const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
-      setFormData({ ...formData, image: fullUrl });
+      setFormData(prev => ({ ...prev, [fieldName]: fullUrl }));
     } catch(err) {
       alert('Upload failed');
     }

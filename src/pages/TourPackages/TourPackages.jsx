@@ -110,15 +110,15 @@ const TourPackages = () => {
           <section id={activeCategory} className={styles.categorySection}>
             {(() => {
               const activeTrips = activeCategory === 'All' ? trips : groupedTrips[activeCategory] || [];
-              const tourPackages = activeTrips.filter(t => t.category === 'Tour Package');
-              const groupTrips = activeTrips.filter(t => t.category === 'Group Trip');
-              const otherTrips = activeTrips.filter(t => t.category !== 'Tour Package' && t.category !== 'Group Trip');
+              const tourPackages = activeTrips.filter(t => t.category === 'Motorcycle Tours');
+              const groupTrips = activeTrips.filter(t => t.category === 'Group Tours');
+              const otherTrips = activeTrips.filter(t => t.category !== 'Motorcycle Tours' && t.category !== 'Group Tours');
 
               return (
                 <>
                   {tourPackages.length > 0 && (
                     <div style={{marginBottom: '3rem'}}>
-                      <h3 className={styles.categorySubTitle}>Tour Packages</h3>
+                      <h3 className={styles.categorySubTitle}>Motorcycle Tours</h3>
                       <div className={styles.tripsGrid}>
                         {tourPackages.map(trip => (
                           <TrendingCard key={trip._id} trip={trip} />
@@ -129,7 +129,7 @@ const TourPackages = () => {
 
                   {groupTrips.length > 0 && (
                     <div style={{marginBottom: '3rem'}}>
-                      <h3 className={styles.categorySubTitle}>Group Trips</h3>
+                      <h3 className={styles.categorySubTitle}>Group Tours</h3>
                       <div className={styles.tripsGrid}>
                         {groupTrips.map(trip => (
                           <TrendingCard key={trip._id} trip={trip} />

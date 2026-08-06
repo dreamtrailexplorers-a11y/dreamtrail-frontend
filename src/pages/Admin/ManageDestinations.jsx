@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getDestinations, createDestination, deleteDestination, getTrips, uploadFile, createTrip } from '../../services/api';
+import { getDestinations, createDestination, updateDestination, deleteDestination, getTrips, uploadFile, createTrip } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import styles from './Admin.module.css';
 import FillDestinationDetail from './FillDestinationDetail'; // import the component
@@ -14,6 +14,7 @@ const ManageDestinations = () => {
   const [newDestType, setNewDestType] = useState('domestic');
   const [newDestIcon, setNewDestIcon] = useState('TbBuildingSkyscraper');
   const [newDestImage, setNewDestImage] = useState('');
+  const [newDestWhyUs, setNewDestWhyUs] = useState([]);
   
   // State for Edit popup
   const [editingDestId, setEditingDestId] = useState(null);
@@ -21,6 +22,10 @@ const ManageDestinations = () => {
   // State for Add Package popup
   const [addingPackageToDest, setAddingPackageToDest] = useState(null);
   const [packageForm, setPackageForm] = useState({ title: '', slug: '', category: 'Tour Package', image: '' });
+
+  // State for Why Choose Us popup
+  const [whyUsDest, setWhyUsDest] = useState(null);
+  const [whyUsData, setWhyUsData] = useState([]);
 
   useEffect(() => {
     fetchDestinations();
@@ -33,6 +38,7 @@ const ManageDestinations = () => {
     setNewDestName('');
     setNewDestType('domestic');
     setNewDestImage('');
+    setNewDestWhyUs([]);
     setIsModalOpen(true);
   };
 
@@ -82,22 +88,34 @@ const ManageDestinations = () => {
     }
   };
 
+  const handleSaveWhyUs = async () => {
+    try {
+      await updateDestination(whyUsDest._id, { whyChooseUs: whyUsData });
+      setWhyUsDest(null);
+      fetchDestinations();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to save Why Choose Us data');
+    }
+  };
+
   const handleCreateDestination = async (e) => {
     e.preventDefault();
     if (!newDestName.trim()) return;
     try {
-      const res = await createDestination({ 
+      const destData = { 
         name: newDestName,
-        startingPrice: 0,
         image: newDestImage || 'https://placehold.co/600x400?text=Upload+Image',
-        tagline: 'To be added',
         type: newDestType,
-        icon: newDestIcon
-      });
+        icon: newDestIcon,
+        whyChooseUs: newDestWhyUs
+      };
+      await createDestination(destData);
       setIsModalOpen(false);
       setNewDestName('');
       setNewDestType('domestic');
       setNewDestImage('');
+      setNewDestWhyUs([]);
       // Refresh the list instead of opening the edit popup
       fetchDestinations();
     } catch (err) {
@@ -133,19 +151,9 @@ const ManageDestinations = () => {
   */
 
   // === 03-Aug-2026: New logic to open full details page directly ===
-  const handleAddPackageClick = async (dest) => {
+  const handleAddPackageClick = (dest) => {
     try {
-      const newTrip = {
-        title: 'New Package (Edit Title)',
-        slug: 'new-package-' + Date.now(),
-        category: 'Tour Package',
-        destination: dest.name,
-        duration: 'TBD', route: 'TBD', originalPrice: 0, discountedPrice: 0,
-        image: dest.image || 'https://placehold.co/600x400?text=Upload+Image',
-        tag: 'Trending', type: 'tour', rating: '5', reviewsCount: '0'
-      };
-      const res = await createTrip(newTrip);
-      navigate('/admin/all-packages', { state: { editTripId: res.data._id } });
+      navigate('/admin/all-packages', { state: { createForDestination: dest.name, destImage: dest.image || 'https://placehold.co/600x400?text=Upload+Image' } });
     } catch(err) {
       alert('Error creating package: ' + (err.response?.data?.message || err.message));
     }
@@ -201,9 +209,7 @@ const ManageDestinations = () => {
               </div>
 
               <div style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '20px' }}>
-                <div style={{ marginBottom: '8px' }}><strong>Tagline:</strong> {dest.tagline !== 'To be added' ? dest.tagline : <span style={{color: '#94a3b8', fontStyle: 'italic'}}>To be added</span>}</div>
                 <div style={{ marginBottom: '8px' }}><strong>Packages:</strong> <span style={{ backgroundColor: '#f1f5f9', padding: '2px 8px', borderRadius: '12px', color: '#334155', fontWeight: '600' }}>{packageCount}</span></div>
-                <div><strong>Starting Price:</strong> ₹{dest.startingPrice?.toLocaleString('en-IN') || 0}</div>
               </div>
 
               <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
@@ -223,14 +229,26 @@ const ManageDestinations = () => {
                   >
                     Add Package
                   </button>
-                <button 
-                  onClick={() => handleDelete(dest._id)} 
-                  style={{ padding: '10px 8px', fontSize: '0.85rem', backgroundColor: '#fee2e2', color: '#ef4444', border: '1px solid #fca5a5', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', transition: 'all 0.2s' }}
-                  onMouseEnter={(e) => e.target.style.backgroundColor = '#fecaca'}
-                  onMouseLeave={(e) => e.target.style.backgroundColor = '#fee2e2'}
-                >
-                  Delete
-                </button>
+                  <button 
+                    onClick={() => {
+                      setWhyUsDest(dest);
+                      setWhyUsData(dest.whyChooseUs || []);
+                    }} 
+                    style={{ padding: '10px 8px', fontSize: '0.85rem', backgroundColor: '#fef3c7', color: '#d97706', border: '1px solid #fde68a', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', transition: 'all 0.2s' }}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = '#fde68a'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = '#fef3c7'}
+                    title="Why Choose Us Info"
+                  >
+                    ℹ️
+                  </button>
+                  <button 
+                    onClick={() => handleDelete(dest._id)} 
+                    style={{ padding: '10px 8px', fontSize: '0.85rem', backgroundColor: '#fee2e2', color: '#ef4444', border: '1px solid #fca5a5', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', transition: 'all 0.2s' }}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = '#fecaca'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = '#fee2e2'}
+                  >
+                    Delete
+                  </button>
               </div>
             </div>
           );
@@ -253,7 +271,7 @@ const ManageDestinations = () => {
       {/* ADD DESTINATION MODAL */}
       {isModalOpen && (
         <div className={styles.modalOverlay} onClick={() => setIsModalOpen(false)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()} style={{ maxHeight: '90vh', overflowY: 'auto' }}>
             <h3 className={styles.cardTitle} style={{ borderBottom: 'none', marginBottom: '10px', paddingBottom: 0 }}>Add New Destination</h3>
             <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '25px' }}>Enter the name and type of the new destination you want to add.</p>
             <form onSubmit={handleCreateDestination}>
@@ -326,6 +344,49 @@ const ManageDestinations = () => {
                       </div>
                   ))}
                 </div>
+              </div>
+
+              <div className={styles.inputGroup} style={{ marginTop: '15px', borderTop: '1px solid #e2e8f0', paddingTop: '15px' }}>
+                <label className={styles.inputLabel}>Why Choose Us (Optional)</label>
+                {newDestWhyUs.map((item, index) => (
+                  <div key={index} style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '10px', padding: '10px', border: '1px solid #e2e8f0', borderRadius: '8px', backgroundColor: '#f8fafc' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 'bold' }}>Item {index + 1}</span>
+                      <button type="button" onClick={() => setNewDestWhyUs(newDestWhyUs.filter((_, i) => i !== index))} style={{ color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 'bold' }}>Remove</button>
+                    </div>
+                    <input 
+                      type="text" 
+                      value={item.title} 
+                      onChange={(e) => {
+                        const newData = [...newDestWhyUs];
+                        newData[index].title = e.target.value;
+                        setNewDestWhyUs(newData);
+                      }}
+                      placeholder="Title (e.g., Most Experienced Company)"
+                      className={styles.inputField}
+                      style={{ padding: '6px 10px', fontSize: '0.85rem' }}
+                    />
+                    <textarea 
+                      value={item.description} 
+                      onChange={(e) => {
+                        const newData = [...newDestWhyUs];
+                        newData[index].description = e.target.value;
+                        setNewDestWhyUs(newData);
+                      }}
+                      placeholder="Description..."
+                      className={styles.inputField}
+                      rows={2}
+                      style={{ padding: '6px 10px', fontSize: '0.85rem' }}
+                    />
+                  </div>
+                ))}
+                <button 
+                  type="button"
+                  onClick={() => setNewDestWhyUs([...newDestWhyUs, { title: '', description: '' }])}
+                  style={{ width: '100%', padding: '8px', backgroundColor: '#f1f5f9', color: '#3b82f6', border: '1px dashed #cbd5e1', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontSize: '0.85rem' }}
+                >
+                  + Add Item
+                </button>
               </div>
 
               <div className={styles.btnGroup} style={{ marginTop: '25px', justifyContent: 'flex-end' }}>
@@ -406,6 +467,58 @@ const ManageDestinations = () => {
         </div>
       )}
       */}
+      {/* Why Choose Us Modal */}
+      {whyUsDest && (
+        <div className={styles.modalOverlay} style={{ zIndex: 9999 }}>
+          <div className={styles.modalContent} style={{ maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto' }}>
+            <h3 style={{ marginBottom: '20px' }}>Why Choose Us For {whyUsDest.name}</h3>
+            
+            {whyUsData.map((item, index) => (
+              <div key={index} style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', backgroundColor: '#f8fafc' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h4 style={{ margin: 0, fontSize: '0.9rem', color: '#64748b' }}>Item {index + 1}</h4>
+                  <button onClick={() => setWhyUsData(whyUsData.filter((_, i) => i !== index))} style={{ color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>Remove</button>
+                </div>
+                <input 
+                  type="text" 
+                  value={item.title} 
+                  onChange={(e) => {
+                    const newData = [...whyUsData];
+                    newData[index].title = e.target.value;
+                    setWhyUsData(newData);
+                  }}
+                  placeholder="Title (e.g., Most Experienced Company)"
+                  className={styles.inputField}
+                />
+                <textarea 
+                  value={item.description} 
+                  onChange={(e) => {
+                    const newData = [...whyUsData];
+                    newData[index].description = e.target.value;
+                    setWhyUsData(newData);
+                  }}
+                  placeholder="Description..."
+                  className={styles.inputField}
+                  rows={3}
+                />
+              </div>
+            ))}
+
+            <button 
+              onClick={() => setWhyUsData([...whyUsData, { title: '', description: '' }])}
+              style={{ width: '100%', padding: '12px', backgroundColor: '#f1f5f9', color: '#3b82f6', border: '1px dashed #cbd5e1', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', marginBottom: '20px' }}
+            >
+              + Add New Item
+            </button>
+
+            <div className={styles.btnGroup} style={{ justifyContent: 'flex-end' }}>
+              <button onClick={() => setWhyUsDest(null)} className={styles.btnSecondary}>Cancel</button>
+              <button onClick={handleSaveWhyUs} className={styles.btnPrimary}>Save Details</button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

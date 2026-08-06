@@ -38,11 +38,7 @@ const EnquiryModal = ({ isOpen, onClose, trip, selectedOptionTitle, selectedDepa
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user) {
-      onClose();
-      navigate('/login', { state: { from: location } });
-      return;
-    }
+
     setLoading(true);
     try {
       const finalTitle = selectedOptionTitle && selectedOptionTitle !== activeTrip.title 

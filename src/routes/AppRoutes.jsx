@@ -16,6 +16,7 @@ import Login from '../pages/Login/Login';
 import Register from '../pages/Register/Register';
 import Profile from '../pages/Profile/Profile';
 import DynamicPage from '../pages/DynamicPage/DynamicPage';
+import AboutUs from '../pages/AboutUs/AboutUs';
 
 const AppRoutes = () => {
   return (
@@ -39,7 +40,7 @@ const AppRoutes = () => {
       <Route path="/profile" element={<Profile />} />
 
       {/* Footer / Dynamic Pages */}
-      <Route path="/about" element={<DynamicPage title="About Us" contentKey="aboutUsContent" />} />
+      <Route path="/about" element={<AboutUs />} />
       <Route path="/careers" element={<DynamicPage title="Careers" contentKey="careersContent" />} />
       <Route path="/contact" element={<DynamicPage title="Contact Us" contentKey="contactUsContent" />} />
       <Route path="/terms" element={<DynamicPage title="Terms & Conditions" contentKey="termsContent" />} />

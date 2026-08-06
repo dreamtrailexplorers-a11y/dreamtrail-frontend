@@ -112,6 +112,85 @@ const ManageSiteSettings = () => {
     setFormData({ ...formData, groupTripBanners: newBanners });
   };
 
+  
+  const handleAboutIntroImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const res = await uploadFile(file);
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const currentImages = formData.aboutPage?.introImages || [];
+      setFormData({
+        ...formData,
+        aboutPage: { ...(formData.aboutPage || {}), introImages: [...currentImages, fullUrl] }
+      });
+    } catch (err) {
+      console.error('Failed to upload image', err);
+      alert('Failed to upload image.');
+    }
+  };
+
+  const removeAboutIntroImage = (idx) => {
+    const currentImages = formData.aboutPage?.introImages || [];
+    setFormData({
+      ...formData,
+      aboutPage: { ...(formData.aboutPage || {}), introImages: currentImages.filter((_, i) => i !== idx) }
+    });
+  };
+
+  const handleAboutNestedChange = (e, section) => {
+    setFormData({
+      ...formData,
+      [section]: {
+        ...(formData[section] || {}),
+        [e.target.name]: e.target.value
+      }
+    });
+  };
+
+  const handleAboutImageUpload = async (e, section, field) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const res = await uploadFile(file);
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      setFormData({
+        ...formData,
+        [section]: {
+          ...(formData[section] || {}),
+          [field]: fullUrl
+        }
+      });
+    } catch (err) {
+      console.error('Failed to upload image', err);
+      alert('Failed to upload image.');
+    }
+  };
+
+  const handleAboutPointsChange = (index, field, value, section, arrayField) => {
+    const newPoints = [...(formData[section]?.[arrayField] || [])];
+    newPoints[index] = { ...newPoints[index], [field]: value };
+    setFormData({
+      ...formData,
+      [section]: { ...(formData[section] || {}), [arrayField]: newPoints }
+    });
+  };
+
+  const addAboutPoint = (section, arrayField) => {
+    const newPoints = [...(formData[section]?.[arrayField] || []), { icon: '', text: '' }];
+    setFormData({
+      ...formData,
+      [section]: { ...(formData[section] || {}), [arrayField]: newPoints }
+    });
+  };
+
+  const removeAboutPoint = (index, section, arrayField) => {
+    const newPoints = (formData[section]?.[arrayField] || []).filter((_, i) => i !== index);
+    setFormData({
+      ...formData,
+      [section]: { ...(formData[section] || {}), [arrayField]: newPoints }
+    });
+  };
   const handleBannerUpload = async (e, index) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -242,13 +321,13 @@ const ManageSiteSettings = () => {
       </form>
 
       {/* 4. Social Media Links */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['instagram', 'youtube', 'facebook', 'twitter', 'linkedin', 'whatsapp'], 'Social Media Links')} className={styles.card}>
+      <form onSubmit={(e) => handleSectionSubmit(e, ['instagram', 'facebook', 'linkedin', 'whatsapp'], 'Social Media Links')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Social Media Links</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
         </div>
         <div className={styles.formGrid}>
-          {['instagram', 'youtube', 'facebook', 'twitter', 'linkedin', 'whatsapp'].map(platform => (
+          {['instagram', 'facebook', 'linkedin', 'whatsapp'].map(platform => (
             <div key={platform} className={styles.inputGroup}>
               <label className={styles.inputLabel} style={{ textTransform: 'capitalize' }}>{platform}</label>
               <input name={platform} value={formData[platform] || ''} onChange={handleChange} className={styles.inputField} />
@@ -289,18 +368,173 @@ const ManageSiteSettings = () => {
         </div>
       </form>
 
-      {/* 7. About Us Content */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['aboutUsContent'], 'About Us Content')} className={styles.card}>
+      
+      {/* 7. About Us Page Settings */}
+      <form onSubmit={(e) => handleSectionSubmit(e, ['aboutPage'], 'About Us Page')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>About Us Content</h3>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>About Us Page</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
         </div>
+        
+        {/* Hero Section */}
+        <h4 style={{marginTop: '20px', marginBottom: '10px', color: '#334155', borderBottom: '1px solid #e2e8f0', paddingBottom: '5px'}}>Hero Section</h4>
         <div className={styles.formGrid}>
           <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
-            <textarea name="aboutUsContent" value={formData.aboutUsContent || ''} onChange={handleChange} className={styles.textareaField} rows="4" placeholder="Use plain text or basic HTML..." />
+            <label className={styles.inputLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              Hero Image
+              <label className={styles.btnSecondary} style={{ cursor: 'pointer', padding: '4px 10px', fontSize: '0.75rem' }}>
+                Upload Image
+                <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleAboutImageUpload(e, 'aboutPage', 'heroImage')} />
+              </label>
+            </label>
+            <input name="heroImage" value={formData.aboutPage?.heroImage || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} />
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.inputLabel}>Hero Title</label>
+            <input name="heroTitle" value={formData.aboutPage?.heroTitle || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} />
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.inputLabel}>Hero Subtitle</label>
+            <input name="heroSubtitle" value={formData.aboutPage?.heroSubtitle || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} />
+          </div>
+        </div>
+
+        {/* Intro Section */}
+        <h4 style={{marginTop: '20px', marginBottom: '10px', color: '#334155', borderBottom: '1px solid #e2e8f0', paddingBottom: '5px'}}>Intro Section</h4>
+        <div className={styles.formGrid}>
+          <div className={styles.inputGroup}>
+            <label className={styles.inputLabel}>Intro Title 1</label>
+            <input name="introTitle1" value={formData.aboutPage?.introTitle1 || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} />
+          </div>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel}>Intro Text 1</label>
+            <textarea name="introText1" value={formData.aboutPage?.introText1 || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.textareaField} rows="3" />
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.inputLabel}>Intro Title 2</label>
+            <input name="introTitle2" value={formData.aboutPage?.introTitle2 || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} />
+          </div>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel}>Intro Text 2</label>
+            <textarea name="introText2" value={formData.aboutPage?.introText2 || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.textareaField} rows="3" />
+          </div>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              Collage Images
+              <label className={styles.btnSecondary} style={{ cursor: 'pointer', padding: '4px 10px', fontSize: '0.75rem' }}>
+                Upload Image
+                <input type="file" style={{ display: 'none' }} accept="image/*" onChange={handleAboutIntroImageUpload} />
+              </label>
+            </label>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '10px' }}>
+              {(formData.aboutPage?.introImages || []).map((img, idx) => (
+                <div key={idx} style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '8px', overflow: 'hidden', border: '1px solid #cbd5e1' }}>
+                  <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <button type="button" onClick={() => removeAboutIntroImage(idx)} className={styles.btnDanger} style={{ position: 'absolute', top: 0, right: 0, padding: '2px 6px', fontSize: '0.75rem' }}>X</button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Story Section */}
+        <h4 style={{marginTop: '20px', marginBottom: '10px', color: '#334155', borderBottom: '1px solid #e2e8f0', paddingBottom: '5px'}}>Our Story Section</h4>
+        <div className={styles.formGrid}>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              Story Image
+              <label className={styles.btnSecondary} style={{ cursor: 'pointer', padding: '4px 10px', fontSize: '0.75rem' }}>
+                Upload Image
+                <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleAboutImageUpload(e, 'aboutPage', 'storyImage')} />
+              </label>
+            </label>
+            <input name="storyImage" value={formData.aboutPage?.storyImage || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} />
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.inputLabel}>Story Title</label>
+            <input name="storyTitle" value={formData.aboutPage?.storyTitle || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} />
+          </div>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel}>Story Text</label>
+            <textarea name="storyText" value={formData.aboutPage?.storyText || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.textareaField} rows="4" />
+          </div>
+        </div>
+
+        {/* Community Section */}
+        <h4 style={{marginTop: '20px', marginBottom: '10px', color: '#334155', borderBottom: '1px solid #e2e8f0', paddingBottom: '5px'}}>Community & Features</h4>
+        <div className={styles.formGrid}>
+          <div className={styles.inputGroup}>
+            <label className={styles.inputLabel}>Community Title</label>
+            <input name="communityTitle" value={formData.aboutPage?.communityTitle || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} />
+          </div>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel}>Community Text</label>
+            <textarea name="communityText" value={formData.aboutPage?.communityText || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.textareaField} rows="3" />
+          </div>
+          
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1', borderTop: '1px solid #eee', paddingTop: '15px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+              <label className={styles.inputLabel} style={{ margin: 0 }}>Community Points (Grid Items)</label>
+              <button type="button" onClick={() => addAboutPoint('aboutPage', 'communityPoints')} className={styles.btnSecondary} style={{ padding: '4px 10px', fontSize: '0.8rem' }}>+ Add Point</button>
+            </div>
+            {(formData.aboutPage?.communityPoints || []).map((point, index) => (
+              <div key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'center' }}>
+                <input 
+                  placeholder="Point Text (e.g. Safe & Secure)" 
+                  value={point.text || ''} 
+                  onChange={(e) => handleAboutPointsChange(index, 'text', e.target.value, 'aboutPage', 'communityPoints')} 
+                  className={styles.inputField} 
+                />
+                <button type="button" onClick={() => removeAboutPoint(index, 'aboutPage', 'communityPoints')} className={styles.btnDanger} style={{ padding: '8px 12px' }}>Remove</button>
+              </div>
+            ))}
           </div>
         </div>
       </form>
+
+      {/* 8. About Us Snippet (Home Page) */}
+      <form onSubmit={(e) => handleSectionSubmit(e, ['aboutSnippet'], 'About Snippet')} className={styles.card}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>About Snippet (Homepage)</h3>
+          <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
+        </div>
+        <div className={styles.formGrid}>
+          <div className={styles.inputGroup}>
+            <label className={styles.inputLabel}>Snippet Title</label>
+            <input name="title" value={formData.aboutSnippet?.title || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutSnippet')} className={styles.inputField} />
+          </div>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel}>Snippet Text</label>
+            <textarea name="text" value={formData.aboutSnippet?.text || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutSnippet')} className={styles.textareaField} rows="4" />
+          </div>
+          
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1', borderTop: '1px solid #eee', paddingTop: '15px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+              <label className={styles.inputLabel} style={{ margin: 0 }}>Snippet Points</label>
+              <button type="button" onClick={() => addAboutPoint('aboutSnippet', 'points')} className={styles.btnSecondary} style={{ padding: '4px 10px', fontSize: '0.8rem' }}>+ Add Point</button>
+            </div>
+            {(formData.aboutSnippet?.points || []).map((point, index) => (
+              <div key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'center' }}>
+                <input 
+                  placeholder="Icon Class (e.g. FiStar) or keep empty" 
+                  value={point.icon || ''} 
+                  onChange={(e) => handleAboutPointsChange(index, 'icon', e.target.value, 'aboutSnippet', 'points')} 
+                  className={styles.inputField} 
+                  style={{ width: '150px' }}
+                />
+                <input 
+                  placeholder="Point Text (e.g. 17+ Years Experience)" 
+                  value={point.text || ''} 
+                  onChange={(e) => handleAboutPointsChange(index, 'text', e.target.value, 'aboutSnippet', 'points')} 
+                  className={styles.inputField} 
+                />
+                <button type="button" onClick={() => removeAboutPoint(index, 'aboutSnippet', 'points')} className={styles.btnDanger} style={{ padding: '8px 12px' }}>Remove</button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </form>
+
 
       {/* 8. Careers Content */}
       <form onSubmit={(e) => handleSectionSubmit(e, ['careersContent'], 'Careers Content')} className={styles.card}>

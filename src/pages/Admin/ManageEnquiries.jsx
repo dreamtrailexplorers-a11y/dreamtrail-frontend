@@ -123,18 +123,56 @@ const ManageEnquiries = () => {
     doc.save(`Enquiries_Report_${new Date().getTime()}.pdf`);
   };
 
+  // Excel (CSV) Export
+  const handleDownloadExcel = () => {
+    const tableColumn = ["Date", "Name", "Email", "Phone", "Destination", "Package", "Travel Date", "Pax", "Message"];
+    const csvRows = [];
+    csvRows.push(tableColumn.join(','));
+
+    filteredEnquiries.forEach(enq => {
+      const rowData = [
+        formatDate(enq.createdAt),
+        enq.name || '-',
+        enq.email || '-',
+        enq.phone ? `\t${enq.phone}` : '-',
+        enq.destination || '-',
+        enq.tripTitle || '-',
+        enq.date ? `\t${enq.date}` : '-',
+        enq.travellers ? `${enq.travellers}` : '-',
+        enq.message ? enq.message.replace(/"/g, '""') : '-'
+      ];
+      csvRows.push(rowData.map(item => `"${item}"`).join(','));
+    });
+
+    const csvData = new Blob(['\ufeff' + csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    const csvUrl = URL.createObjectURL(csvData);
+    const hiddenElement = document.createElement('a');
+    hiddenElement.href = csvUrl;
+    hiddenElement.target = '_blank';
+    hiddenElement.download = `Enquiries_Report_${new Date().getTime()}.csv`;
+    hiddenElement.click();
+  };
+
   if (loading) return <div>Loading enquiries...</div>;
 
   return (
     <div className={styles.adminPage}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2 className={styles.pageTitle} style={{ margin: 0 }}>Manage Enquiries (Leads)</h2>
-        <button 
-          onClick={handleDownloadPDF} 
-          style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', backgroundColor: '#3b82f6', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}
-        >
-          <FiDownload /> Download PDF
-        </button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button 
+            onClick={handleDownloadExcel} 
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', backgroundColor: '#10b981', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}
+          >
+            <FiDownload /> Download Excel
+          </button>
+          <button 
+            onClick={handleDownloadPDF} 
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', backgroundColor: '#3b82f6', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}
+          >
+            <FiDownload /> Download PDF
+          </button>
+        </div>
       </div>
 
       {/* Filters Toolbar */}

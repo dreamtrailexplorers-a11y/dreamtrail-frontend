@@ -76,8 +76,8 @@ const ManageNavLinks = () => {
   const loadDefaultLinks = async () => {
     if(window.confirm('This will load default navigation links. Continue?')) {
       const defaultLinks = [
-        { title: 'Tour Packages', path: '/tour-packages', order: 1 },
-        { title: 'Group Trips', path: '/group-trips', order: 2 }
+        { title: 'Motorcycle Tours', path: '/tour-packages', order: 1 },
+        { title: 'Group Tours', path: '/group-trips', order: 2 }
       ];
       
       try {

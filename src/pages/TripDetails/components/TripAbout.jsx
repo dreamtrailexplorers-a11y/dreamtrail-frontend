@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FiCheckCircle } from 'react-icons/fi';
 import styles from './TripAbout.module.css';
 
 const TripAbout = ({ trip }) => {
@@ -19,15 +18,17 @@ const TripAbout = ({ trip }) => {
 
   return (
     <div className={styles.sectionBlock}>
-      <h2 className={styles.blockTitle} style={{ textTransform: 'uppercase', color: '#dc2626' }}>About The Tour</h2>
+      <h2 className={styles.blockTitle}>About The Tour</h2>
       
       {hasHighlights && (
         <div style={{ marginBottom: '25px' }}>
-          <h3 style={{ fontSize: '1.25rem', color: '#dc2626', marginBottom: '15px' }}>Tour Highlights</h3>
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <h3 className={styles.highlightsTitle}>Tour Highlights</h3>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '15px' }}>
             {trip.tourHighlights.map((highlight, idx) => (
-              <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.95rem', color: '#334155', lineHeight: '1.6' }}>
-                <FiCheckCircle style={{ color: '#dc2626', fontSize: '1.1rem', marginTop: '3px', flexShrink: 0 }} />
+              <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', fontSize: '1rem', color: '#334155', lineHeight: '1.6' }}>
+                <svg width="18" height="18" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: '4px' }}>
+                  <circle cx="8" cy="8" r="6" fill="#fff" stroke="#cc0000" strokeWidth="3.5" />
+                </svg>
                 <span>{highlight}</span>
               </li>
             ))}

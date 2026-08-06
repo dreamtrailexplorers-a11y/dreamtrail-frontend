@@ -17,9 +17,7 @@ const AddDestination = () => {
     const formData = {
       name: name,
       slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      startingPrice: 0,
       image: 'https://placehold.co/600x400?text=Placeholder',
-      tagline: 'To be added',
       type: 'domestic',
       aboutText: '',
       handpickedHotels: [], curatedExperiences: [], placesToVisit: [], citiesList: [], faqs: [], popularCities: []

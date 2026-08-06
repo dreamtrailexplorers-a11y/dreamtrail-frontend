@@ -17,15 +17,20 @@ const Navbar = ({ sticky = true }) => {
       try {
         const { getNavLinks } = await import('../../services/api');
         const { data } = await getNavLinks();
-        if (data && data.length > 0) {
-          setNavLinks(data);
-        } else {
-          // Fallback if db is empty
-          setNavLinks([
-            { _id: '1', title: "Tour Packages", path: "/tour-packages" },
-            { _id: '2', title: "Group Trips", path: "/group-trips" }
-          ]);
+        let fetchedLinks = data || [];
+        if (fetchedLinks.length === 0) {
+          fetchedLinks = [
+            { _id: '1', title: "Motorcycle Tours", path: "/tour-packages" },
+            { _id: '2', title: "Group Tours", path: "/group-trips" }
+          ];
         }
+
+        // Ensure About Us is present in the navbar
+        if (!fetchedLinks.some(link => link.path === '/about' || link.title.toLowerCase() === 'about us')) {
+          fetchedLinks.push({ _id: 'about-us-link', title: "About Us", path: "/about" });
+        }
+
+        setNavLinks(fetchedLinks);
       } catch (error) {
         console.error('Failed to fetch nav links:', error);
       }

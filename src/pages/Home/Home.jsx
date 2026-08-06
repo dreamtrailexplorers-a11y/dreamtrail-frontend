@@ -9,6 +9,7 @@ import GroupTripBanner from '../../components/GroupTripBanner/GroupTripBanner';
 import BlogSection from '../../components/BlogSection/BlogSection';
 import ReviewSection from '../../components/ReviewSection/ReviewSection';
 import Footer from '../../components/Footer/Footer';
+import AboutSnippet from '../../components/AboutSnippet/AboutSnippet';
 
 import { getDestinations } from '../../services/api';
 
@@ -44,6 +45,9 @@ const Home = () => {
 
         {/* 3. Hero Banner */}
         <Hero />
+
+        {/* About Snippet */}
+        <AboutSnippet />
 
         {/* 4. Trending Section */}
         <TrendingSection />

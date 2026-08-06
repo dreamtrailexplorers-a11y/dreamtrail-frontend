@@ -58,8 +58,8 @@ const DestinationPage = () => {
 
   // Group trips dynamically by reading their new explicit category field.
   const flightPackages = allTrips.filter(t => t.category === 'Flight Package');
-  const tourPackages = allTrips.filter(t => t.category === 'Tour Package');
-  const groupTrips = allTrips.filter(t => t.category === 'Group Trip');
+  const motorcycleTours = allTrips.filter(t => t.category === 'Motorcycle Tours');
+  const groupTrips = allTrips.filter(t => t.category === 'Group Tours');
   const honeymoonPackages = allTrips.filter(t => t.category === 'Honeymoon');
   const uniqueExperiences = allTrips.filter(t => t.category === 'Unique Experience');
 
@@ -92,10 +92,10 @@ const DestinationPage = () => {
             <FiSend className={styles.navIcon} /> Flight Packages
           </button>
           <button onClick={() => handleScrollTo('tour-packages')} className={styles.stickyNavItem}>
-            <FaCarSide className={styles.navIcon} /> Tour Packages
+            <FaCarSide className={styles.navIcon} /> Motorcycle Tours
           </button>
           <button onClick={() => handleScrollTo('group-trips')} className={styles.stickyNavItem}>
-            <FiUsers className={styles.navIcon} /> Group Trips
+            <FiUsers className={styles.navIcon} /> Group Tours
           </button>
           <button onClick={() => handleScrollTo('honeymoon')} className={styles.stickyNavItem}>
             <FiBriefcase className={styles.navIcon} /> Honeymoon
@@ -122,22 +122,22 @@ const DestinationPage = () => {
           </section>
         )}
 
-        {/* Tour Packages Section */}
-        {tourPackages.length > 0 && (
+        {/* Motorcycle Tours Section */}
+        {motorcycleTours.length > 0 && (
           <section id="tour-packages" className={styles.section}>
-            <h2 className={styles.sectionTitle}>Tour Packages</h2>
+            <h2 className={styles.sectionTitle}>Motorcycle Tours</h2>
             <div className={styles.tripsGrid}>
-              {tourPackages.map(trip => (
+              {motorcycleTours.map(trip => (
                 <TrendingCard key={`tour-${trip._id || trip.id}`} trip={trip} />
               ))}
             </div>
           </section>
         )}
 
-        {/* Group Trips Section */}
+        {/* Group Tours Section */}
         {groupTrips.length > 0 && (
           <section id="group-trips" className={styles.section}>
-            <h2 className={styles.sectionTitle}>Group Trips</h2>
+            <h2 className={styles.sectionTitle}>Group Tours</h2>
             <div className={styles.tripsGrid}>
               {groupTrips.map(trip => (
                 <TrendingCard key={`group-${trip._id || trip.id}`} trip={trip} />

@@ -378,7 +378,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
   const [showFullForm, setShowFullForm] = useState(false);
   
   const initialForm = {
-    title: '', slug: '', duration: '', route: '', destination: destName || '', category: 'Tour Package',
+    title: '', slug: '', duration: '', route: '', destination: destName || '', category: 'Motorcycle Tours',
     originalPrice: '', discountedPrice: '', saveAmount: '',
     rating: '5', reviewsCount: '0', image: '', mapImage: '', tag: 'Trending', type: 'tour',
     galleryImages: ['', '', '', '', ''], itinerary: [], attractions: [], inclusions: [], tourHighlights: [], exclusions: [], amenities: [], aboutTrip: '',
@@ -389,22 +389,35 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
   const [formData, setFormData] = useState(initialForm);
 
   // Basic form for initial creation
-  const [basicForm, setBasicForm] = useState({ title: '', slug: '', category: 'Tour Package' });
+  const [basicForm, setBasicForm] = useState({ title: '', slug: '', category: 'Motorcycle Tours' });
 
   useEffect(() => {
     fetchTrips();
   }, [destName, refreshKey]);
 
   useEffect(() => {
-    if (location.state?.editTripId && trips.length > 0) {
+    if (location.state?.createForDestination) {
+      if (!showFullForm) {
+        setFormData({
+          ...initialForm,
+          title: '',
+          slug: '',
+          category: 'Motorcycle Tours',
+          destination: location.state.createForDestination,
+          image: location.state.destImage || 'https://placehold.co/600x400?text=Upload+Image'
+        });
+        setEditingId(null);
+        setShowFullForm(true);
+        navigate(location.pathname, { replace: true, state: {} });
+      }
+    } else if (location.state?.editTripId && trips.length > 0) {
       const trip = trips.find(t => t._id === location.state.editTripId);
       if (trip && editingId !== trip._id) {
         handleEdit(trip);
-        // Clean up React Router state to prevent re-triggering when Close is clicked
         navigate(location.pathname, { replace: true, state: {} });
       }
     }
-  }, [trips, location.state, editingId, navigate]);
+  }, [trips, location.state, editingId, navigate, showFullForm]);
 
   useEffect(() => {
     const mainContent = document.getElementById('admin-main-content');
@@ -507,7 +520,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     };
     try {
       await createTrip(newTrip);
-      setBasicForm({ title: '', slug: '', category: 'Tour Package' });
+      setBasicForm({ title: '', slug: '', category: 'Motorcycle Tours' });
       fetchTrips();
     } catch (error) {
       alert(error.response?.data?.message || 'Error creating package. Make sure the Slug is unique!');
@@ -517,16 +530,26 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
 
   const handleFullSubmit = async (e) => {
     e.preventDefault();
-    if (editingId) {
-      const payload = { ...formData };
-      if (payload.galleryImages) {
-        payload.galleryImages = payload.galleryImages.filter(img => img && img.trim() !== '');
+    const payload = { ...formData };
+    if (payload.galleryImages) {
+      payload.galleryImages = payload.galleryImages.filter(img => img && img.trim() !== '');
+    }
+    
+    try {
+      if (editingId) {
+        await updateTrip(editingId, payload);
+        alert('Package updated successfully!');
+      } else {
+        await createTrip(payload);
+        alert('Package created successfully!');
       }
-      await updateTrip(editingId, payload);
       setEditingId(null);
       setShowFullForm(false);
+      fetchTrips();
+    } catch(error) {
+      alert(error.response?.data?.message || 'Error saving package. Make sure Title/Slug are unique.');
+      console.error(error);
     }
-    fetchTrips();
     window.scrollTo(0, 0);
   };
 
@@ -632,8 +655,8 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
               <label className={styles.inputLabel}>Category</label>
               <select name="category" value={basicForm.category} onChange={handleBasicChange} required className={styles.inputField}>
                 <option value="Flight Package">Flight Package</option>
-                <option value="Tour Package">Tour Package</option>
-                <option value="Group Trip">Group Trip</option>
+                <option value="Motorcycle Tours">Motorcycle Tours</option>
+                <option value="Group Tours">Group Tours</option>
                 <option value="Honeymoon">Honeymoon</option>
                 <option value="Unique Experience">Unique Experience</option>
               </select>
@@ -647,7 +670,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
 
       {/* FULL DETAILS FORM (MODAL POPUP) */}
       {showFullForm && (
-        <div className={styles.modalOverlay} onClick={() => { setShowFullForm(false); setEditingId(null); navigate(location.pathname, { replace: true, state: {} }); }} style={{ padding: '20px', zIndex: 1100 }}>
+        <div className={styles.modalOverlay} style={{ padding: '20px', zIndex: 1100 }}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()} style={{ maxWidth: '1200px', width: '100%', maxHeight: '95vh', overflowY: 'auto', padding: 0 }}>
             <form onSubmit={handleFullSubmit} style={{ margin: 0 }}>
               <div style={{ position: 'sticky', top: 0, backgroundColor: '#fff', zIndex: 10, padding: '20px 30px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -670,6 +693,16 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Destination</label>
             <input name="destination" value={formData.destination || ''} readOnly className={styles.inputField} style={{ backgroundColor: '#f1f5f9', color: '#64748b' }} />
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.inputLabel}>Category</label>
+            <select name="category" value={formData.category || 'Motorcycle Tours'} onChange={handleChange} required className={styles.inputField}>
+                <option value="Flight Package">Flight Package</option>
+                <option value="Motorcycle Tours">Motorcycle Tours</option>
+                <option value="Group Tours">Group Tours</option>
+                <option value="Honeymoon">Honeymoon</option>
+                <option value="Unique Experience">Unique Experience</option>
+            </select>
           </div>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Duration</label>
@@ -785,6 +818,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
           onChange={(d) => setFormData({...formData, itinerary: d})} 
         />
         <StringArrayInput title="Inclusions" data={formData.inclusions} onChange={(d) => setFormData({...formData, inclusions: d})} />
+        <StringArrayInput title="Exclusions" data={formData.exclusions} onChange={(d) => setFormData({...formData, exclusions: d})} />
         <div className={styles.card} style={{ marginBottom: '20px' }}>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>About The Tour (Description)</label>
@@ -807,7 +841,6 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
           </div>
         </div>
         
-        <StringArrayInput title="Exclusions" data={formData.exclusions} onChange={(d) => setFormData({...formData, exclusions: d})} />
         <AmenitiesCheckboxInput data={formData.amenities} onChange={(d) => setFormData({...formData, amenities: d})} />
           
         <ArrayInput title="FAQs" fields={['q', 'a']} data={formData.faqs} onChange={(d) => setFormData({...formData, faqs: d})} />
@@ -824,12 +857,16 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
               { key: 'termsAndConditions', label: 'Terms and Conditions' },
               { key: 'cancellationAndRefundPolicy', label: 'Cancellation and Refund Policy' }
             ].map(info => (
-              <div key={info.key} style={{ gridColumn: '1 / -1', marginBottom: '20px' }}>
-                <StringArrayInput 
-                  title={info.label} 
+              <div key={info.key} className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                <ArrayInput 
+                  title={info.label}
+                  fields={[
+                    { name: 'title', placeholder: 'Point Title (e.g. Travel Documents)' },
+                    { name: 'desc', type: 'textarea', placeholder: 'Description' }
+                  ]}
                   data={formData.quickInfo?.[info.key] || []} 
                   onChange={(d) => setFormData({
-                    ...formData,
+                    ...formData, 
                     quickInfo: { ...formData.quickInfo, [info.key]: d }
                   })} 
                 />

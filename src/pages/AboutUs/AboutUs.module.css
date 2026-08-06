@@ -1,0 +1,290 @@
+.aboutUsContainer {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background-color: var(--light-bg);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* 1. Hero Section */
+.heroSection {
+  position: relative;
+  height: 60vh;
+  min-height: 400px;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-color: var(--dark-card); /* Fallback */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  color: white;
+  padding: 0 20px;
+  max-width: 800px;
+}
+
+.heroTitle {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.heroSubtitle {
+  font-family: var(--font-sans-heading);
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--primary-color);
+}
+
+/* 2. Intro Section */
+.introSection {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 20px;
+  gap: 60px;
+}
+
+.introLeft {
+  flex: 1;
+  min-width: 300px;
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+}
+
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background-color: var(--primary-color);
+}
+
+.sectionText {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+  text-align: justify;
+}
+
+.introRight {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collageGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  width: 100%;
+}
+
+.collageItem {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  aspect-ratio: 1;
+  background-color: var(--border-color);
+}
+
+.collageItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 3. Our Story Section */
+.storySection {
+  background-color: var(--card-bg);
+  padding: 80px 20px;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.storyContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.storyImageBlock {
+  flex: 1;
+  min-width: 300px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  background-color: var(--border-color);
+}
+
+.storyImageBlock img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 400px;
+  max-height: 600px;
+}
+
+.storyTextBlock {
+  flex: 1;
+  min-width: 300px;
+}
+
+.storyTitle {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.storyText {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .storyContainer {
+    flex-direction: column-reverse;
+  }
+}
+
+/* 4. Community Section */
+.communitySection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.communityHeader {
+  max-width: 800px;
+  margin: 0 auto 50px auto;
+}
+
+.communityTitle {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.communityText {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.featuresGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 250px;
+  background-color: var(--card-bg);
+  padding: 20px 30px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.featureIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background-color: var(--badge-green-bg);
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.featureText {
+  font-family: var(--font-sans-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* 5. Bottom Banner */
+.bottomBannerSection {
+  position: relative;
+  height: 350px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--dark-bg); /* Fallback */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: -4rem; /* Pull footer up to remove white gap */
+  padding-bottom: 2rem; /* Give some breathing room inside */
+}
+
+.bannerOverlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.bannerContent {
+  position: relative;
+  z-index: 1;
+  color: white;
+  padding: 0 20px;
+}
+
+.bannerTitle {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.bannerSubtitle {
+  font-family: var(--font-sans-heading);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--primary-color);
+}

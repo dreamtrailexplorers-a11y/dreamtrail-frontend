@@ -26,7 +26,7 @@ const BlogSection = () => {
 
   return (
     <section className={styles.blogSection}>
-      <h2 className={styles.sectionTitle}>Watch & Read</h2>
+      <h2 className={styles.sectionTitle}>Blogs</h2>
       <div className={styles.sliderContainer}>
         <Swiper
           modules={[Navigation]}

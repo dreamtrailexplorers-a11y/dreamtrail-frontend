@@ -138,6 +138,38 @@ const ManageBookings = () => {
     doc.save(`Bookings_Report_${new Date().getTime()}.pdf`);
   };
 
+  // Excel (CSV) Export
+  const handleDownloadExcel = () => {
+    const tableColumn = ["Date", "Customer", "Email", "Trip", "Dest", "Dep Date", "Duration", "Pax", "Amount", "Status", "Order ID"];
+    const csvRows = [];
+    csvRows.push(tableColumn.join(','));
+
+    filteredBookings.forEach(booking => {
+      const rowData = [
+        formatDate(booking.createdAt),
+        booking.user ? booking.user.name : '-',
+        booking.user ? booking.user.email : '-',
+        booking.tripTitle || '-',
+        booking.destination || '-',
+        booking.departureDate ? `\t${booking.departureDate}` : '-',
+        booking.duration || '-',
+        booking.numberOfPersons || '-',
+        booking.totalAmount ? booking.totalAmount.toString() : '-',
+        booking.paymentStatus || '-',
+        booking.razorpayOrderId ? `\t${booking.razorpayOrderId}` : '-'
+      ];
+      csvRows.push(rowData.map(item => `"${item}"`).join(','));
+    });
+
+    const csvData = new Blob(['\ufeff' + csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    const csvUrl = URL.createObjectURL(csvData);
+    const hiddenElement = document.createElement('a');
+    hiddenElement.href = csvUrl;
+    hiddenElement.target = '_blank';
+    hiddenElement.download = `Bookings_Report_${new Date().getTime()}.csv`;
+    hiddenElement.click();
+  };
+
 
   if (loading) return <div className={styles.container}>Loading bookings...</div>;
   if (error) return <div className={styles.container}>{error}</div>;
@@ -146,12 +178,20 @@ const ManageBookings = () => {
     <div className={styles.container}>
       <div className={styles.header} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1 className={styles.title} style={{ margin: 0 }}>Manage Bookings</h1>
-        <button 
-          onClick={handleDownloadPDF} 
-          style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', backgroundColor: '#3b82f6', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}
-        >
-          <FiDownload /> Download PDF
-        </button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button 
+            onClick={handleDownloadExcel} 
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', backgroundColor: '#10b981', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}
+          >
+            <FiDownload /> Download Excel
+          </button>
+          <button 
+            onClick={handleDownloadPDF} 
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', backgroundColor: '#3b82f6', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}
+          >
+            <FiDownload /> Download PDF
+          </button>
+        </div>
       </div>
 
       {/* Filters Toolbar */}

@@ -33,6 +33,7 @@ const TripDetails = () => {
   const [selectedDepartureDate, setSelectedDepartureDate] = useState(null);
 
   const [currentTrip, setCurrentTrip] = useState(null);
+  const [currentDestination, setCurrentDestination] = useState(null);
   const [quickInfoModal, setQuickInfoModal] = useState({ isOpen: false, title: '', content: '' });
   
   const [reviews, setReviews] = useState([]);
@@ -42,12 +43,16 @@ const TripDetails = () => {
     window.scrollTo(0, 0);
     const fetchTripAndReviews = async () => {
       try {
-        const { getTrips, getReviews, getSiteSettings } = await import('../../services/api');
-        const [tripsRes, reviewsRes, settingsRes] = await Promise.all([getTrips(), getReviews(), getSiteSettings()]);
+        const { getTrips, getReviews, getSiteSettings, getDestinations } = await import('../../services/api');
+        const [tripsRes, reviewsRes, settingsRes, destinationsRes] = await Promise.all([getTrips(), getReviews(), getSiteSettings(), getDestinations()]);
         
         const trip = tripsRes.data.find((t) => t.slug === slug);
         setCurrentTrip(trip || 'not-found');
         setSettings(settingsRes.data);
+        if (trip) {
+          const dest = destinationsRes.data.find(d => d.name === trip.destination);
+          setCurrentDestination(dest || null);
+        }
         setReviews(reviewsRes.data.filter(r => 
           (r.tripSlug && r.tripSlug === trip.slug) || 
           (!r.tripSlug && r.destination && trip.destination && r.destination.toLowerCase() === trip.destination.toLowerCase()) ||
@@ -176,12 +181,19 @@ const TripDetails = () => {
                 selectedDepartureDate={selectedDepartureDate}
                 setSelectedDepartureDate={setSelectedDepartureDate}
               />
-              </div>
             </div>
+
+            {/* FAQs */}
+            <div id="faqs" className={styles.sectionMargin} style={{ scrollMarginTop: '90px', backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#1e293b', marginBottom: '20px' }}>FAQs</h3>
+              <CreatorFaqs faqs={faqs} />
+            </div>
+          </div>
 
           {/* Right Column (Sticky Pricing Sidebar) */}
           <div className={styles.rightColumn}>
             <TripSidebar 
+              destinationInfo={currentDestination}
               trip={{
                 ...currentTrip, 
                 discountedPrice: displayDiscPrice, 
@@ -258,14 +270,6 @@ const TripDetails = () => {
           </div>
         )}
           
-        {/* FAQs */}
-        <div id="faqs" style={{ marginTop: '2rem', backgroundColor: '#fff', padding: '2rem', borderRadius: '16px', scrollMarginTop: '140px' }}>
-          <section className={styles.cleanSection}>
-            <h3 className={styles.sectionTitle} style={{textAlign: 'center', marginBottom: '2rem'}}>FAQs</h3>
-            <CreatorFaqs faqs={faqs} />
-          </section>
-        </div>
-
         {/* Reviews Section */}
         <div style={{ marginTop: '2rem', backgroundColor: '#fff', padding: '2rem', borderRadius: '16px' }}>
           <section className={styles.cleanSection}>
@@ -294,11 +298,20 @@ const TripDetails = () => {
             </div>
             <div style={{ lineHeight: '1.6', color: '#334155' }}>
               {Array.isArray(quickInfoModal.content) ? (
-                <ul style={{ paddingLeft: '20px', margin: 0 }}>
+                <div style={{ margin: 0 }}>
                   {quickInfoModal.content.map((point, i) => (
-                    <li key={i} style={{ marginBottom: '10px' }}>{point}</li>
+                    <div key={i} style={{ marginBottom: '15px' }}>
+                      {typeof point === 'object' && point !== null ? (
+                        <>
+                          {point.title && <h4 style={{ margin: '0 0 5px 0', fontSize: '1.05rem', color: '#1e293b' }}>{point.title}</h4>}
+                          {point.desc && <p style={{ margin: 0, fontSize: '0.95rem' }}>{point.desc}</p>}
+                        </>
+                      ) : (
+                        <p style={{ margin: 0 }}>{point}</p>
+                      )}
+                    </div>
                   ))}
-                </ul>
+                </div>
               ) : (
                 <p>{quickInfoModal.content}</p>
               )}

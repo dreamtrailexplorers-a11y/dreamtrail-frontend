@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { FiCheck, FiPhone, FiMessageSquare, FiDownload } from 'react-icons/fi';
+import { FiCheck, FiPhone, FiMessageSquare, FiDownload, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import styles from './TripSidebar.module.css';
 import BuyNowModal from '../../../components/BuyNowModal/BuyNowModal';
 
-const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry, selectedDepartureDate }) => {
+const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry, selectedDepartureDate, destinationInfo }) => {
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
+  const [expandedWhyUs, setExpandedWhyUs] = useState(null);
   
   const origPriceNum = Number(trip.originalPrice) || 0;
   const discPriceNum = Number(trip.discountedPrice) || 0;
@@ -34,13 +35,7 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
           </div>
         </div>
 
-        {trip.inclusions && trip.inclusions.length > 0 && (
-          <div className={styles.packageDetailSub}>
-            {trip.inclusions.slice(0, 3).map((inc, i) => (
-              <p key={i}>✓ {inc}</p>
-            ))}
-          </div>
-        )}
+
 
         <div style={{ borderTop: '1px solid #e2e8f0', margin: '15px 0', paddingTop: '15px', textAlign: 'center' }}>
           <p style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: '700', marginBottom: '4px' }}>
@@ -88,6 +83,49 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
           </button>
         </div>
       </div>
+
+      {/* Why Choose Us Box */}
+      {destinationInfo && destinationInfo.whyChooseUs && destinationInfo.whyChooseUs.length > 0 && (
+        <div style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '20px', marginTop: '15px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+            <div style={{ width: '4px', height: '35px', backgroundColor: '#cc0000', marginRight: '10px' }}></div>
+            <h4 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#cc0000', margin: 0 }}>
+              Why Choose Us For {destinationInfo.name}
+            </h4>
+          </div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {destinationInfo.whyChooseUs.map((item, index) => {
+              const isExpanded = expandedWhyUs === index;
+              return (
+                <div key={index} style={{ borderBottom: index < destinationInfo.whyChooseUs.length - 1 ? '1px dotted #cbd5e1' : 'none' }}>
+                  <div 
+                    onClick={() => setExpandedWhyUs(isExpanded ? null : index)}
+                    style={{ display: 'flex', alignItems: 'center', padding: '12px 0', cursor: 'pointer' }}
+                  >
+                    <div style={{ 
+                      width: '20px', height: '20px', borderRadius: '50%', backgroundColor: '#cc0000', 
+                      display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#fff', marginRight: '15px', flexShrink: 0 
+                    }}>
+                      {isExpanded ? <FiChevronUp size={14} /> : <FiChevronDown size={14} />}
+                    </div>
+                    <span style={{ fontSize: '0.95rem', fontWeight: '700', color: '#0f172a' }}>{item.title}</span>
+                  </div>
+                  {isExpanded && (
+                    <div style={{ paddingLeft: '9px', paddingBottom: '12px' }}>
+                      <div style={{ 
+                        borderLeft: '1px dotted #cc0000', paddingLeft: '25px', color: '#475569', fontSize: '0.9rem', lineHeight: '1.6' 
+                      }}>
+                        {item.description}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Still Got Queries Box */}
       <div className={styles.queriesCard} style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '15px', marginTop: '15px' }}>

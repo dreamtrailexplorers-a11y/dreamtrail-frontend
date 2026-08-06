@@ -67,10 +67,6 @@ const FillDestinationDetail = ({ destId, onClose }) => {
               <input name="name" value={formData.name || ''} onChange={handleChange} className={styles.inputField} required />
             </div>
             <div className={styles.inputGroup}>
-              <label className={styles.inputLabel}>Starting Price</label>
-              <input name="startingPrice" type="number" value={formData.startingPrice || ''} onChange={handleChange} className={styles.inputField} />
-            </div>
-            <div className={styles.inputGroup}>
               <label className={styles.inputLabel}>Cover Image URL</label>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <label className={styles.btnPrimary} style={{ cursor: 'pointer', textAlign: 'center', whiteSpace: 'nowrap', padding: '8px 12px' }}>
@@ -79,10 +75,6 @@ const FillDestinationDetail = ({ destId, onClose }) => {
                 </label>
                 <input name="image" value={formData.image || ''} onChange={handleChange} placeholder="Or enter image URL" className={styles.inputField} style={{ flex: 1 }} />
               </div>
-            </div>
-            <div className={styles.inputGroup}>
-              <label className={styles.inputLabel}>Tagline</label>
-              <input name="tagline" value={formData.tagline || ''} onChange={handleChange} className={styles.inputField} />
             </div>
             <div className={styles.inputGroup}>
               <label className={styles.inputLabel}>Destination Type</label>

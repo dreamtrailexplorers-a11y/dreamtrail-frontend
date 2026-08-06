@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
+import {
   FaWhatsapp, 
   FaInstagram, 
-  FaYoutube, 
   FaFacebookF, 
-  FaTwitter, 
   FaLinkedinIn 
 } from 'react-icons/fa';
 import { FiMapPin, FiCompass } from 'react-icons/fi';
@@ -71,14 +69,8 @@ const Footer = () => {
             <a href={settings?.instagram || '#'} className={`${styles.socialIconBtn} ${styles.instagram}`} aria-label="Instagram">
               <FaInstagram />
             </a>
-            <a href={settings?.youtube || '#'} className={`${styles.socialIconBtn} ${styles.youtube}`} aria-label="YouTube">
-              <FaYoutube />
-            </a>
             <a href={settings?.facebook || '#'} className={`${styles.socialIconBtn} ${styles.facebook}`} aria-label="Facebook">
               <FaFacebookF />
-            </a>
-            <a href={settings?.twitter || '#'} className={`${styles.socialIconBtn} ${styles.twitter}`} aria-label="X">
-              <FaTwitter />
             </a>
             <a href={settings?.linkedin || '#'} className={`${styles.socialIconBtn} ${styles.linkedin}`} aria-label="LinkedIn">
               <FaLinkedinIn />
@@ -92,15 +84,21 @@ const Footer = () => {
         {/* Company Info */}
         <div className={styles.companyCol}>
           <div className={styles.brandLogo}>
-            <img src="/logo.png" alt="DreamTrail Logo" style={{ height: '70px', width: 'auto' }} />
+            <img src="/footer-logo.png" alt="DreamTrail Logo" style={{ height: '110px', width: 'auto' }} />
           </div>
 
-          <div className={styles.addressBox}>
+          <a 
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings?.address || 'DreamTrail Experiences Pvt. Ltd. 508, 3rd Eye Vision, IIM Road, Ahmedabad, Gujarat 380015')}`}
+            target="_blank"
+            rel="noreferrer"
+            className={styles.addressBox}
+            style={{ textDecoration: 'none', color: '#cbd5e1' }}
+          >
             <FiMapPin size={22} color="#E67E22" style={{ flexShrink: 0, marginTop: '3px' }} />
             <span style={{ whiteSpace: 'pre-line' }}>
               {settings?.address || 'DreamTrail Experiences Pvt. Ltd.\n508, 3rd Eye Vision, IIM Road, Ahmedabad, Gujarat 380015'}
             </span>
-          </div>
+          </a>
         </div>
 
         {/* Explore Links */}
@@ -108,8 +106,8 @@ const Footer = () => {
           <h3 className={styles.colHeading}>Explore</h3>
           <div className={styles.linksList}>
             <Link to="/" className={styles.linkItem}>Home</Link>
-            <Link to="/tour-packages" className={styles.linkItem}>Tour Packages</Link>
-            <Link to="/group-trips" className={styles.linkItem}>Group Trips</Link>
+            <Link to="/tour-packages" className={styles.linkItem}>Motorcycle Tours</Link>
+            <Link to="/group-trips" className={styles.linkItem}>Group Tours</Link>
             <Link to="/creator-trips" className={styles.linkItem}>Creator</Link>
             <Link to="/careers" className={styles.linkItem}>Careers</Link>
             <Link to="/about" className={styles.linkItem}>About Us</Link>
