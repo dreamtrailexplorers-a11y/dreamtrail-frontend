@@ -234,7 +234,7 @@ const ManageSiteSettings = () => {
         <div className={styles.formGrid}>
           <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
             <label className={styles.inputLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              Video Banner URL
+              Video Banner URL (Max 4.5MB limit)
               <label style={{ cursor: 'pointer', backgroundColor: '#3b82f6', color: 'white', padding: '4px 10px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
                 Upload Video
                 <input type="file" style={{ display: 'none' }} accept="video/*" onChange={(e) => handleSingleUpload(e, 'bannerVideoUrl')} />

@@ -19,7 +19,7 @@ const CreatePackage = () => {
     route: 'TBD',
     originalPrice: 0,
     discountedPrice: 0,
-    image: 'https://placehold.co/600x400?text=Upload+Image',
+    image: '',
   });
 
   useEffect(() => {

@@ -6,6 +6,24 @@ import styles from './TrendingSection.module.css';
 const TrendingCard = ({ trip, basePath = '/tours' }) => {
   const navigate = useNavigate();
 
+  const getImageUrl = (url) => {
+    if (!url) return '';
+    if (typeof url !== 'string') return '';
+    if (url.includes('drive.google.com/uc?export=view&id=')) {
+      const id = url.split('id=')[1]?.split('&')[0];
+      if (id) return `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+    }
+    if (url.includes('drive.google.com/uc?id=')) {
+      const id = url.split('id=')[1]?.split('&')[0];
+      if (id) return `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+    }
+    if (url.includes('drive.google.com/file/d/')) {
+      const id = url.split('/d/')[1]?.split('/')[0];
+      if (id) return `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+    }
+    return url;
+  };
+
   const handleCardClick = () => {
     navigate(`${basePath}/${trip.slug || trip.id || trip._id}`);
   };
@@ -13,11 +31,13 @@ const TrendingCard = ({ trip, basePath = '/tours' }) => {
   return (
     <div className={styles.cardContainer} onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <div className={styles.imageWrapper}>
-        <img 
-          src={trip.image} 
-          alt={trip.title} 
-          className={styles.cardImage} 
-        />
+        {getImageUrl(trip.image) && (
+          <img 
+            src={getImageUrl(trip.image)} 
+            alt={trip.title} 
+            className={styles.cardImage} 
+          />
+        )}
 
         {/* Inner pagination dots */}
         <div className={styles.imageDots}>

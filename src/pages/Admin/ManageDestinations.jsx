@@ -105,7 +105,7 @@ const ManageDestinations = () => {
     try {
       const destData = { 
         name: newDestName,
-        image: newDestImage || 'https://placehold.co/600x400?text=Upload+Image',
+        image: newDestImage || '',
         type: newDestType,
         icon: newDestIcon,
         whyChooseUs: newDestWhyUs
@@ -136,7 +136,7 @@ const ManageDestinations = () => {
         category: packageForm.category,
         destination: addingPackageToDest.name,
         duration: 'TBD', route: 'TBD', originalPrice: 0, discountedPrice: 0,
-        image: packageForm.image || addingPackageToDest.image || 'https://placehold.co/600x400?text=Upload+Image',
+        image: packageForm.image || addingPackageToDest.image || '',
         tag: 'Trending', type: 'tour', rating: '5', reviewsCount: '0'
       };
       await createTrip(newTrip);
@@ -153,7 +153,7 @@ const ManageDestinations = () => {
   // === 03-Aug-2026: New logic to open full details page directly ===
   const handleAddPackageClick = (dest) => {
     try {
-      navigate('/admin/all-packages', { state: { createForDestination: dest.name, destImage: dest.image || 'https://placehold.co/600x400?text=Upload+Image' } });
+      navigate('/admin/all-packages', { state: { createForDestination: dest.name, destImage: dest.image || '' } });
     } catch(err) {
       alert('Error creating package: ' + (err.response?.data?.message || err.message));
     }

@@ -404,7 +404,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
           slug: '',
           category: 'Motorcycle Tours',
           destination: location.state.createForDestination,
-          image: location.state.destImage || 'https://placehold.co/600x400?text=Upload+Image'
+          image: location.state.destImage || ''
         });
         setEditingId(null);
         setShowFullForm(true);
@@ -516,7 +516,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
       route: 'TBD',
       originalPrice: 0,
       discountedPrice: 0,
-      image: 'https://placehold.co/600x400?text=Upload+Image'
+      image: ''
     };
     try {
       await createTrip(newTrip);
@@ -599,7 +599,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     if (overrideTrip.discountedPrice === 0) overrideTrip.discountedPrice = '';
     
     overrideTrip.image = cleanImageUrl(overrideTrip.image);
-    if (overrideTrip.image === 'https://placehold.co/600x400?text=Upload+Image') overrideTrip.image = '';
+    if (overrideTrip.image === '') overrideTrip.image = '';
     
     gallery = gallery.map(img => cleanImageUrl(img));
     
