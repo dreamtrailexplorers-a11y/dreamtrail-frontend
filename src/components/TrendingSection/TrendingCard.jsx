@@ -14,9 +14,8 @@ const TrendingCard = ({ trip, basePath = '/tours' }) => {
     <div className={styles.cardContainer} onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <div className={styles.imageWrapper}>
         <img 
-          src={trip.image || "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80"} 
+          src={trip.image} 
           alt={trip.title} 
-          onError={(e) => e.target.src = "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80"}
           className={styles.cardImage} 
         />
 

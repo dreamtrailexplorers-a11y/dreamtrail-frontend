@@ -3,6 +3,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import CategoryMenu from '../../components/CategoryMenu/CategoryMenu';
 import Hero from '../../components/Hero/Hero';
 import TrendingSection from '../../components/TrendingSection/TrendingSection';
+import UpcomingTripsSection from '../../components/UpcomingTripsSection/UpcomingTripsSection';
 import Banner from '../../components/Banner/Banner';
 import DestinationSlider from '../../components/DestinationSlider/DestinationSlider';
 import GroupTripBanner from '../../components/GroupTripBanner/GroupTripBanner';
@@ -51,6 +52,9 @@ const Home = () => {
 
         {/* 4. Trending Section */}
         <TrendingSection />
+
+        {/* 4.5. Upcoming Trips Section */}
+        <UpcomingTripsSection />
 
         {/* 5. Promotional Banner */}
         <Banner />

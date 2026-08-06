@@ -6,6 +6,7 @@ import CreatorTripDetails from '../pages/CreatorTripDetails/CreatorTripDetails';
 import CreatorTrips from '../pages/CreatorTrips/CreatorTrips';
 import GroupTrips from '../pages/GroupTrips/GroupTrips';
 import TourPackages from '../pages/TourPackages/TourPackages';
+import UpcomingTripsPage from '../pages/UpcomingTripsPage/UpcomingTripsPage';
 
 import DestinationPage from '../pages/DestinationPage/DestinationPage';
 import AttractionPage from '../pages/AttractionPage/AttractionPage';
@@ -23,6 +24,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/tour-packages" element={<TourPackages />} />
+      <Route path="/upcoming-trips/:month" element={<UpcomingTripsPage />} />
       <Route path="/group-trips" element={<GroupTrips />} />
       <Route path="/creator-trips" element={<CreatorTrips />} />
       <Route path="/destinations/:slug" element={<DestinationPage />} />

@@ -29,9 +29,8 @@ const DestinationCard = ({ destination }) => {
   return (
     <div className={styles.cardContainer} onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <img
-        src={destination.image || "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80"}
+        src={destination.image}
         alt={destination.name}
-        onError={(e) => e.target.src = "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80"}
         className={styles.cardImage}
       />
       {/* Top Gradient for Title Readability */}

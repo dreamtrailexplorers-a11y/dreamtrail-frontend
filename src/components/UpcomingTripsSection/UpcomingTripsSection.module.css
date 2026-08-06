@@ -1,0 +1,71 @@
+.upcomingSection {
+  padding: 60px 20px;
+  background-color: var(--light-bg);
+  font-family: var(--font-body);
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  position: relative;
+  display: inline-block;
+}
+
+.sliderContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.monthSwiper {
+  padding: 10px 0 20px 0;
+}
+
+.monthCard {
+  width: 100%;
+  padding: 12px 10px;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-sans-heading);
+  font-weight: 600;
+  color: var(--text-secondary);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  user-select: none;
+}
+
+.monthCard:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.monthCard.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+  .sectionTitle {
+    font-size: 2rem;
+  }
+  .monthCard {
+    padding: 10px 5px;
+    font-size: 0.9rem;
+  }
+}
