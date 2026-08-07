@@ -92,8 +92,8 @@ const AdminDashboard = () => {
   return (
     <div className={styles.adminContainer}>
       <aside className={styles.sidebar}>
-        {/* Admin Brand Logo - Redirects to website */}
-        <Link to="/" className={styles.brandLogo} style={{ marginBottom: '40px', paddingLeft: '10px' }} title="Go to Website">
+        {/* Admin Brand Logo - Redirects to admin dashboard */}
+        <Link to="/admin" className={styles.brandLogo} style={{ marginBottom: '40px', paddingLeft: '10px' }} title="Go to Admin Dashboard">
           <img src="/logo.png" alt="DreamTrail Logo" style={{ height: '70px', width: 'auto' }} />
         </Link>
         <nav className={styles.navLinks}>
