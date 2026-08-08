@@ -203,3 +203,108 @@
 .pdfActionBtn:hover {
   background-color: #f1f5f9;
 }
+
+/* Why Choose Us Hover Dropdown Styles */
+.whyUsDropdownWrapper {
+  position: relative;
+  margin-bottom: 15px; 
+  z-index: 10;
+  text-align: left;
+}
+
+.whyUsDropdownHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0f172a;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.whyUsChevron {
+  margin-left: auto;
+  transition: transform 0.3s;
+  color: #64748b;
+}
+
+.whyUsDropdownContent {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 5px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 20;
+}
+
+.whyUsDropdownWrapper:hover .whyUsDropdownContent {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.whyUsDropdownWrapper:hover .whyUsChevron {
+  transform: rotate(180deg);
+}
+
+.whyUsDropdownWrapper:hover .whyUsDropdownHeader {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.whyUsScrollArea {
+  max-height: 250px;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+/* Scrollbar customization for the dropdown */
+.whyUsScrollArea::-webkit-scrollbar {
+  width: 5px;
+}
+.whyUsScrollArea::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 5px;
+}
+.whyUsScrollArea::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 5px;
+}
+
+.whyUsDropdownItem {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dotted #e2e8f0;
+}
+.whyUsDropdownItem:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.whyUsDropdownItem strong {
+  display: block;
+  font-size: 0.85rem;
+  color: #cc0000;
+  margin-bottom: 4px;
+}
+
+.whyUsDropdownItem p {
+  font-size: 0.8rem;
+  color: #475569;
+  margin: 0;
+  line-height: 1.5;
+}

@@ -46,9 +46,30 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
               {selectedOptionTitle}
             </p>
           )}
-          <p style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '600' }}>
+          <p style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '600', marginBottom: '15px' }}>
             {trip.duration || '5 Days 4 Nights'}
           </p>
+
+          {/* Hover Dropdown for Why Choose Us */}
+          {destinationInfo && destinationInfo.whyChooseUs && destinationInfo.whyChooseUs.length > 0 && (
+            <div className={styles.whyUsDropdownWrapper}>
+              <div className={styles.whyUsDropdownHeader}>
+                <FiCheck style={{color: '#cc0000'}}/> 
+                <span>Why Choose Us For {destinationInfo.name}</span>
+                <FiChevronDown className={styles.whyUsChevron} />
+              </div>
+              <div className={styles.whyUsDropdownContent}>
+                <div className={styles.whyUsScrollArea}>
+                  {destinationInfo.whyChooseUs.map((item, index) => (
+                    <div key={index} className={styles.whyUsDropdownItem}>
+                      <strong>{item.title}</strong>
+                      <p>{item.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Main Enquire & Buy Now Buttons */}
@@ -83,49 +104,6 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
           </button>
         </div>
       </div>
-
-      {/* Why Choose Us Box */}
-      {destinationInfo && destinationInfo.whyChooseUs && destinationInfo.whyChooseUs.length > 0 && (
-        <div style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '20px', marginTop: '15px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-            <div style={{ width: '4px', height: '35px', backgroundColor: '#cc0000', marginRight: '10px' }}></div>
-            <h4 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#cc0000', margin: 0 }}>
-              Why Choose Us For {destinationInfo.name}
-            </h4>
-          </div>
-          
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {destinationInfo.whyChooseUs.map((item, index) => {
-              const isExpanded = expandedWhyUs === index;
-              return (
-                <div key={index} style={{ borderBottom: index < destinationInfo.whyChooseUs.length - 1 ? '1px dotted #cbd5e1' : 'none' }}>
-                  <div 
-                    onClick={() => setExpandedWhyUs(isExpanded ? null : index)}
-                    style={{ display: 'flex', alignItems: 'center', padding: '12px 0', cursor: 'pointer' }}
-                  >
-                    <div style={{ 
-                      width: '20px', height: '20px', borderRadius: '50%', backgroundColor: '#cc0000', 
-                      display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#fff', marginRight: '15px', flexShrink: 0 
-                    }}>
-                      {isExpanded ? <FiChevronUp size={14} /> : <FiChevronDown size={14} />}
-                    </div>
-                    <span style={{ fontSize: '0.95rem', fontWeight: '700', color: '#0f172a' }}>{item.title}</span>
-                  </div>
-                  {isExpanded && (
-                    <div style={{ paddingLeft: '9px', paddingBottom: '12px' }}>
-                      <div style={{ 
-                        borderLeft: '1px dotted #cc0000', paddingLeft: '25px', color: '#475569', fontSize: '0.9rem', lineHeight: '1.6' 
-                      }}>
-                        {item.description}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
 
       {/* Still Got Queries Box */}
       <div className={styles.queriesCard} style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '15px', marginTop: '15px' }}>
