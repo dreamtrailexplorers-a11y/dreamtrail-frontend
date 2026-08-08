@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styles from './AboutSnippet.module.css';
-import { FiTarget, FiMap, FiUsers, FiStar } from 'react-icons/fi';
+import { FiTarget, FiMap, FiUsers, FiStar, FiChevronRight } from 'react-icons/fi';
 
 const AboutSnippet = ({ data }) => {
   const [localData, setLocalData] = useState(null);
@@ -10,7 +10,7 @@ const AboutSnippet = ({ data }) => {
   useEffect(() => {
     if (!data) {
       axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/settings`)
-        .then(res => setLocalData(res.data?.aboutPage))
+        .then(res => setLocalData(res.data?.aboutSnippet))
         .catch(err => console.error(err));
     }
   }, [data]);
@@ -18,19 +18,19 @@ const AboutSnippet = ({ data }) => {
   const snippetData = data || localData;
 
   if (!snippetData) return null;
-  // If title and text are totally empty, don't show the white box at all
-  if (!snippetData.introTitle1?.trim() && !snippetData.introText1?.trim()) {
+  
+  // If title and text are totally empty, don't show the component
+  if (!snippetData.title?.trim() && !snippetData.text?.trim()) {
     return null;
   }
 
-  // Fallback icon mapping if icon string matches
+  // Icon mapping
   const getIcon = (iconName, index) => {
     switch (iconName) {
       case 'FiTarget': return <FiTarget />;
       case 'FiMap': return <FiMap />;
       case 'FiUsers': return <FiUsers />;
       default: 
-        // Fallbacks based on index
         if (index === 0) return <FiStar />;
         if (index === 1) return <FiMap />;
         if (index === 2) return <FiUsers />;
@@ -41,16 +41,34 @@ const AboutSnippet = ({ data }) => {
 
   return (
     <section className={styles.snippetSection}>
-      <div className={styles.snippetContainer} style={{ justifyContent: 'center' }}>
+      <div className={styles.snippetContainer}>
+        
         {/* Left Side: Content */}
-        <div className={styles.snippetLeft} style={{ flex: 'none', maxWidth: '800px', textAlign: 'center', paddingLeft: 0 }}>
-          {snippetData.introTitle1 && <h2 className={styles.snippetTitle}>{snippetData.introTitle1}</h2>}
-          <div className={styles.titleUnderline} style={{ margin: '0 auto 20px auto' }}></div>
-          {snippetData.introText1 && <p className={styles.snippetText} style={{ textAlign: 'center', whiteSpace: 'pre-line' }}>{snippetData.introText1}</p>}
+        <div className={styles.snippetLeft}>
+          {snippetData.title && <h2 className={styles.snippetTitle}>{snippetData.title}</h2>}
+          <div className={styles.titleUnderline}></div>
+          {snippetData.text && <p className={styles.snippetText}>{snippetData.text}</p>}
           <Link to="/about" className={styles.knowMoreBtn}>
-            Know More &rarr;
+            <em>Know More</em> &rarr;
           </Link>
         </div>
+
+        {/* Right Side: Points */}
+        {snippetData.points && snippetData.points.length > 0 && (
+          <div className={styles.snippetRight}>
+            <div className={styles.pointsList}>
+              {snippetData.points.map((point, idx) => (
+                <div key={idx} className={styles.pointCard} style={{ marginLeft: `${idx * 40}px` }}>
+                  <div className={styles.pointIcon}>
+                    {getIcon(point.icon, idx)}
+                  </div>
+                  <div className={styles.pointText}>{point.text}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
       </div>
     </section>
   );

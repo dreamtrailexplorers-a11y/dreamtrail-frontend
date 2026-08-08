@@ -1,71 +1,191 @@
 .upcomingSection {
-  padding: 60px 20px;
-  background-color: var(--light-bg);
+  padding: 80px 20px;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
   font-family: var(--font-body);
 }
 
 .sectionHeader {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
+}
+
+.sectionSubtitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }
 
 .sectionTitle {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 2.8rem;
+  font-weight: 800;
   color: var(--text-primary);
   text-align: center;
-  position: relative;
-  display: inline-block;
+  margin-bottom: 15px;
+}
+
+.titleUnderline {
+  width: 60px;
+  height: 4px;
+  background: var(--primary-color);
+  border-radius: 2px;
 }
 
 .sliderContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 0 40px; /* Increased padding to make room for arrows */
+  position: relative;
 }
 
 .monthSwiper {
-  padding: 10px 0 20px 0;
+  padding: 20px 10px 40px 10px; /* Space for shadows */
 }
 
+/* Custom Swiper Arrows for this section */
+.sliderContainer :global(.swiper-button-prev),
+.sliderContainer :global(.swiper-button-next) {
+  width: 45px !important;
+  height: 45px !important;
+  background-color: white !important;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+  color: var(--primary-color) !important;
+  transition: all 0.3s ease !important;
+  top: calc(50% - 10px) !important; /* Move up by 10px to account for asymmetric top/bottom padding */
+  margin-top: -22.5px !important; /* Half of height to perfectly center */
+}
+
+.sliderContainer :global(.swiper-button-prev) {
+  left: -5px !important; /* Move outside of the cards */
+}
+
+.sliderContainer :global(.swiper-button-next) {
+  right: -5px !important; /* Move outside of the cards */
+}
+
+.sliderContainer :global(.swiper-button-prev):hover,
+.sliderContainer :global(.swiper-button-next):hover {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 8px 20px rgba(230, 126, 34, 0.3) !important;
+  border-color: transparent;
+}
+
+/* Redesigned Card */
 .monthCard {
   width: 100%;
-  padding: 12px 10px;
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  text-align: center;
+  padding: 20px 15px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: var(--font-sans-heading);
-  font-weight: 600;
-  color: var(--text-secondary);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
   user-select: none;
 }
 
-.monthCard:hover {
-  border-color: var(--primary-color);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+.iconWrapper {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
 }
 
-.monthCard.active {
-  background-color: var(--primary-color);
-  color: white;
+.calendarIcon {
+  font-size: 1.2rem;
+  color: #64748b;
+  transition: all 0.3s ease;
+}
+
+.monthText {
+  font-family: var(--font-sans-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+}
+
+.monthCard:hover {
+  transform: translateY(-8px);
   border-color: var(--primary-color);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 15px 35px rgba(230, 126, 34, 0.15);
+}
+
+.monthCard:hover .iconWrapper {
+  background: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.monthCard:hover .calendarIcon {
+  color: white;
+}
+
+.monthCard:hover .monthText {
+  color: var(--primary-color);
+}
+
+/* Active State */
+.monthCard.active {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  border-color: transparent;
+  box-shadow: 0 15px 35px rgba(230, 126, 34, 0.4);
+  transform: translateY(-8px) scale(1.05);
+}
+
+.monthCard.active .iconWrapper {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.monthCard.active .calendarIcon {
+  color: white;
+}
+
+.monthCard.active .monthText {
+  color: white;
 }
 
 @media (max-width: 768px) {
   .sectionTitle {
     font-size: 2rem;
   }
+  .sliderContainer {
+    padding: 0 10px; /* Reset padding for mobile */
+  }
+  .sliderContainer :global(.swiper-button-prev),
+  .sliderContainer :global(.swiper-button-next) {
+    display: none !important; /* Hide arrows on mobile, they can swipe */
+  }
   .monthCard {
-    padding: 10px 5px;
+    padding: 15px 10px;
+    border-radius: 16px;
+    gap: 8px;
+  }
+  .iconWrapper {
+    width: 35px;
+    height: 35px;
+  }
+  .calendarIcon {
+    font-size: 1rem;
+  }
+  .monthText {
     font-size: 0.9rem;
   }
 }
