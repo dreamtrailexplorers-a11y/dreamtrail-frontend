@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styles from './AboutSnippet.module.css';
-import { FiTarget, FiMap, FiUsers, FiStar, FiChevronRight } from 'react-icons/fi';
 
 const AboutSnippet = ({ data }) => {
   const [localData, setLocalData] = useState(null);
@@ -19,25 +18,9 @@ const AboutSnippet = ({ data }) => {
 
   if (!snippetData) return null;
   
-  // If title and text are totally empty, don't show the component
   if (!snippetData.title?.trim() && !snippetData.text?.trim()) {
     return null;
   }
-
-  // Icon mapping
-  const getIcon = (iconName, index) => {
-    switch (iconName) {
-      case 'FiTarget': return <FiTarget />;
-      case 'FiMap': return <FiMap />;
-      case 'FiUsers': return <FiUsers />;
-      default: 
-        if (index === 0) return <FiStar />;
-        if (index === 1) return <FiMap />;
-        if (index === 2) return <FiUsers />;
-        if (index === 3) return <FiUsers />;
-        return <FiStar />;
-    }
-  };
 
   return (
     <section className={styles.snippetSection}>
@@ -53,15 +36,13 @@ const AboutSnippet = ({ data }) => {
           </Link>
         </div>
 
-        {/* Right Side: Points */}
+        {/* Right Side: Points (No Icons) */}
         {snippetData.points && snippetData.points.length > 0 && (
           <div className={styles.snippetRight}>
             <div className={styles.pointsList}>
               {snippetData.points.map((point, idx) => (
-                <div key={idx} className={styles.pointCard} style={{ marginLeft: `${idx * 40}px` }}>
-                  <div className={styles.pointIcon}>
-                    {getIcon(point.icon, idx)}
-                  </div>
+                <div key={idx} className={styles.pointItem}>
+                  <div className={styles.pointMarker}></div>
                   <div className={styles.pointText}>{point.text}</div>
                 </div>
               ))}

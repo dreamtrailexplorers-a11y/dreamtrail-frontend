@@ -1,48 +1,51 @@
 .snippetSection {
   background-color: transparent;
-  padding: 60px 20px;
+  padding: 80px 20px;
   font-family: var(--font-body);
 }
 
 .snippetContainer {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
-  gap: 40px;
-  align-items: center;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.6);
 }
 
 .snippetLeft {
-  flex: 1;
+  flex: 1.2;
   min-width: 300px;
-  background: white;
-  border-radius: var(--radius-sm);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  padding: 40px;
-  border-left: 4px solid var(--primary-color);
+  padding: 60px 50px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, #f8fafc 100%);
+  border-right: 1px solid rgba(226, 232, 240, 0.6);
 }
 
 .snippetTitle {
   font-family: var(--font-heading);
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: var(--primary-color); /* Red title as per design */
-  margin-bottom: 15px;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  line-height: 1.2;
 }
 
 .titleUnderline {
-  width: 60px;
-  height: 2px;
+  width: 70px;
+  height: 4px;
   background-color: var(--text-primary);
   margin-bottom: 25px;
+  border-radius: 2px;
 }
 
 .snippetText {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   line-height: 1.8;
-  color: #4b5563; /* Gray text */
-  margin-bottom: 30px;
+  color: #4b5563;
+  margin-bottom: 40px;
   text-align: justify;
 }
 
@@ -50,7 +53,8 @@
   display: inline-block;
   background-color: var(--primary-color);
   color: white;
-  padding: 8px 20px;
+  padding: 10px 25px;
+  font-size: 1.05rem;
   font-weight: 600;
   text-decoration: none;
   font-family: var(--font-sans-heading);
@@ -58,82 +62,95 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(230, 126, 34, 0.2);
 }
 
 .knowMoreBtn em {
   font-style: italic;
-  transform: skew(10deg); /* Counter skew for text */
+  transform: skew(10deg);
   display: inline-block;
 }
 
 .knowMoreBtn:hover {
   background-color: var(--primary-hover);
+  transform: skew(-10deg) translateY(-2px);
+  box-shadow: 0 6px 20px rgba(230, 126, 34, 0.3);
 }
 
 .snippetRight {
   flex: 1;
   min-width: 300px;
+  padding: 60px 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background: white;
 }
 
 .pointsList {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 25px;
+}
+
+.pointItem {
+  display: flex;
   align-items: flex-start;
+  gap: 20px;
+  position: relative;
+  padding-bottom: 25px;
 }
 
-.pointCard {
-  background: white;
-  padding: 15px 25px;
-  border-radius: var(--radius-sm);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  width: 100%;
-  max-width: 300px;
-  border-left: 3px solid var(--primary-color);
-  transition: transform 0.3s ease;
+.pointItem:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 20px;
+  bottom: 0;
+  width: 2px;
+  background: rgba(226, 232, 240, 0.8);
 }
 
-.pointCard:hover {
-  transform: translateY(-2px);
-}
-
-.pointIcon {
-  font-size: 1.5rem;
-  color: #111827; /* Dark icon */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.pointMarker {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  margin-top: 6px;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 4px rgba(230, 126, 34, 0.15);
+  position: relative;
+  z-index: 2;
 }
 
 .pointText {
   font-family: var(--font-sans-heading);
-  font-size: 1rem;
+  font-size: 1.15rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-primary);
+  line-height: 1.4;
 }
 
 @media (max-width: 768px) {
   .snippetContainer {
-    padding: 20px;
-    gap: 30px;
+    margin: 0 10px;
   }
-  .snippetLeft, .snippetRight {
-    min-width: 100%;
+  .snippetLeft {
+    padding: 40px 20px;
+    border-right: none;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+  }
+  .snippetRight {
+    padding: 40px 20px;
   }
   .snippetTitle {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
   }
   .snippetText {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
-  .pointCard {
-    margin-left: 0 !important; /* Remove staggering on mobile */
-    max-width: 100%;
+  .pointText {
+    font-size: 1.05rem;
   }
 }
