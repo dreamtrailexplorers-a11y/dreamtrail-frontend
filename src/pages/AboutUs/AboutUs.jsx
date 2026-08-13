@@ -46,6 +46,42 @@ const AboutUs = () => {
     e.target.src = fallbackSrc || 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc';
   };
 
+  
+  const renderFormattedText = (text) => {
+    if (!text) return null;
+    
+    // First, try to fix missing newlines before ## if user forgot them
+    let cleanText = text.replace(/([^\n])(##+ )/g, '$1\n\n$2');
+    
+    // Split by newlines
+    const paragraphs = cleanText.split(/\n+/);
+    
+    return paragraphs.map((para, i) => {
+      para = para.trim();
+      if (!para) return null;
+      
+      if (para.startsWith('## ')) {
+        return <h3 key={i} className={styles.manifestoHeading}>{para.replace('## ', '')}</h3>;
+      }
+      if (para.startsWith('### ')) {
+        return <h4 key={i} className={styles.manifestoSubheading}>{para.replace('### ', '')}</h4>;
+      }
+      
+      // Parse bold **text**
+      const parts = para.split(/(\*\*.*?\*\*)/g);
+      return (
+        <p key={i} className={styles.manifestoParagraph}>
+          {parts.map((part, j) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+              return <strong key={j}>{part.slice(2, -2)}</strong>;
+            }
+            return part;
+          })}
+        </p>
+      );
+    });
+  };
+
   return (
     <>
       <Navbar />
@@ -159,10 +195,12 @@ const AboutUs = () => {
 
       {/* 4. Community Section */}
       <section className={styles.communitySection}>
-        <div className={styles.communityHeader}>
-          <h2 className={styles.communityTitle}>{aboutPage.communityTitle || 'Join the Passionate Rider Community'}</h2>
-          <p className={styles.communityText}>{aboutPage.communityText}</p>
-        </div>
+        
+          <div className={styles.manifestoContainer}>
+            <h2 className={styles.manifestoTitle}>{aboutPage.communityTitle || 'Join the Passionate Rider Community'}</h2>
+            {renderFormattedText(aboutPage.communityText)}
+          </div>
+
         
         <div className={styles.featuresGrid}>
           {(aboutPage.communityPoints || []).map((point, index) => (
