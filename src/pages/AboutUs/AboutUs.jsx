@@ -8,6 +8,11 @@ import Footer from '../../components/Footer/Footer';
 const AboutUs = () => {
   const [siteSettings, setSiteSettings] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [openAccordionId, setOpenAccordionId] = useState(null);
+
+  const toggleAccordion = (index) => {
+    setOpenAccordionId(openAccordionId === index ? null : index);
+  };
 
   useEffect(() => {
     const fetchSiteSettings = async () => {
@@ -155,17 +160,25 @@ const AboutUs = () => {
             )}
             
             {aboutPage.whyChooseUsPoints && aboutPage.whyChooseUsPoints.length > 0 && (
-              <div className={styles.whyChooseUsList}>
-                {aboutPage.whyChooseUsPoints.map((point, index) => (
-                  <div key={index} className={styles.whyChooseUsItem}>
-                    <div className={styles.whyChooseUsIcon}>
-                      <FiChevronDown strokeWidth={3} />
+                <div className={styles.whyChooseUsList}>
+                  {aboutPage.whyChooseUsPoints.map((point, index) => (
+                    <div 
+                      key={index} 
+                      className={`${styles.whyChooseUsItem} ${openAccordionId === index ? styles.accordionOpen : ''}`}
+                    >
+                      <div className={styles.accordionHeader} onClick={() => toggleAccordion(index)}>
+                        <div className={styles.whyChooseUsIcon}>
+                          <FiChevronDown strokeWidth={3} className={styles.accordionIcon} />
+                        </div>
+                        <h3 className={styles.accordionTitle}>{point.title || 'Point ' + (index + 1)}</h3>
+                      </div>
+                      <div className={styles.accordionContent}>
+                        <p className={styles.whyChooseUsText}>{point.text}</p>
+                      </div>
                     </div>
-                    <span className={styles.whyChooseUsText}>{point.text}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
           </div>
         </section>
       )}

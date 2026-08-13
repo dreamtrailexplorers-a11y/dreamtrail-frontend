@@ -568,14 +568,29 @@ const ManageSiteSettings = () => {
                 <button type="button" onClick={() => addAboutPoint('aboutPage', 'whyChooseUsPoints')} className={styles.btnSecondary} style={{ padding: '4px 10px', fontSize: '0.8rem' }}>+ Add Point</button>
               </div>
               {(formData.aboutPage?.whyChooseUsPoints || []).map((point, index) => (
-                <div key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'center' }}>
-                  <input 
-                    placeholder="Point Text" 
-                    value={point.text || ''} 
-                    onChange={(e) => handleAboutPointsChange(index, 'text', e.target.value, 'aboutPage', 'whyChooseUsPoints')} 
-                    className={styles.inputField} 
-                  />
-                  <button type="button" onClick={() => removeAboutPoint(index, 'aboutPage', 'whyChooseUsPoints')} className={styles.btnDanger} style={{ padding: '8px 12px' }}>Remove</button>
+                <div key={index} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #eee', borderRadius: '8px', background: '#fafafa' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '10px' }}>
+                    <div className={styles.inputGroup}>
+                      <label className={styles.inputLabel}>Point Title</label>
+                      <input 
+                        placeholder="e.g. Safety Comes First" 
+                        value={point.title || ''} 
+                        onChange={(e) => handleAboutPointsChange(index, 'title', e.target.value, 'aboutPage', 'whyChooseUsPoints')} 
+                        className={styles.inputField} 
+                      />
+                    </div>
+                    <div className={styles.inputGroup}>
+                      <label className={styles.inputLabel}>Point Text</label>
+                      <textarea 
+                        placeholder="Point Text" 
+                        value={point.text || ''} 
+                        onChange={(e) => handleAboutPointsChange(index, 'text', e.target.value, 'aboutPage', 'whyChooseUsPoints')} 
+                        className={styles.textareaField} 
+                        rows="3"
+                      />
+                    </div>
+                  </div>
+                  <button type="button" onClick={() => removeAboutPoint(index, 'aboutPage', 'whyChooseUsPoints')} className={styles.btnDanger} style={{ marginTop: '10px', padding: '6px 12px' }}>Remove Point</button>
                 </div>
               ))}
             </div>
@@ -645,16 +660,31 @@ const ManageSiteSettings = () => {
               <button type="button" onClick={() => addAboutPoint('aboutPage', 'whyChooseUsPoints')} className={styles.btnSecondary} style={{ padding: '4px 10px', fontSize: '0.8rem' }}>+ Add Point</button>
             </div>
             {(formData.aboutPage?.whyChooseUsPoints || []).map((point, index) => (
-              <div key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'center' }}>
-                <input 
-                  placeholder="Point Text" 
-                  value={point.text || ''} 
-                  onChange={(e) => handleAboutPointsChange(index, 'text', e.target.value, 'aboutPage', 'whyChooseUsPoints')} 
-                  className={styles.inputField} 
-                />
-                <button type="button" onClick={() => removeAboutPoint(index, 'aboutPage', 'whyChooseUsPoints')} className={styles.btnDanger} style={{ padding: '8px 12px' }}>Remove</button>
-              </div>
-            ))}
+                <div key={index} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #eee', borderRadius: '8px', background: '#fafafa' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '10px' }}>
+                    <div className={styles.inputGroup}>
+                      <label className={styles.inputLabel}>Point Title</label>
+                      <input 
+                        placeholder="e.g. Safety Comes First" 
+                        value={point.title || ''} 
+                        onChange={(e) => handleAboutPointsChange(index, 'title', e.target.value, 'aboutPage', 'whyChooseUsPoints')} 
+                        className={styles.inputField} 
+                      />
+                    </div>
+                    <div className={styles.inputGroup}>
+                      <label className={styles.inputLabel}>Point Text</label>
+                      <textarea 
+                        placeholder="Point Text" 
+                        value={point.text || ''} 
+                        onChange={(e) => handleAboutPointsChange(index, 'text', e.target.value, 'aboutPage', 'whyChooseUsPoints')} 
+                        className={styles.textareaField} 
+                        rows="3"
+                      />
+                    </div>
+                  </div>
+                  <button type="button" onClick={() => removeAboutPoint(index, 'aboutPage', 'whyChooseUsPoints')} className={styles.btnDanger} style={{ marginTop: '10px', padding: '6px 12px' }}>Remove Point</button>
+                </div>
+              ))}
           </div>
 
         </div>
