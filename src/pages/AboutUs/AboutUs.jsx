@@ -59,6 +59,13 @@ const AboutUs = () => {
           
           <h2 className={styles.sectionTitle} style={{ marginTop: '2rem' }}>{aboutPage.introTitle2 || 'Expanding Horizon'}</h2>
           <p className={styles.sectionText}>{aboutPage.introText2}</p>
+          
+          {(aboutPage.extraIntros || []).map((intro, idx) => (
+             <React.Fragment key={idx}>
+               {intro.title && <h2 className={styles.sectionTitle} style={{ marginTop: '2rem' }}>{intro.title}</h2>}
+               {intro.text && <p className={styles.sectionText}>{intro.text}</p>}
+             </React.Fragment>
+          ))}
         </div>
         
         <div className={styles.introRight}>

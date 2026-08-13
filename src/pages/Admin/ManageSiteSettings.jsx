@@ -517,6 +517,29 @@ const ManageSiteSettings = () => {
             <label className={styles.inputLabel}>Intro Text 2</label>
             <textarea name="introText2" value={formData.aboutPage?.introText2 || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.textareaField} rows="3" />
           </div>
+
+          <div style={{ gridColumn: '1 / -1', marginTop: '20px', borderTop: '1px solid #e2e8f0', paddingTop: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+              <h4 style={{ margin: 0, fontSize: '1rem', color: '#334155' }}>Extra Intro Sections</h4>
+              <button type="button" onClick={() => addAboutPoint('aboutPage', 'extraIntros')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Add Section</button>
+            </div>
+            
+            {(formData.aboutPage?.extraIntros || []).map((intro, index) => (
+              <div key={index} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', background: '#f8fafc' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px' }}>
+                  <div className={styles.inputGroup}>
+                    <label className={styles.inputLabel}>Title</label>
+                    <input value={intro.title || ''} onChange={(e) => handleAboutPointsChange(index, 'title', e.target.value, 'aboutPage', 'extraIntros')} className={styles.inputField} />
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label className={styles.inputLabel}>Text</label>
+                    <textarea value={intro.text || ''} onChange={(e) => handleAboutPointsChange(index, 'text', e.target.value, 'aboutPage', 'extraIntros')} className={styles.textareaField} rows="3" />
+                  </div>
+                </div>
+                <button type="button" onClick={() => removeAboutPoint(index, 'aboutPage', 'extraIntros')} className={styles.btnDanger} style={{ padding: '6px 12px', fontSize: '0.85rem', marginTop: '15px' }}>Remove Section</button>
+              </div>
+            ))}
+          </div>
           <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
             <label className={styles.inputLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               Collage Images
