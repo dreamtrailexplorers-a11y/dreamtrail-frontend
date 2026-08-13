@@ -3,12 +3,18 @@ import axios from 'axios';
 import styles from './AboutUs.module.css';
 import { FiCheck, FiChevronDown } from 'react-icons/fi';
 import Navbar from '../../components/Navbar/Navbar';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import Footer from '../../components/Footer/Footer';
 
 const AboutUs = () => {
   const [siteSettings, setSiteSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [openAccordionId, setOpenAccordionId] = useState(null);
+  const [selectedIntro, setSelectedIntro] = useState(null);
 
   const toggleAccordion = (index) => {
     setOpenAccordionId(openAccordionId === index ? null : index);
@@ -97,20 +103,41 @@ const AboutUs = () => {
       {aboutPage.extraIntros && aboutPage.extraIntros.length > 0 && (
         <section className={styles.deepDiveSection}>
           <div className={styles.deepDiveContainer}>
-            <div className={styles.deepDiveHeader}>
-              <h2 className={styles.deepDiveTitle}>Discover More</h2>
-              <p className={styles.deepDiveSubtitle}>Delve deeper into our vision, philosophy, and the journey that brought us here.</p>
+              <div className={styles.deepDiveHeader}>
+                <h2 className={styles.deepDiveTitle}>{aboutPage.extraIntrosTitle || 'Discover More'}</h2>
+                <p className={styles.deepDiveSubtitle}>{aboutPage.extraIntrosSubtitle || 'Delve deeper into our vision, philosophy, and the journey that brought us here.'}</p>
+              </div>
+            <div className="about-swiper-container" style={{ padding: '20px 0 40px 0' }}>
+                <Swiper
+                  modules={[Navigation, Pagination]}
+                  spaceBetween={30}
+                  slidesPerView={1}
+                  navigation
+                  pagination={{ clickable: true }}
+                  breakpoints={{
+                    640: { slidesPerView: 1 },
+                    768: { slidesPerView: 2 },
+                    1024: { slidesPerView: 3 },
+                  }}
+                  style={{ paddingBottom: '40px' }}
+                >
+                  {aboutPage.extraIntros.map((intro, idx) => (
+                    <SwiperSlide key={idx} style={{ height: 'auto' }}>
+                      <div className={styles.deepDiveCard} onClick={() => setSelectedIntro(intro)}>
+                        {intro.title && <h3 className={styles.cardTitle}>{intro.title}</h3>}
+                        {intro.text && (
+                          <>
+                            <p className={`${styles.cardText} ${styles.truncatedText}`}>{intro.text}</p>
+                            <span className={styles.readMoreBtn}>Read More &rarr;</span>
+                          </>
+                        )}
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
             </div>
-            <div className={styles.deepDiveGrid}>
-              {aboutPage.extraIntros.map((intro, idx) => (
-                <div key={idx} className={styles.deepDiveCard}>
-                  {intro.title && <h3 className={styles.cardTitle}>{intro.title}</h3>}
-                  {intro.text && <p className={styles.cardText}>{intro.text}</p>}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+          </section>
       )}
 
       {/* 3. Our Story Section */}
@@ -181,6 +208,17 @@ const AboutUs = () => {
               )}
           </div>
         </section>
+      )}
+
+      {/* Modal for Discover More */}
+      {selectedIntro && (
+        <div className={styles.modalOverlay} onClick={() => setSelectedIntro(null)}>
+          <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+            <button className={styles.modalCloseBtn} onClick={() => setSelectedIntro(null)}>&times;</button>
+            {selectedIntro.title && <h3 className={styles.modalTitle}>{selectedIntro.title}</h3>}
+            {selectedIntro.text && <p className={styles.modalText}>{selectedIntro.text}</p>}
+          </div>
+        </div>
       )}
 
     </div>

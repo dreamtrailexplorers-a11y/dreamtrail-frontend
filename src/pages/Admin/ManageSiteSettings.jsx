@@ -518,11 +518,24 @@ const ManageSiteSettings = () => {
             <textarea name="introText2" value={formData.aboutPage?.introText2 || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.textareaField} rows="3" />
           </div>
 
-          <div style={{ gridColumn: '1 / -1', marginTop: '20px', borderTop: '1px solid #e2e8f0', paddingTop: '20px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-              <h4 style={{ margin: 0, fontSize: '1rem', color: '#334155' }}>Extra Intro Sections</h4>
-              <button type="button" onClick={() => addAboutPoint('aboutPage', 'extraIntros')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Add Section</button>
-            </div>
+            <div style={{ gridColumn: '1 / -1', marginTop: '20px', borderTop: '1px solid #e2e8f0', paddingTop: '20px' }}>
+              <div style={{ marginBottom: '15px' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Discover More Section (Slider)</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                  <div className={styles.inputGroup}>
+                    <label className={styles.inputLabel}>Section Title</label>
+                    <input name="extraIntrosTitle" value={formData.aboutPage?.extraIntrosTitle || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} placeholder="e.g. Discover More" />
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label className={styles.inputLabel}>Section Subtitle</label>
+                    <input name="extraIntrosSubtitle" value={formData.aboutPage?.extraIntrosSubtitle || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} placeholder="e.g. Delve deeper into our vision..." />
+                  </div>
+                </div>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                <h4 style={{ margin: 0, fontSize: '0.9rem', color: '#64748b' }}>Slider Cards</h4>
+                <button type="button" onClick={() => addAboutPoint('aboutPage', 'extraIntros')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Add Card</button>
+              </div>
             
             {(formData.aboutPage?.extraIntros || []).map((intro, index) => (
               <div key={index} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', background: '#f8fafc' }}>

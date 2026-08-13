@@ -325,13 +325,7 @@
   flex-direction: column;
 }
 
-.whyChooseUsItem {
-  display: flex;
-  align-items: flex-start;
-  gap: 15px;
-  padding: 20px 0;
-  border-bottom: 1px dotted #cbd5e1;
-}
+
 
 .whyChooseUsItem:last-child {
   border-bottom: none;
@@ -545,4 +539,106 @@
   color: var(--text-secondary);
   line-height: 1.7;
   margin: 0;
+}
+
+/* Slider Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContent {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modalCloseBtn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #f1f5f9;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #334155;
+  transition: all 0.2s ease;
+}
+
+.modalCloseBtn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.modalTitle {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 10px;
+}
+
+.modalText {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.truncatedText {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 15px;
+}
+
+.readMoreBtn {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-weight: 600;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.readMoreBtn:hover {
+  text-decoration: underline;
+}
+
+.deepDiveCard {
+  cursor: pointer;
+  height: 100%;
+}
+.deepDiveCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.deepDiveGrid {
+  display: block; /* Override grid for swiper wrapper if needed, but we'll remove it in JSX */
 }
