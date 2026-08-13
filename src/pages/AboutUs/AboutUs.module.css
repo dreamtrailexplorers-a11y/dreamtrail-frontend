@@ -469,6 +469,7 @@
 }
 
 .whyChooseUsItem {
+  display: block;
   background: white;
   border-radius: 8px;
   border: 1px solid #eee;
