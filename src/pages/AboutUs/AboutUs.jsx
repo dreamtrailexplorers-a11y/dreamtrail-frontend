@@ -60,12 +60,6 @@ const AboutUs = () => {
           <h2 className={styles.sectionTitle} style={{ marginTop: '2rem' }}>{aboutPage.introTitle2 || 'Expanding Horizon'}</h2>
           <p className={styles.sectionText}>{aboutPage.introText2}</p>
           
-          {(aboutPage.extraIntros || []).map((intro, idx) => (
-             <React.Fragment key={idx}>
-               {intro.title && <h2 className={styles.sectionTitle} style={{ marginTop: '2rem' }}>{intro.title}</h2>}
-               {intro.text && <p className={styles.sectionText}>{intro.text}</p>}
-             </React.Fragment>
-          ))}
         </div>
         
         <div className={styles.introRight}>
@@ -93,6 +87,26 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
+
+      {/* 2.5 Extra Intros Deep Dive Section */}
+      {aboutPage.extraIntros && aboutPage.extraIntros.length > 0 && (
+        <section className={styles.deepDiveSection}>
+          <div className={styles.deepDiveContainer}>
+            <div className={styles.deepDiveHeader}>
+              <h2 className={styles.deepDiveTitle}>Discover More</h2>
+              <p className={styles.deepDiveSubtitle}>Delve deeper into our vision, philosophy, and the journey that brought us here.</p>
+            </div>
+            <div className={styles.deepDiveGrid}>
+              {aboutPage.extraIntros.map((intro, idx) => (
+                <div key={idx} className={styles.deepDiveCard}>
+                  {intro.title && <h3 className={styles.cardTitle}>{intro.title}</h3>}
+                  {intro.text && <p className={styles.cardText}>{intro.text}</p>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* 3. Our Story Section */}
       <section className={styles.storySection}>
