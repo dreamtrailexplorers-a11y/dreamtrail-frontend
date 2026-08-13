@@ -12,9 +12,81 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
 
   return (
     <div className={styles.stickySidebar}>
-      {/* Why Choose Us Box (Outside Pricing Module) */}
+      {/* Save Pill */}
+      {origPriceNum > 0 && discPriceNum > 0 && origPriceNum !== discPriceNum && (
+        <div className={styles.saveHeaderPill}>
+          <FiCheck size={14} /> Save {'\u20B9'} {Math.abs(origPriceNum - discPriceNum).toLocaleString('en-IN')}
+        </div>
+      )}
+
+      {/* Main Pricing & Enquire Container */}
+      <div className={styles.priceContainer}>
+        <span className={styles.startFromLabel}>Starting from</span>
+        <div className={styles.sidebarPriceRow}>
+          <span className={styles.mainPrice}>
+            {'\u20B9'} {trip.discountedPrice ? Number(trip.discountedPrice).toLocaleString('en-IN') : '0'}
+          </span>
+          <div className={styles.perPersonSub}>
+            {origPriceNum > 0 && (
+              <span className={styles.sidebarOldPrice}>
+                {'\u20B9'} {origPriceNum.toLocaleString('en-IN')}
+              </span>
+            )}
+            <span>per person</span>
+            <span style={{fontSize: '0.65rem'}}>+ taxes</span>
+          </div>
+        </div>
+
+        <div style={{ borderTop: '1px solid #e2e8f0', margin: '15px 0', paddingTop: '15px', textAlign: 'center' }}>
+          <p style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: '700', marginBottom: '4px' }}>
+            {trip.title}
+          </p>
+          {selectedOptionTitle && selectedOptionTitle !== trip.title && (
+            <p style={{ fontSize: '0.85rem', color: '#475569', fontWeight: '500', marginBottom: '4px' }}>
+              {selectedOptionTitle}
+            </p>
+          )}
+          <p style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '600', marginBottom: '15px' }}>
+            {trip.duration || '5 Days 4 Nights'}
+          </p>
+        </div>
+
+        {/* Main Enquire & Buy Now Buttons */}
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button 
+            className={styles.sidebarEnquireBtn}
+            onClick={onOpenEnquiry}
+            style={{ flex: 1, fontSize: '0.95rem' }}
+          >
+            Send Enquiry
+          </button>
+          <button 
+            onClick={() => setIsBuyModalOpen(true)}
+            className={styles.sidebarBuyBtn}
+            style={{ 
+              flex: 1, 
+              backgroundColor: '#ffffff', 
+              color: '#e60000', 
+              border: '1px solid #e60000', 
+              padding: '0.85rem', 
+              borderRadius: '8px', 
+              fontSize: '0.95rem', 
+              fontWeight: '800', 
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 4px 14px rgba(230, 0, 0, 0.1)'
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#fff0f0'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.transform = 'translateY(0)'; }}
+          >
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+      {/* Why Choose Us Box */}
       {destinationInfo && destinationInfo.whyChooseUs && destinationInfo.whyChooseUs.length > 0 && (
-        <div style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '15px', textAlign: 'left' }}>
+        <div style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '15px', textAlign: 'left', marginBottom: '15px', marginTop: '15px' }}>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
             <div style={{ width: '4px', height: '25px', backgroundColor: '#cc0000', marginRight: '10px' }}></div>
             <h4 style={{ fontSize: '1rem', fontWeight: '700', color: '#cc0000', margin: 0 }}>
@@ -58,82 +130,8 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
         </div>
       )}
 
-      {origPriceNum > 0 && discPriceNum > 0 && origPriceNum !== discPriceNum && (
-        <div className={styles.saveHeaderPill}>
-          <FiCheck size={14} /> Save {'\u20B9'} {Math.abs(origPriceNum - discPriceNum).toLocaleString('en-IN')}
-        </div>
-      )}
-
-      <div className={styles.priceContainer}>
-        <span className={styles.startFromLabel}>Starting from</span>
-        <div className={styles.sidebarPriceRow}>
-          <span className={styles.mainPrice}>
-            {'\u20B9'} {trip.discountedPrice ? Number(trip.discountedPrice).toLocaleString('en-IN') : '0'}
-          </span>
-          <div className={styles.perPersonSub}>
-            {origPriceNum > 0 && (
-              <span className={styles.sidebarOldPrice}>
-                {'\u20B9'} {origPriceNum.toLocaleString('en-IN')}
-              </span>
-            )}
-            <span>per person</span>
-            <span style={{fontSize: '0.65rem'}}>+ taxes</span>
-          </div>
-        </div>
-
-
-
-        <div style={{ borderTop: '1px solid #e2e8f0', margin: '15px 0', paddingTop: '15px', textAlign: 'center' }}>
-          <p style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: '700', marginBottom: '4px' }}>
-            {trip.title}
-          </p>
-          {selectedOptionTitle && selectedOptionTitle !== trip.title && (
-            <p style={{ fontSize: '0.85rem', color: '#475569', fontWeight: '500', marginBottom: '4px' }}>
-              {selectedOptionTitle}
-            </p>
-          )}
-          <p style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '600', marginBottom: '15px' }}>
-            {trip.duration || '5 Days 4 Nights'}
-          </p>
-        </div>
-
-
-
-        {/* Main Enquire & Buy Now Buttons */}
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button 
-            className={styles.sidebarEnquireBtn}
-            onClick={onOpenEnquiry}
-            style={{ flex: 1, fontSize: '0.95rem' }}
-          >
-            Send Enquiry
-          </button>
-          <button 
-            onClick={() => setIsBuyModalOpen(true)}
-            className={styles.sidebarBuyBtn}
-            style={{ 
-              flex: 1, 
-              backgroundColor: '#ffffff', 
-              color: '#e60000', 
-              border: '1px solid #e60000', 
-              padding: '0.85rem', 
-              borderRadius: '8px', 
-              fontSize: '0.95rem', 
-              fontWeight: '800', 
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: '0 4px 14px rgba(230, 0, 0, 0.1)'
-            }}
-            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#fff0f0'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.transform = 'translateY(0)'; }}
-          >
-            Buy Now
-          </button>
-        </div>
-      </div>
-
       {/* Still Got Queries Box */}
-      <div className={styles.queriesCard} style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '15px', marginTop: '15px' }}>
+      <div className={styles.queriesCard} style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '15px', marginTop: '0px' }}>
         <h4 style={{ fontSize: '1rem', fontWeight: '700', marginBottom: '10px' }}>Still Got Queries ?</h4>
         <p style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '4px' }}>Have your queries answered by</p>
         <p style={{ fontSize: '0.9rem', fontWeight: '700', marginBottom: '15px' }}>DreamTrail's Destination Experts</p>

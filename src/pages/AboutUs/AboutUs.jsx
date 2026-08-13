@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './AboutUs.module.css';
-import { FiCheck } from 'react-icons/fi';
+import { FiCheck, FiChevronDown } from 'react-icons/fi';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 
@@ -122,6 +122,32 @@ const AboutUs = () => {
           ))}
         </div>
       </section>
+
+      {/* 5. Why Choose Us Section */}
+      {(aboutPage.whyChooseUsTitle || (aboutPage.whyChooseUsPoints && aboutPage.whyChooseUsPoints.length > 0)) && (
+        <section className={styles.whyChooseUsSection}>
+          <div className={styles.whyChooseUsContainer}>
+            {aboutPage.whyChooseUsTitle && (
+              <div className={styles.whyChooseUsHeader}>
+                <h2 className={styles.whyChooseUsTitle}>{aboutPage.whyChooseUsTitle}</h2>
+              </div>
+            )}
+            
+            {aboutPage.whyChooseUsPoints && aboutPage.whyChooseUsPoints.length > 0 && (
+              <div className={styles.whyChooseUsList}>
+                {aboutPage.whyChooseUsPoints.map((point, index) => (
+                  <div key={index} className={styles.whyChooseUsItem}>
+                    <div className={styles.whyChooseUsIcon}>
+                      <FiChevronDown strokeWidth={3} />
+                    </div>
+                    <span className={styles.whyChooseUsText}>{point.text}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
     </div>
     <Footer />

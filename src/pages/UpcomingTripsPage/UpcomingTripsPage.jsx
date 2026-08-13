@@ -13,6 +13,11 @@ const MONTHS = [
 
 const UpcomingTripsPage = () => {
   const { month } = useParams();
+  const searchParams = new URLSearchParams(window.location.search);
+  const yearParam = searchParams.get('year');
+  const currentYear = new Date().getFullYear();
+  const selectedYear = yearParam ? parseInt(yearParam, 10) : currentYear;
+
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +34,7 @@ const UpcomingTripsPage = () => {
       }
     };
     fetchTrips();
-  }, [month]);
+  }, [month, selectedYear]);
 
   const selectedMonthIndex = MONTHS.indexOf(month?.toLowerCase());
 
@@ -42,10 +47,10 @@ const UpcomingTripsPage = () => {
       return trip.departureDates.some(dateObj => {
         if (!dateObj.start) return false;
         const startDate = new Date(dateObj.start);
-        return startDate.getMonth() === selectedMonthIndex;
+        return startDate.getMonth() === selectedMonthIndex && startDate.getFullYear() === selectedYear;
       });
     });
-  }, [trips, selectedMonthIndex]);
+  }, [trips, selectedMonthIndex, selectedYear]);
 
   const displayMonth = month ? month.charAt(0).toUpperCase() + month.slice(1) : '';
 
@@ -55,7 +60,7 @@ const UpcomingTripsPage = () => {
 
       <div className={styles.contentContainer}>
         <div className={styles.pageHeader}>
-          <h1 className={styles.pageTitle}>Upcoming Community Trips in {displayMonth}</h1>
+          <h1 className={styles.pageTitle}>Upcoming Community Trips in {displayMonth} {selectedYear}</h1>
         </div>
 
         {loading ? (

@@ -9,18 +9,23 @@ const TrendingCard = ({ trip, basePath = '/tours' }) => {
   const getImageUrl = (url) => {
     if (!url) return '';
     if (typeof url !== 'string') return '';
-    if (url.includes('drive.google.com/uc?export=view&id=')) {
-      const id = url.split('id=')[1]?.split('&')[0];
-      if (id) return `https://lh3.googleusercontent.com/d/${id}=w1000`;
+    
+    // Proxy Google Drive images through our backend to avoid CORS/Hotlinking blocks
+    let id = null;
+    if (url.includes('lh3.googleusercontent.com/d/')) {
+      id = url.split('/d/')[1]?.split('=')[0];
+    } else if (url.includes('drive.google.com/uc?export=view&id=')) {
+      id = url.split('id=')[1]?.split('&')[0];
+    } else if (url.includes('drive.google.com/uc?id=')) {
+      id = url.split('id=')[1]?.split('&')[0];
+    } else if (url.includes('drive.google.com/file/d/')) {
+      id = url.split('/d/')[1]?.split('/')[0];
     }
-    if (url.includes('drive.google.com/uc?id=')) {
-      const id = url.split('id=')[1]?.split('&')[0];
-      if (id) return `https://lh3.googleusercontent.com/d/${id}=w1000`;
+
+    if (id) {
+      return `${import.meta.env.VITE_BACKEND_URL}/api/image/${id}`;
     }
-    if (url.includes('drive.google.com/file/d/')) {
-      const id = url.split('/d/')[1]?.split('/')[0];
-      if (id) return `https://lh3.googleusercontent.com/d/${id}=w1000`;
-    }
+    
     return url;
   };
 

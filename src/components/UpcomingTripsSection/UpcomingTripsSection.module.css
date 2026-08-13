@@ -189,3 +189,142 @@
     font-size: 0.9rem;
   }
 }
+
+.yearSelector {
+  margin-top: 20px;
+}
+.yearSelect {
+  padding: 8px 16px;
+  font-size: 1rem;
+  border: 2px solid var(--primary-color);
+  border-radius: 20px;
+  background-color: white;
+  color: var(--primary-color);
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
+
+
+.yearDropdownContainer {
+  position: relative;
+  width: 140px;
+  margin-top: 15px;
+  user-select: none;
+}
+
+.yearDropdownHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: var(--card-bg);
+  border: 2px solid var(--primary-color);
+  border-radius: 30px;
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.yearDropdownHeader:hover {
+  background-color: var(--badge-orange-bg);
+}
+
+.chevron {
+  transition: transform 0.3s ease;
+}
+
+.chevron.open {
+  transform: rotate(180deg);
+}
+
+.yearDropdownList {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  overflow: hidden;
+  z-index: 100;
+  border: 1px solid var(--border-color);
+  animation: fadeIn 0.2s ease;
+}
+
+.yearDropdownItem {
+  padding: 12px 20px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+.yearDropdownItem:hover {
+  background-color: var(--badge-orange-bg);
+  color: var(--primary-color);
+}
+
+.yearDropdownItem.selected {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.emptyStateMessage {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+
+/* Overrides to match Trending Section completely */
+.upcomingSection {
+  max-width: 1536px !important;
+  margin: 3.5rem auto 2.5rem !important;
+  padding: 0 1.5rem !important;
+  background: transparent !important;
+}
+
+.sectionHeader {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 1.8rem !important;
+  width: 100%;
+}
+
+.sectionTitle {
+  font-family: var(--font-body) !important;
+  font-size: 1.6rem !important;
+  font-weight: 800 !important;
+  color: #1a1a1a !important;
+  letter-spacing: -0.3px !important;
+  margin: 0 !important;
+  text-align: left !important;
+}
+
+.sliderContainer {
+  padding: 0.5rem 0 1.5rem !important;
+  max-width: 100% !important;
+}
+

@@ -17,6 +17,7 @@ import Login from '../pages/Login/Login';
 import Register from '../pages/Register/Register';
 import Profile from '../pages/Profile/Profile';
 import DynamicPage from '../pages/DynamicPage/DynamicPage';
+import DynamicCustomPage from '../pages/DynamicCustomPage/DynamicCustomPage';
 import AboutUs from '../pages/AboutUs/AboutUs';
 
 const AppRoutes = () => {
@@ -48,6 +49,9 @@ const AppRoutes = () => {
       <Route path="/terms" element={<DynamicPage title="Terms & Conditions" contentKey="termsContent" />} />
       <Route path="/privacy" element={<DynamicPage title="Privacy Policy" contentKey="privacyPolicyContent" />} />
       <Route path="/payment" element={<DynamicPage title="Payment Details" contentKey="paymentDetailsContent" />} />
+      
+      {/* Dynamic Custom Block Builder Pages */}
+      <Route path="/page/:slug" element={<DynamicCustomPage />} />
 
       {/* Admin Route */}
       <Route path="/admin/*" element={<AdminDashboard />} />

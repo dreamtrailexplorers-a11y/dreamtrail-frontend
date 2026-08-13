@@ -103,13 +103,7 @@
 }
 
 .pointItem:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  left: 5px;
-  top: 20px;
-  bottom: 0;
-  width: 2px;
-  background: rgba(226, 232, 240, 0.8);
+  display: none;
 }
 
 .pointMarker {
@@ -154,3 +148,13 @@
     font-size: 1.05rem;
   }
 }
+
+/* Overrides to make it full width matching Trending Section */
+.snippetSection {
+  padding: 40px 1.5rem !important;
+}
+.snippetContainer {
+  max-width: 1536px !important;
+  margin: 0 auto !important;
+}
+

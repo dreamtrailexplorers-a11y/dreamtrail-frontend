@@ -8,6 +8,8 @@ import ManageBlogs from './ManageBlogs';
 import ManageReviews from './ManageReviews';
 import ManageNavLinks from './ManageNavLinks';
 import ManageSiteSettings from './ManageSiteSettings';
+import ManageFooterLinks from './ManageFooterLinks';
+import ManageCustomPages from './ManageCustomPages/ManageCustomPages';
 import ManageEnquiries from './ManageEnquiries';
 import DestinationDetail from './DestinationDetail';
 import AddDestination from './AddDestination';
@@ -107,6 +109,8 @@ const AdminDashboard = () => {
           <NavLink to="/admin/subscribers" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Subscribers</NavLink>
           <NavLink to="/admin/reviews" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Reviews</NavLink>
           <NavLink to="/admin/navlinks" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Nav Links</NavLink>
+          <NavLink to="/admin/footerlinks" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Footer Links</NavLink>
+          <NavLink to="/admin/custompages" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Custom Pages</NavLink>
         <NavLink to="/admin/settings" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Site Settings</NavLink>
         </nav>
         <div style={{ marginTop: 'auto', paddingTop: '20px', borderTop: '1px solid #e2e8f0' }}>
@@ -132,6 +136,8 @@ const AdminDashboard = () => {
           <Route path="/subscribers" element={<ManageSubscribers />} />
           <Route path="/reviews" element={<ManageReviews />} />
           <Route path="/navlinks" element={<ManageNavLinks />} />
+          <Route path="/footerlinks" element={<ManageFooterLinks />} />
+          <Route path="/custompages" element={<ManageCustomPages />} />
           <Route path="/settings" element={<ManageSiteSettings />} />
           <Route path="/destination/:id" element={<DestinationDetail />} />
           <Route path="/fill-destination/:id" element={<FillDestinationDetail />} />

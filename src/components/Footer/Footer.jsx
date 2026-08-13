@@ -105,16 +105,26 @@ const Footer = () => {
         <div className={styles.exploreCol}>
           <h3 className={styles.colHeading}>Explore</h3>
           <div className={styles.linksList}>
-            <Link to="/" className={styles.linkItem}>Home</Link>
-            <Link to="/tour-packages" className={styles.linkItem}>Motorcycle Tours</Link>
-            <Link to="/group-trips" className={styles.linkItem}>Group Tours</Link>
-            <Link to="/creator-trips" className={styles.linkItem}>Creator</Link>
-            <Link to="/careers" className={styles.linkItem}>Careers</Link>
-            <Link to="/about" className={styles.linkItem}>About Us</Link>
-            <Link to="/contact" className={styles.linkItem}>Contact Us</Link>
-            <Link to="/terms" className={styles.linkItem}>Terms & Conditions</Link>
-            <Link to="/privacy" className={styles.linkItem}>Privacy Policy</Link>
-            <Link to="/payment" className={styles.linkItem}>Payment Details</Link>
+            {settings?.footerLinks && settings.footerLinks.length > 0 ? (
+              settings.footerLinks.map((link, idx) => (
+                <Link key={idx} to={link.url} className={styles.linkItem}>
+                  {link.label}
+                </Link>
+              ))
+            ) : (
+              <>
+                <Link to="/" className={styles.linkItem}>Home</Link>
+                <Link to="/tour-packages" className={styles.linkItem}>Motorcycle Tours</Link>
+                <Link to="/group-trips" className={styles.linkItem}>Group Tours</Link>
+                <Link to="/creator-trips" className={styles.linkItem}>Creator</Link>
+                <Link to="/careers" className={styles.linkItem}>Careers</Link>
+                <Link to="/about" className={styles.linkItem}>About Us</Link>
+                <Link to="/contact" className={styles.linkItem}>Contact Us</Link>
+                <Link to="/terms" className={styles.linkItem}>Terms & Conditions</Link>
+                <Link to="/privacy" className={styles.linkItem}>Privacy Policy</Link>
+                <Link to="/payment" className={styles.linkItem}>Payment Details</Link>
+              </>
+            )}
           </div>
         </div>
 

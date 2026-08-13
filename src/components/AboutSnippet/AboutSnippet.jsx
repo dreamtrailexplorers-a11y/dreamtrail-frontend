@@ -41,7 +41,10 @@ const AboutSnippet = ({ data }) => {
           <div className={styles.snippetRight}>
             <div className={styles.pointsList}>
               {snippetData.points.map((point, idx) => (
-                <div key={idx} className={styles.pointItem}>
+                <div 
+                  key={idx} 
+                  className={styles.pointItem}
+                >
                   <div className={styles.pointMarker}></div>
                   <div className={styles.pointText}>{point.text}</div>
                 </div>

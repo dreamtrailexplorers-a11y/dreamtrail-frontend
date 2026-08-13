@@ -17,18 +17,7 @@ const Navbar = ({ sticky = true }) => {
       try {
         const { getNavLinks } = await import('../../services/api');
         const { data } = await getNavLinks();
-        let fetchedLinks = data || [];
-        if (fetchedLinks.length === 0) {
-          fetchedLinks = [
-            { _id: '1', title: "Motorcycle Tours", path: "/tour-packages" },
-            { _id: '2', title: "Group Tours", path: "/group-trips" }
-          ];
-        }
-
-        // Ensure About Us is present in the navbar
-        if (!fetchedLinks.some(link => link.path === '/about' || link.title.toLowerCase() === 'about us')) {
-          fetchedLinks.push({ _id: 'about-us-link', title: "About Us", path: "/about" });
-        }
+        const fetchedLinks = data || [];
 
         setNavLinks(fetchedLinks);
       } catch (error) {

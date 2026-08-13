@@ -23,6 +23,7 @@ import TripPageNav from './components/TripPageNav';
 
 // Reusing CreatorFaqs for clean layout
 import CreatorFaqs from '../CreatorTripDetails/components/CreatorFaqs';
+import BuyNowModal from '../../components/BuyNowModal/BuyNowModal';
 
 const TripDetails = () => {
   const { slug } = useParams();
@@ -35,6 +36,7 @@ const TripDetails = () => {
   const [currentTrip, setCurrentTrip] = useState(null);
   const [currentDestination, setCurrentDestination] = useState(null);
   const [quickInfoModal, setQuickInfoModal] = useState({ isOpen: false, title: '', content: '' });
+  const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
   
   const [reviews, setReviews] = useState([]);
   const [settings, setSettings] = useState(null);
@@ -183,6 +185,33 @@ const TripDetails = () => {
               />
             </div>
 
+            {/* Pre Book Section */}
+            <div style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '25px 30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', boxShadow: '0 4px 15px rgba(0,0,0,0.03)' }}>
+              <div>
+                <h4 style={{ fontSize: '1.2rem', fontWeight: '800', color: '#1e293b', margin: 0, marginBottom: '5px' }}>Book your seat now!</h4>
+                <p style={{ color: '#475569', margin: 0, fontSize: '0.95rem' }}>Pre Book @ 5000/-</p>
+              </div>
+              <button 
+                onClick={() => setIsBuyModalOpen(true)}
+                style={{ 
+                  backgroundColor: '#e60000', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  padding: '0.85rem 2rem', 
+                  borderRadius: '8px', 
+                  fontSize: '0.95rem', 
+                  fontWeight: '800', 
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: '0 4px 14px rgba(230, 0, 0, 0.2)'
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#cc0000'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#e60000'; e.currentTarget.style.transform = 'translateY(0)'; }}
+              >
+                BOOK NOW
+              </button>
+            </div>
+
             {/* FAQs */}
             <div id="faqs" className={styles.sectionMargin} style={{ scrollMarginTop: '90px', backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
               <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#1e293b', marginBottom: '20px' }}>FAQs</h3>
@@ -287,6 +316,18 @@ const TripDetails = () => {
         selectedOptionTitle={selectedSidebarTitle}
         selectedDepartureDate={selectedDepartureDate}
       />
+
+      {currentTrip && (
+        <BuyNowModal 
+          isOpen={isBuyModalOpen}
+          onClose={() => setIsBuyModalOpen(false)}
+          tripTitle={selectedSidebarTitle && selectedSidebarTitle !== currentTrip.title ? `${currentTrip.title} (${selectedSidebarTitle})` : currentTrip.title}
+          pricePerPerson={Number(displayDiscPrice) || 0}
+          duration={currentTrip.duration}
+          destination={currentDestination ? currentDestination.name : ''}
+          selectedDepartureDate={selectedDepartureDate}
+        />
+      )}
 
       {/* Quick Info Modal */}
       {quickInfoModal.isOpen && (

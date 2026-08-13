@@ -488,6 +488,18 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     }
   };
 
+  const handleUploadPDF = async (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    try {
+      const res = await uploadFile(file);
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      setFormData({ ...formData, pdfUrl: fullUrl });
+    } catch(err) {
+      alert('PDF Upload failed');
+    }
+  };
+
   const handleUploadMapImage = async (e) => {
     const file = e.target.files[0];
     if(!file) return;
@@ -765,6 +777,16 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
                 <input type="file" style={{ display: 'none' }} accept="image/*" onChange={handleUploadMainImage} />
               </label>
               <input name="image" value={formData.image} onChange={handleChange} placeholder="Cover Image URL" required className={styles.inputField} style={{ flex: 1, backgroundColor: '#f9f9f9' }} />
+            </div>
+          </div>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel}>Upload PDF (Optional)</label>
+            <div style={{ display: 'flex', gap: '5px' }}>
+              <label style={{ cursor: 'pointer', background: '#e74c3c', color: 'white', padding: '8px', borderRadius: '4px', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
+                Upload PDF
+                <input type="file" style={{ display: 'none' }} accept="application/pdf" onChange={handleUploadPDF} />
+              </label>
+              <input name="pdfUrl" value={formData.pdfUrl || ''} onChange={handleChange} placeholder="PDF View URL" className={styles.inputField} style={{ flex: 1, backgroundColor: '#f9f9f9' }} />
             </div>
           </div>
             <div className={styles.inputGroup}>

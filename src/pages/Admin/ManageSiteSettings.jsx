@@ -434,6 +434,29 @@ const ManageSiteSettings = () => {
                 </div>
               ))}
             </div>
+
+            <div className={styles.inputGroup} style={{ gridColumn: '1 / -1', borderTop: '1px solid #eee', paddingTop: '15px' }}>
+              <label className={styles.inputLabel}>Why Choose Us Title</label>
+              <input name="whyChooseUsTitle" value={formData.aboutPage?.whyChooseUsTitle || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} placeholder="e.g. WHY CHOOSE US FOR MOTORCYCLE TOURS" />
+            </div>
+
+            <div className={styles.inputGroup} style={{ gridColumn: '1 / -1', borderTop: '1px solid #eee', paddingTop: '15px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                <label className={styles.inputLabel} style={{ margin: 0 }}>Why Choose Us Points</label>
+                <button type="button" onClick={() => addAboutPoint('aboutPage', 'whyChooseUsPoints')} className={styles.btnSecondary} style={{ padding: '4px 10px', fontSize: '0.8rem' }}>+ Add Point</button>
+              </div>
+              {(formData.aboutPage?.whyChooseUsPoints || []).map((point, index) => (
+                <div key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'center' }}>
+                  <input 
+                    placeholder="Point Text" 
+                    value={point.text || ''} 
+                    onChange={(e) => handleAboutPointsChange(index, 'text', e.target.value, 'aboutPage', 'whyChooseUsPoints')} 
+                    className={styles.inputField} 
+                  />
+                  <button type="button" onClick={() => removeAboutPoint(index, 'aboutPage', 'whyChooseUsPoints')} className={styles.btnDanger} style={{ padding: '8px 12px' }}>Remove</button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -489,6 +512,29 @@ const ManageSiteSettings = () => {
               </div>
             ))}
           </div>
+
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1', borderTop: '1px solid #eee', paddingTop: '15px' }}>
+            <label className={styles.inputLabel}>Why Choose Us Title</label>
+            <input name="whyChooseUsTitle" value={formData.aboutPage?.whyChooseUsTitle || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} placeholder="e.g. WHY CHOOSE US FOR MOTORCYCLE TOURS" />
+          </div>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+              <label className={styles.inputLabel} style={{ margin: 0 }}>Why Choose Us Points</label>
+              <button type="button" onClick={() => addAboutPoint('aboutPage', 'whyChooseUsPoints')} className={styles.btnSecondary} style={{ padding: '4px 10px', fontSize: '0.8rem' }}>+ Add Point</button>
+            </div>
+            {(formData.aboutPage?.whyChooseUsPoints || []).map((point, index) => (
+              <div key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'center' }}>
+                <input 
+                  placeholder="Point Text" 
+                  value={point.text || ''} 
+                  onChange={(e) => handleAboutPointsChange(index, 'text', e.target.value, 'aboutPage', 'whyChooseUsPoints')} 
+                  className={styles.inputField} 
+                />
+                <button type="button" onClick={() => removeAboutPoint(index, 'aboutPage', 'whyChooseUsPoints')} className={styles.btnDanger} style={{ padding: '8px 12px' }}>Remove</button>
+              </div>
+            ))}
+          </div>
+
         </div>
       </form>
 
