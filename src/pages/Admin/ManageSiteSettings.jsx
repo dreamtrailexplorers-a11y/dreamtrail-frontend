@@ -49,10 +49,29 @@ const StringArrayInput = ({ title, data = [], onChange }) => {
 const ManageSiteSettings = () => {
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [activeModal, setActiveModal] = useState(null);
 
   useEffect(() => {
     fetchSettings();
   }, []);
+
+  useEffect(() => {
+    const mainContent = document.getElementById('admin-main-content');
+    if (activeModal) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      if (mainContent) mainContent.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+      document.documentElement.style.overflow = 'auto';
+      if (mainContent) mainContent.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+      document.documentElement.style.overflow = 'auto';
+      if (mainContent) mainContent.style.overflow = 'auto';
+    };
+  }, [activeModal]);
 
   const fetchSettings = async () => {
     try {
@@ -78,6 +97,7 @@ const ManageSiteSettings = () => {
       });
       await updateSiteSettings(payload);
       alert(`${sectionName} saved successfully!`);
+      setActiveModal(null);
     } catch (err) {
       console.error(err);
       alert(`Failed to save ${sectionName}`);
@@ -206,12 +226,14 @@ const ManageSiteSettings = () => {
   if (loading) return <div>Loading...</div>;
   if (!formData) return <div>No settings found</div>;
 
-  return (
-    <div>
-      <h2 className={styles.pageHeader}>Manage Site Settings</h2>
+
+  const renderModalContent = () => {
+    switch(activeModal) {
       
-      {/* 1. Hero Section */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['heroSliders'], 'Hero Section')} className={styles.card}>
+      case 'Hero Section':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['heroSliders'], 'Hero Section')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Hero Section</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -278,9 +300,13 @@ const ManageSiteSettings = () => {
           }} style={{ alignSelf: 'flex-start', background: '#f1f5f9', color: '#0f172a', border: '1px solid #cbd5e1', padding: '8px 16px', borderRadius: '6px', cursor: 'pointer', fontWeight: '500' }}>+ Add Slide</button>
         </div>
       </form>
-
-      {/* 2. Promotional Banners */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['bannerVideoUrl', 'bannerVideoTitle', 'bannerVideoSubtitle', 'groupTripBanners'], 'Promotional Banners')} className={styles.card}>
+          </>
+        );
+      
+      case 'Promotional Banners':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['bannerVideoUrl', 'bannerVideoTitle', 'bannerVideoSubtitle', 'groupTripBanners'], 'Promotional Banners')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Promotional Banners</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -305,7 +331,7 @@ const ManageSiteSettings = () => {
             <input name="bannerVideoSubtitle" value={formData.bannerVideoSubtitle || ''} onChange={handleChange} className={styles.inputField} placeholder="e.g. Uncharted Expeditions" />
           </div>
           
-          {/* Divider */}
+          
           <div style={{ gridColumn: '1 / -1', height: '1px', backgroundColor: '#e2e8f0', margin: '20px 0' }}></div>
           
           <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
@@ -347,9 +373,13 @@ const ManageSiteSettings = () => {
           ))}
         </div>
       </form>
-
-      {/* 3. Contact Info */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['address', 'phone', 'email', 'whatsappNumber'], 'Contact Info')} className={styles.card}>
+          </>
+        );
+      
+      case 'Contact Info':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['address', 'phone', 'email', 'whatsappNumber'], 'Contact Info')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Contact Info</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -373,9 +403,13 @@ const ManageSiteSettings = () => {
           </div>
         </div>
       </form>
-
-      {/* 4. Social Media Links */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['instagram', 'facebook', 'linkedin', 'whatsapp'], 'Social Media Links')} className={styles.card}>
+          </>
+        );
+      
+      case 'Social Media Links':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['instagram', 'facebook', 'linkedin', 'whatsapp'], 'Social Media Links')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Social Media Links</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -389,9 +423,13 @@ const ManageSiteSettings = () => {
           ))}
         </div>
       </form>
-
-      {/* 5. Footer */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['copyrightText'], 'Footer')} className={styles.card}>
+          </>
+        );
+      
+      case 'Footer':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['copyrightText'], 'Footer')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Footer</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -403,9 +441,13 @@ const ManageSiteSettings = () => {
           </div>
         </div>
       </form>
-
-      {/* 6. Razorpay Integration */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['razorpayKeyId', 'razorpayKeySecret'], 'Razorpay Integration')} className={styles.card}>
+          </>
+        );
+      
+      case 'Razorpay Integration':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['razorpayKeyId', 'razorpayKeySecret'], 'Razorpay Integration')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Razorpay Integration</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -421,16 +463,19 @@ const ManageSiteSettings = () => {
           </div>
         </div>
       </form>
-
+          </>
+        );
       
-      {/* 7. About Us Page Settings */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['aboutPage'], 'About Us Page')} className={styles.card}>
+      case 'About Us Page':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['aboutPage'], 'About Us Page')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>About Us Page</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
         </div>
         
-        {/* Hero Section */}
+        
         <h4 style={{marginTop: '20px', marginBottom: '10px', color: '#334155', borderBottom: '1px solid #e2e8f0', paddingBottom: '5px'}}>Hero Section</h4>
         <div className={styles.formGrid}>
           <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
@@ -453,7 +498,7 @@ const ManageSiteSettings = () => {
           </div>
         </div>
 
-        {/* Intro Section */}
+        
         <h4 style={{marginTop: '20px', marginBottom: '10px', color: '#334155', borderBottom: '1px solid #e2e8f0', paddingBottom: '5px'}}>Intro Section</h4>
         <div className={styles.formGrid}>
           <div className={styles.inputGroup}>
@@ -514,7 +559,7 @@ const ManageSiteSettings = () => {
           </div>
         </div>
 
-        {/* Story Section */}
+        
         <h4 style={{marginTop: '20px', marginBottom: '10px', color: '#334155', borderBottom: '1px solid #e2e8f0', paddingBottom: '5px'}}>Our Story Section</h4>
         <div className={styles.formGrid}>
           <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
@@ -537,7 +582,7 @@ const ManageSiteSettings = () => {
           </div>
         </div>
 
-        {/* Community Section */}
+        
         <h4 style={{marginTop: '20px', marginBottom: '10px', color: '#334155', borderBottom: '1px solid #e2e8f0', paddingBottom: '5px'}}>Community & Features</h4>
         <div className={styles.formGrid}>
           <div className={styles.inputGroup}>
@@ -591,9 +636,13 @@ const ManageSiteSettings = () => {
 
         </div>
       </form>
-
-      {/* 8. About Us Snippet (Home Page) */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['aboutSnippet'], 'About Snippet')} className={styles.card}>
+          </>
+        );
+      
+      case 'About Snippet':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['aboutSnippet'], 'About Snippet')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>About Snippet (Homepage)</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -634,10 +683,13 @@ const ManageSiteSettings = () => {
           </div>
         </div>
       </form>
-
-
-      {/* 8. Careers Content */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['careersContent'], 'Careers Content')} className={styles.card}>
+          </>
+        );
+      
+      case 'Careers Content':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['careersContent'], 'Careers Content')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Careers Content</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -648,9 +700,13 @@ const ManageSiteSettings = () => {
           </div>
         </div>
       </form>
-
-      {/* 9. Contact Us Content */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['contactUsContent'], 'Contact Us Content')} className={styles.card}>
+          </>
+        );
+      
+      case 'Contact Us Content':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['contactUsContent'], 'Contact Us Content')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Contact Us Content</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -661,9 +717,13 @@ const ManageSiteSettings = () => {
           </div>
         </div>
       </form>
-
-      {/* 10. Terms & Conditions Content */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['termsContent'], 'Terms & Conditions Content')} className={styles.card}>
+          </>
+        );
+      
+      case 'Terms & Conditions Content':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['termsContent'], 'Terms & Conditions Content')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Terms & Conditions Content</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -674,9 +734,13 @@ const ManageSiteSettings = () => {
           </div>
         </div>
       </form>
-
-      {/* 11. Privacy Policy Content */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['privacyPolicyContent'], 'Privacy Policy Content')} className={styles.card}>
+          </>
+        );
+      
+      case 'Privacy Policy Content':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['privacyPolicyContent'], 'Privacy Policy Content')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Privacy Policy Content</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -687,9 +751,13 @@ const ManageSiteSettings = () => {
           </div>
         </div>
       </form>
-
-      {/* 12. Payment Details Content */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['paymentDetailsContent'], 'Payment Details Content')} className={styles.card}>
+          </>
+        );
+      
+      case 'Payment Details Content':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['paymentDetailsContent'], 'Payment Details Content')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Payment Details Content</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -700,9 +768,142 @@ const ManageSiteSettings = () => {
           </div>
         </div>
       </form>
+          </>
+        );
+      
+      default:
+        return null;
+    }
+  };
 
+  return (
+    <div style={{ position: 'relative' }}>
+      <h2 className={styles.pageHeader}>Manage Site Settings</h2>
+      
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Hero Section</h3>
+          <button type="button" onClick={() => setActiveModal('Hero Section')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Promotional Banners</h3>
+          <button type="button" onClick={() => setActiveModal('Promotional Banners')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Contact Info</h3>
+          <button type="button" onClick={() => setActiveModal('Contact Info')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Social Media Links</h3>
+          <button type="button" onClick={() => setActiveModal('Social Media Links')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Footer</h3>
+          <button type="button" onClick={() => setActiveModal('Footer')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Razorpay Integration</h3>
+          <button type="button" onClick={() => setActiveModal('Razorpay Integration')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>About Us Page Settings</h3>
+          <button type="button" onClick={() => setActiveModal('About Us Page')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>About Us Snippet (Home Page)</h3>
+          <button type="button" onClick={() => setActiveModal('About Snippet')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Careers Content</h3>
+          <button type="button" onClick={() => setActiveModal('Careers Content')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Contact Us Content</h3>
+          <button type="button" onClick={() => setActiveModal('Contact Us Content')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Terms & Conditions Content</h3>
+          <button type="button" onClick={() => setActiveModal('Terms & Conditions Content')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Privacy Policy Content</h3>
+          <button type="button" onClick={() => setActiveModal('Privacy Policy Content')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Payment Details Content</h3>
+          <button type="button" onClick={() => setActiveModal('Payment Details Content')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+      </div>
+
+      {activeModal && (
+        <div 
+          onClick={() => setActiveModal(null)}
+          style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
+            backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999, 
+            display: 'flex', justifyContent: 'center', alignItems: 'center',
+            padding: '20px'
+          }}>
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: 'white', padding: '25px', borderRadius: '12px', 
+              width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto',
+              position: 'relative', boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
+            }}>
+            <button 
+              onClick={() => setActiveModal(null)}
+              style={{ position: 'absolute', top: '20px', right: '20px', background: 'transparent', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: '#64748b' }}
+            >
+              &times;
+            </button>
+            {renderModalContent()}
+          </div>
+        </div>
+      )}
     </div>
   );
+
 };
 
 export default ManageSiteSettings;
