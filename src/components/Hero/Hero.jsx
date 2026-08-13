@@ -19,62 +19,46 @@ const Hero = () => {
     fetchSettings();
   }, []);
 
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
-  const videoRef = useRef(null);
+  const slides = settings?.heroSliders?.length > 0 ? settings.heroSliders : [
+    {
+      image: 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1920&q=80',
+      heading: 'Experiences for\nTourist Explorers'
+    }
+  ];
 
   useEffect(() => {
-    if (!settings?.heroImages || settings.heroImages.length <= 1) return;
+    if (slides.length <= 1) return;
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % settings.heroImages.length);
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 2500); // 2.5 second interval
     return () => clearInterval(interval);
-  }, [settings]);
-
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
-  };
-
-  const images = settings?.heroImages?.length > 0 ? settings.heroImages : [
-    'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1920&q=80'
-  ];
+  }, [slides.length]);
 
   return (
     <section className={styles.heroContainer}>
-      {images.map((img, index) => (
-        <div 
-          key={index} 
-          className={styles.slideImage} 
-          style={{ 
-            backgroundImage: `url(${img})`,
-            opacity: index === currentSlide ? 1 : 0
-          }} 
-        />
+      {slides.map((slide, index) => (
+        <div key={index} style={{ opacity: index === currentSlide ? 1 : 0, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, transition: 'opacity 0.5s ease-in-out' }}>
+          <div 
+            className={styles.slideImage} 
+            style={{ 
+              backgroundImage: `url(${slide.image})`,
+              width: '100%',
+              height: '100%',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }} 
+          />
+          {/* Dark Overlay */}
+          <div className={styles.heroOverlay}></div>
+
+          {/* Hero Main Content */}
+          <div className={styles.heroContent} style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10, width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <h1 className={styles.heroHeading} style={{ whiteSpace: 'pre-line' }}>
+              {slide.heading}
+            </h1>
+          </div>
+        </div>
       ))}
-
-      {/* Dark Overlay */}
-      <div className={styles.heroOverlay}></div>
-
-      {/* Hero Main Content */}
-      <div className={styles.heroContent}>
-        <h1 className={styles.heroHeading} style={{ whiteSpace: 'pre-line' }}>
-          {settings ? settings.heroHeading : 'Experiences for\nTourist Explorers'}
-        </h1>
-      </div>
     </section>
   );
 };

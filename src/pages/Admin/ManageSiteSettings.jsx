@@ -211,18 +211,72 @@ const ManageSiteSettings = () => {
       <h2 className={styles.pageHeader}>Manage Site Settings</h2>
       
       {/* 1. Hero Section */}
-      <form onSubmit={(e) => handleSectionSubmit(e, ['heroHeading', 'heroImages'], 'Hero Section')} className={styles.card}>
+      <form onSubmit={(e) => handleSectionSubmit(e, ['heroSliders'], 'Hero Section')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Hero Section</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
         </div>
-        <div className={styles.formGrid}>
-          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
-            <label className={styles.inputLabel}>Hero Heading</label>
-            <textarea name="heroHeading" value={formData.heroHeading || ''} onChange={handleChange} className={styles.textareaField} rows="2" />
-          </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          {(formData.heroSliders || []).map((slide, index) => (
+            <div key={index} style={{ border: '1px solid #e2e8f0', padding: '15px', borderRadius: '8px', position: 'relative' }}>
+              <button type="button" onClick={() => {
+                const newSliders = [...(formData.heroSliders || [])];
+                newSliders.splice(index, 1);
+                setFormData({...formData, heroSliders: newSliders});
+              }} style={{ position: 'absolute', top: '10px', right: '10px', background: '#ffe4e6', color: '#e11d48', border: 'none', borderRadius: '4px', cursor: 'pointer', padding: '5px 10px' }}>X Remove</button>
+              
+              <div className={styles.formGrid}>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <label className={styles.inputLabel}>Slide Heading</label>
+                  <textarea 
+                    value={slide.heading} 
+                    onChange={(e) => {
+                      const newSliders = [...(formData.heroSliders || [])];
+                      newSliders[index].heading = e.target.value;
+                      setFormData({...formData, heroSliders: newSliders});
+                    }} 
+                    className={styles.textareaField} rows="2" 
+                  />
+                </div>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <label className={styles.inputLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    Background Image URL
+                    <label style={{ cursor: 'pointer', backgroundColor: '#3b82f6', color: 'white', padding: '4px 10px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
+                      Upload Image
+                      <input type="file" style={{ display: 'none' }} accept="image/*" onChange={async (e) => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        try {
+                          const res = await uploadFile(file);
+                          const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+                          const newSliders = [...(formData.heroSliders || [])];
+                          newSliders[index].image = fullUrl;
+                          setFormData({...formData, heroSliders: newSliders});
+                        } catch (err) {
+                          alert('Upload failed');
+                        }
+                      }} />
+                    </label>
+                  </label>
+                  <input 
+                    value={slide.image} 
+                    onChange={(e) => {
+                      const newSliders = [...(formData.heroSliders || [])];
+                      newSliders[index].image = e.target.value;
+                      setFormData({...formData, heroSliders: newSliders});
+                    }} 
+                    className={styles.inputField} 
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+          <button type="button" onClick={() => {
+            const newSliders = [...(formData.heroSliders || [])];
+            newSliders.push({ heading: 'New Slide Heading', image: '' });
+            setFormData({...formData, heroSliders: newSliders});
+          }} style={{ alignSelf: 'flex-start', background: '#f1f5f9', color: '#0f172a', border: '1px solid #cbd5e1', padding: '8px 16px', borderRadius: '6px', cursor: 'pointer', fontWeight: '500' }}>+ Add Slide</button>
         </div>
-        <StringArrayInput title="Hero Background Images (Slider)" data={formData.heroImages || []} onChange={(d) => setFormData({...formData, heroImages: d})} />
       </form>
 
       {/* 2. Promotional Banners */}
