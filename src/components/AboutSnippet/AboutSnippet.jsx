@@ -44,6 +44,7 @@ const AboutSnippet = ({ data }) => {
                 <div 
                   key={idx} 
                   className={styles.pointItem}
+                  style={{ marginLeft: `${idx * 30}px` }}
                 >
                   <div className={styles.pointMarker}></div>
                   <div className={styles.pointText}>{point.text}</div>
