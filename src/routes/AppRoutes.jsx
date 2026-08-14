@@ -20,6 +20,7 @@ import DynamicPage from '../pages/DynamicPage/DynamicPage';
 import DynamicCustomPage from '../pages/DynamicCustomPage/DynamicCustomPage';
 import AboutUs from '../pages/AboutUs/AboutUs';
 import MeetTheTeam from '../pages/MeetTheTeam/MeetTheTeam';
+import BlogsPage from '../pages/BlogsPage/BlogsPage';
 
 const AppRoutes = () => {
   return (
@@ -46,6 +47,7 @@ const AppRoutes = () => {
       {/* Footer / Dynamic Pages */}
       <Route path="/about" element={<AboutUs />} />
       <Route path="/meet-the-team" element={<MeetTheTeam />} />
+      <Route path="/blogs" element={<BlogsPage />} />
       <Route path="/careers" element={<DynamicPage title="Careers" blocksKey="careersBlocks" />} />
       <Route path="/contact" element={<DynamicPage title="Contact Us" blocksKey="contactUsBlocks" />} />
       <Route path="/terms" element={<DynamicPage title="Terms & Conditions" blocksKey="termsBlocks" />} />
