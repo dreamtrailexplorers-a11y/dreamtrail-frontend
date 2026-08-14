@@ -642,8 +642,6 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     if (overrideTrip.slug && overrideTrip.slug.startsWith('new-package-')) overrideTrip.slug = '';
     if (overrideTrip.route === 'TBD') overrideTrip.route = '';
     if (overrideTrip.duration === 'TBD') overrideTrip.duration = '';
-    if (overrideTrip.originalPrice === 0) overrideTrip.originalPrice = '';
-    if (overrideTrip.discountedPrice === 0) overrideTrip.discountedPrice = '';
     
     overrideTrip.image = cleanImageUrl(overrideTrip.image);
     if (overrideTrip.image === '') overrideTrip.image = '';
