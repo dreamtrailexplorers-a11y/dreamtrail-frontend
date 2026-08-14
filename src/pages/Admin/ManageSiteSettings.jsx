@@ -86,6 +86,32 @@ const ManageSiteSettings = () => {
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  // --- Dynamic Block Builder Functions ---
+  const handleAddPolicyBlock = (field, blockType) => {
+    const currentBlocks = formData[field] || [];
+    setFormData({
+      ...formData,
+      [field]: [...currentBlocks, { blockType, content: '' }]
+    });
+  };
+
+  const handleUpdatePolicyBlock = (field, index, newContent) => {
+    const updatedBlocks = [...(formData[field] || [])];
+    updatedBlocks[index].content = newContent;
+    setFormData({
+      ...formData,
+      [field]: updatedBlocks
+    });
+  };
+
+  const handleRemovePolicyBlock = (field, index) => {
+    const updatedBlocks = (formData[field] || []).filter((_, i) => i !== index);
+    setFormData({
+      ...formData,
+      [field]: updatedBlocks
+    });
+  };
+
   const handleSectionSubmit = async (e, keysToSave, sectionName) => {
     e.preventDefault();
     try {
@@ -755,51 +781,204 @@ const ManageSiteSettings = () => {
       case 'Careers Content':
         return (
           <>
-            <form onSubmit={(e) => handleSectionSubmit(e, ['careersContent'], 'Careers Content')} className={styles.card}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Careers Content</h3>
-          <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
-        </div>
-        <div className={styles.formGrid}>
-          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
-            <textarea name="careersContent" value={formData.careersContent || ''} onChange={handleChange} className={styles.textareaField} rows="4" placeholder="Use plain text or basic HTML..." />
-          </div>
-        </div>
-      </form>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['careersBlocks'], 'Careers Content')} className={styles.card}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Careers Content</h3>
+                <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
+              </div>
+              
+              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" onClick={() => handleAddPolicyBlock('careersBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('careersBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('careersBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('careersBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
+                </div>
+              </div>
+              
+              <div className={styles.formGrid}>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  {(formData.careersBlocks || []).map((block, idx) => (
+                    <div key={idx} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', position: 'relative', backgroundColor: '#fff' }}>
+                      <div style={{ position: 'absolute', top: '-10px', left: '15px', backgroundColor: '#3b82f6', color: 'white', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                        {block.blockType}
+                      </div>
+                      <button 
+                        type="button" 
+                        onClick={() => handleRemovePolicyBlock('careersBlocks', idx)}
+                        style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
+                        title="Remove Block"
+                      >
+                        ×
+                      </button>
+                      
+                      {block.blockType === 'title' || block.blockType === 'subtitle' ? (
+                        <input 
+                          type="text" 
+                          value={block.content} 
+                          onChange={(e) => handleUpdatePolicyBlock('careersBlocks', idx, e.target.value)} 
+                          className={styles.inputField} 
+                          placeholder={`Enter ${block.blockType}...`}
+                          style={{ marginTop: '10px' }}
+                        />
+                      ) : (
+                        <textarea 
+                          value={block.content} 
+                          onChange={(e) => handleUpdatePolicyBlock('careersBlocks', idx, e.target.value)} 
+                          className={styles.textareaField} 
+                          rows={block.blockType === 'point' ? "2" : "4"}
+                          placeholder={`Enter ${block.blockType} content...`}
+                          style={{ marginTop: '10px' }}
+                        />
+                      )}
+                    </div>
+                  ))}
+                  
+                  {(!formData.careersBlocks || formData.careersBlocks.length === 0) && (
+                    <div style={{ textAlign: 'center', padding: '30px', color: '#64748b', backgroundColor: '#f1f5f9', borderRadius: '8px' }}>
+                      No blocks added yet. Use the buttons above to start building your page.
+                    </div>
+                  )}
+                </div>
+              </div>
+            </form>
           </>
         );
       
       case 'Contact Us Content':
         return (
           <>
-            <form onSubmit={(e) => handleSectionSubmit(e, ['contactUsContent'], 'Contact Us Content')} className={styles.card}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Contact Us Content</h3>
-          <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
-        </div>
-        <div className={styles.formGrid}>
-          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
-            <textarea name="contactUsContent" value={formData.contactUsContent || ''} onChange={handleChange} className={styles.textareaField} rows="4" placeholder="Use plain text or basic HTML..." />
-          </div>
-        </div>
-      </form>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['contactUsBlocks'], 'Contact Us Content')} className={styles.card}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Contact Us Content</h3>
+                <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
+              </div>
+              
+              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" onClick={() => handleAddPolicyBlock('contactUsBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('contactUsBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('contactUsBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('contactUsBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
+                </div>
+              </div>
+              
+              <div className={styles.formGrid}>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  {(formData.contactUsBlocks || []).map((block, idx) => (
+                    <div key={idx} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', position: 'relative', backgroundColor: '#fff' }}>
+                      <div style={{ position: 'absolute', top: '-10px', left: '15px', backgroundColor: '#3b82f6', color: 'white', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                        {block.blockType}
+                      </div>
+                      <button 
+                        type="button" 
+                        onClick={() => handleRemovePolicyBlock('contactUsBlocks', idx)}
+                        style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
+                        title="Remove Block"
+                      >
+                        ×
+                      </button>
+                      
+                      {block.blockType === 'title' || block.blockType === 'subtitle' ? (
+                        <input 
+                          type="text" 
+                          value={block.content} 
+                          onChange={(e) => handleUpdatePolicyBlock('contactUsBlocks', idx, e.target.value)} 
+                          className={styles.inputField} 
+                          placeholder={`Enter ${block.blockType}...`}
+                          style={{ marginTop: '10px' }}
+                        />
+                      ) : (
+                        <textarea 
+                          value={block.content} 
+                          onChange={(e) => handleUpdatePolicyBlock('contactUsBlocks', idx, e.target.value)} 
+                          className={styles.textareaField} 
+                          rows={block.blockType === 'point' ? "2" : "4"}
+                          placeholder={`Enter ${block.blockType} content...`}
+                          style={{ marginTop: '10px' }}
+                        />
+                      )}
+                    </div>
+                  ))}
+                  
+                  {(!formData.contactUsBlocks || formData.contactUsBlocks.length === 0) && (
+                    <div style={{ textAlign: 'center', padding: '30px', color: '#64748b', backgroundColor: '#f1f5f9', borderRadius: '8px' }}>
+                      No blocks added yet. Use the buttons above to start building your page.
+                    </div>
+                  )}
+                </div>
+              </div>
+            </form>
           </>
         );
       
       case 'Terms & Conditions Content':
         return (
           <>
-            <form onSubmit={(e) => handleSectionSubmit(e, ['termsContent'], 'Terms & Conditions Content')} className={styles.card}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Terms & Conditions Content</h3>
-          <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
-        </div>
-        <div className={styles.formGrid}>
-          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
-            <textarea name="termsContent" value={formData.termsContent || ''} onChange={handleChange} className={styles.textareaField} rows="4" placeholder="Use plain text or basic HTML..." />
-          </div>
-        </div>
-      </form>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['termsBlocks'], 'Terms & Conditions Content')} className={styles.card}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Terms & Conditions Content</h3>
+                <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
+              </div>
+              
+              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" onClick={() => handleAddPolicyBlock('termsBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('termsBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('termsBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('termsBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
+                </div>
+              </div>
+              
+              <div className={styles.formGrid}>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  {(formData.termsBlocks || []).map((block, idx) => (
+                    <div key={idx} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', position: 'relative', backgroundColor: '#fff' }}>
+                      <div style={{ position: 'absolute', top: '-10px', left: '15px', backgroundColor: '#3b82f6', color: 'white', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                        {block.blockType}
+                      </div>
+                      <button 
+                        type="button" 
+                        onClick={() => handleRemovePolicyBlock('termsBlocks', idx)}
+                        style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
+                        title="Remove Block"
+                      >
+                        ×
+                      </button>
+                      
+                      {block.blockType === 'title' || block.blockType === 'subtitle' ? (
+                        <input 
+                          type="text" 
+                          value={block.content} 
+                          onChange={(e) => handleUpdatePolicyBlock('termsBlocks', idx, e.target.value)} 
+                          className={styles.inputField} 
+                          placeholder={`Enter ${block.blockType}...`}
+                          style={{ marginTop: '10px' }}
+                        />
+                      ) : (
+                        <textarea 
+                          value={block.content} 
+                          onChange={(e) => handleUpdatePolicyBlock('termsBlocks', idx, e.target.value)} 
+                          className={styles.textareaField} 
+                          rows={block.blockType === 'point' ? "2" : "4"}
+                          placeholder={`Enter ${block.blockType} content...`}
+                          style={{ marginTop: '10px' }}
+                        />
+                      )}
+                    </div>
+                  ))}
+                  
+                  {(!formData.termsBlocks || formData.termsBlocks.length === 0) && (
+                    <div style={{ textAlign: 'center', padding: '30px', color: '#64748b', backgroundColor: '#f1f5f9', borderRadius: '8px' }}>
+                      No blocks added yet. Use the buttons above to start building your page.
+                    </div>
+                  )}
+                </div>
+              </div>
+            </form>
           </>
         );
       
@@ -942,17 +1121,68 @@ const ManageSiteSettings = () => {
       case 'Payment Details Content':
         return (
           <>
-            <form onSubmit={(e) => handleSectionSubmit(e, ['paymentDetailsContent'], 'Payment Details Content')} className={styles.card}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Payment Details Content</h3>
-          <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
-        </div>
-        <div className={styles.formGrid}>
-          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
-            <textarea name="paymentDetailsContent" value={formData.paymentDetailsContent || ''} onChange={handleChange} className={styles.textareaField} rows="4" placeholder="Use plain text or basic HTML..." />
-          </div>
-        </div>
-      </form>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['paymentDetailsBlocks'], 'Payment Details Content')} className={styles.card}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Payment Details Content</h3>
+                <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
+              </div>
+              
+              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" onClick={() => handleAddPolicyBlock('paymentDetailsBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('paymentDetailsBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('paymentDetailsBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('paymentDetailsBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
+                </div>
+              </div>
+              
+              <div className={styles.formGrid}>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  {(formData.paymentDetailsBlocks || []).map((block, idx) => (
+                    <div key={idx} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', position: 'relative', backgroundColor: '#fff' }}>
+                      <div style={{ position: 'absolute', top: '-10px', left: '15px', backgroundColor: '#3b82f6', color: 'white', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                        {block.blockType}
+                      </div>
+                      <button 
+                        type="button" 
+                        onClick={() => handleRemovePolicyBlock('paymentDetailsBlocks', idx)}
+                        style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
+                        title="Remove Block"
+                      >
+                        ×
+                      </button>
+                      
+                      {block.blockType === 'title' || block.blockType === 'subtitle' ? (
+                        <input 
+                          type="text" 
+                          value={block.content} 
+                          onChange={(e) => handleUpdatePolicyBlock('paymentDetailsBlocks', idx, e.target.value)} 
+                          className={styles.inputField} 
+                          placeholder={`Enter ${block.blockType}...`}
+                          style={{ marginTop: '10px' }}
+                        />
+                      ) : (
+                        <textarea 
+                          value={block.content} 
+                          onChange={(e) => handleUpdatePolicyBlock('paymentDetailsBlocks', idx, e.target.value)} 
+                          className={styles.textareaField} 
+                          rows={block.blockType === 'point' ? "2" : "4"}
+                          placeholder={`Enter ${block.blockType} content...`}
+                          style={{ marginTop: '10px' }}
+                        />
+                      )}
+                    </div>
+                  ))}
+                  
+                  {(!formData.paymentDetailsBlocks || formData.paymentDetailsBlocks.length === 0) && (
+                    <div style={{ textAlign: 'center', padding: '30px', color: '#64748b', backgroundColor: '#f1f5f9', borderRadius: '8px' }}>
+                      No blocks added yet. Use the buttons above to start building your page.
+                    </div>
+                  )}
+                </div>
+              </div>
+            </form>
           </>
         );
       

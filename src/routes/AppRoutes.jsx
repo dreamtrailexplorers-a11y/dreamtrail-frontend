@@ -44,12 +44,12 @@ const AppRoutes = () => {
 
       {/* Footer / Dynamic Pages */}
       <Route path="/about" element={<AboutUs />} />
-      <Route path="/careers" element={<DynamicPage title="Careers" contentKey="careersContent" />} />
-      <Route path="/contact" element={<DynamicPage title="Contact Us" contentKey="contactUsContent" />} />
+      <Route path="/careers" element={<DynamicPage title="Careers" blocksKey="careersBlocks" />} />
+      <Route path="/contact" element={<DynamicPage title="Contact Us" blocksKey="contactUsBlocks" />} />
       <Route path="/terms" element={<DynamicPage title="Terms & Conditions" blocksKey="termsBlocks" />} />
       <Route path="/privacy" element={<DynamicPage title="Privacy Policy" blocksKey="privacyPolicyBlocks" />} />
       <Route path="/cancellation" element={<DynamicPage title="Cancellation and Refund Terms" blocksKey="cancellationBlocks" />} />
-      <Route path="/payment" element={<DynamicPage title="Payment Details" contentKey="paymentDetailsContent" />} />
+      <Route path="/payment" element={<DynamicPage title="Payment Details" blocksKey="paymentDetailsBlocks" />} />
       
       {/* Dynamic Custom Block Builder Pages */}
       <Route path="/page/:slug" element={<DynamicCustomPage />} />
