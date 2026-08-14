@@ -46,9 +46,9 @@ const AppRoutes = () => {
       <Route path="/about" element={<AboutUs />} />
       <Route path="/careers" element={<DynamicPage title="Careers" contentKey="careersContent" />} />
       <Route path="/contact" element={<DynamicPage title="Contact Us" contentKey="contactUsContent" />} />
-      <Route path="/terms" element={<DynamicPage title="Terms & Conditions" contentKey="termsContent" />} />
-      <Route path="/privacy" element={<DynamicPage title="Privacy Policy" contentKey="privacyPolicyContent" />} />
-      <Route path="/cancellation" element={<DynamicPage title="Cancellation and Refund Terms" contentKey="cancellationContent" />} />
+      <Route path="/terms" element={<DynamicPage title="Terms & Conditions" blocksKey="termsBlocks" />} />
+      <Route path="/privacy" element={<DynamicPage title="Privacy Policy" blocksKey="privacyPolicyBlocks" />} />
+      <Route path="/cancellation" element={<DynamicPage title="Cancellation and Refund Terms" blocksKey="cancellationBlocks" />} />
       <Route path="/payment" element={<DynamicPage title="Payment Details" contentKey="paymentDetailsContent" />} />
       
       {/* Dynamic Custom Block Builder Pages */}

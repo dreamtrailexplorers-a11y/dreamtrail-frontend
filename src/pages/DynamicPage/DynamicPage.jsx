@@ -4,8 +4,8 @@ import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import styles from './DynamicPage.module.css';
 
-const DynamicPage = ({ title, contentKey }) => {
-  const [content, setContent] = useState('');
+const DynamicPage = ({ title, blocksKey }) => {
+  const [blocks, setBlocks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,21 +15,21 @@ const DynamicPage = ({ title, contentKey }) => {
     const fetchContent = async () => {
       try {
         const { data } = await getSiteSettings();
-        if (data && data[contentKey]) {
-          setContent(data[contentKey]);
+        if (data && data[blocksKey]) {
+          setBlocks(data[blocksKey]);
         } else {
-          setContent('Content not found.');
+          setBlocks([{ blockType: 'text', content: 'Content not found.' }]);
         }
       } catch (err) {
         console.error('Error fetching dynamic content:', err);
-        setContent('Error loading content. Please try again later.');
+        setBlocks([{ blockType: 'text', content: 'Error loading content. Please try again later.' }]);
       } finally {
         setLoading(false);
       }
     };
     
     fetchContent();
-  }, [contentKey]);
+  }, [blocksKey]);
 
   
   const renderFormattedText = (text) => {
@@ -98,7 +98,50 @@ const DynamicPage = ({ title, contentKey }) => {
             </div>
           ) : (
             <div className={styles.textContent}>
-              {renderFormattedText(content)}
+              {blocks.map((block, index) => {
+                if (block.blockType === 'title') {
+                  return <h2 key={index} className={styles.manifestoHeading}>{block.content}</h2>;
+                }
+                if (block.blockType === 'subtitle') {
+                  return <h3 key={index} className={styles.manifestoSubheading}>{block.content}</h3>;
+                }
+                if (block.blockType === 'point') {
+                  const parts = block.content.split(/(\*\*.*?\*\*)/g);
+                  return (
+                    <div key={index} className={styles.manifestoBullet}>
+                       <span className={styles.bulletIcon}>•</span>
+                       <span>
+                        {parts.map((part, j) => {
+                          if (part.startsWith('**') && part.endsWith('**')) {
+                            return <strong key={j}>{part.slice(2, -2)}</strong>;
+                          }
+                          return part;
+                        })}
+                       </span>
+                    </div>
+                  );
+                }
+                if (block.blockType === 'text') {
+                  const cleanText = block.content.replace(/([^\n])(##+ )/g, '$1\n\n$2');
+                  const paragraphs = cleanText.split(/\n+/);
+                  return paragraphs.map((para, i) => {
+                    para = para.trim();
+                    if (!para) return null;
+                    const parts = para.split(/(\*\*.*?\*\*)/g);
+                    return (
+                      <p key={`${index}-${i}`} className={styles.manifestoParagraph}>
+                        {parts.map((part, j) => {
+                          if (part.startsWith('**') && part.endsWith('**')) {
+                            return <strong key={j}>{part.slice(2, -2)}</strong>;
+                          }
+                          return part;
+                        })}
+                      </p>
+                    );
+                  });
+                }
+                return null;
+              })}
             </div>
           )}
         </div>
