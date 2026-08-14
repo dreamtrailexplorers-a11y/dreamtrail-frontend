@@ -47,7 +47,7 @@ const AboutUs = () => {
   };
 
   
-  const renderFormattedText = (text) => {
+  const renderFormattedText = (text, customPClass = styles.manifestoParagraph) => {
     if (!text) return null;
     
     // First, try to fix missing newlines before ## if user forgot them
@@ -70,7 +70,7 @@ const AboutUs = () => {
       // Parse bold **text**
       const parts = para.split(/(\*\*.*?\*\*)/g);
       return (
-        <p key={i} className={styles.manifestoParagraph}>
+        <p key={i} className={customPClass}>
           {parts.map((part, j) => {
             if (part.startsWith('**') && part.endsWith('**')) {
               return <strong key={j}>{part.slice(2, -2)}</strong>;
@@ -186,10 +186,10 @@ const AboutUs = () => {
               onError={(e) => handleImageError(e, 'https://images.unsplash.com/photo-1533560904424-a0c61dc306fc')}
             />
           </div>
-          <div className={styles.storyTextBlock}>
-            <h2 className={styles.storyTitle}>{aboutPage.storyTitle || 'Our Story'}</h2>
-            <p className={styles.storyText}>{aboutPage.storyText}</p>
-          </div>
+            <div className={styles.storyTextBlock}>
+              <h2 className={styles.storyTitle}>{aboutPage.storyTitle || 'Our Story'}</h2>
+              {renderFormattedText(aboutPage.storyText, styles.storyText)}
+            </div>
         </div>
       </section>
 
