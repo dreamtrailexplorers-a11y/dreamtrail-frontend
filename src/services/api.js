@@ -81,4 +81,7 @@ export const uploadFile = (file) => {
   });
 };
 
+export const initiateUpload = (filename, mimetype) => api.post('/upload/initiate', { filename, mimetype });
+export const finalizeUpload = (fileId, mimetype) => api.post('/upload/finalize', { fileId, mimetype });
+
 export default api;

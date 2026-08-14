@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getTrips, createTrip, updateTrip, deleteTrip, uploadFile } from '../../services/api';
+import { getTrips, createTrip, updateTrip, deleteTrip, uploadFile, initiateUpload, finalizeUpload } from '../../services/api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { cleanImageUrl } from '../../utils/cleanUrl';
 import styles from './Admin.module.css';
@@ -492,11 +492,32 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     const file = e.target.files[0];
     if(!file) return;
     try {
-      const res = await uploadFile(file);
-      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      // 1. Get the direct upload URL
+      const initiateRes = await initiateUpload(file.name, file.type);
+      const uploadUrl = initiateRes.data.uploadUrl;
+      
+      // 2. Upload directly to Google Drive
+      const uploadRes = await fetch(uploadUrl, {
+        method: 'PUT',
+        body: file,
+        headers: {
+          'Content-Type': file.type,
+        }
+      });
+      
+      if (!uploadRes.ok) throw new Error("Upload failed");
+      
+      const fileData = await uploadRes.json();
+      const fileId = fileData.id;
+
+      // 3. Finalize upload to make public and get URL
+      const finalizeRes = await finalizeUpload(fileId, file.type);
+      const fullUrl = finalizeRes.data.url;
+
       setFormData({ ...formData, pdfUrl: fullUrl });
     } catch(err) {
-      alert('PDF Upload failed');
+      console.error(err);
+      alert('PDF Upload failed: ' + err.message);
     }
   };
 
