@@ -344,17 +344,31 @@ const TripDetails = () => {
                     <div key={i} style={{ marginBottom: '15px' }}>
                       {typeof point === 'object' && point !== null ? (
                         <>
-                          {point.title && <h4 style={{ margin: '0 0 5px 0', fontSize: '1.05rem', color: '#1e293b' }}>{point.title}</h4>}
-                          {point.desc && <p style={{ margin: 0, fontSize: '0.95rem' }}>{point.desc}</p>}
+                          {point.title && <h4 style={{ margin: '0 0 8px 0', fontSize: '1.05rem', color: '#1e293b' }}>{point.title}</h4>}
+                          {point.desc && (
+                            <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.95rem', color: '#475569' }}>
+                              {point.desc.split('\n').filter(line => line.trim() !== '').map((line, idx) => (
+                                <li key={idx} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{line}</li>
+                              ))}
+                            </ul>
+                          )}
                         </>
                       ) : (
-                        <p style={{ margin: 0 }}>{point}</p>
+                        <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.95rem', color: '#475569' }}>
+                          {String(point).split('\n').filter(line => line.trim() !== '').map((line, idx) => (
+                            <li key={idx} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{line}</li>
+                          ))}
+                        </ul>
                       )}
                     </div>
                   ))}
                 </div>
               ) : (
-                <p>{quickInfoModal.content}</p>
+                <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.95rem', color: '#475569' }}>
+                  {String(quickInfoModal.content).split('\n').filter(line => line.trim() !== '').map((line, idx) => (
+                    <li key={idx} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{line}</li>
+                  ))}
+                </ul>
               )}
             </div>
           </div>
