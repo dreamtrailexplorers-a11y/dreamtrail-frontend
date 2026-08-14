@@ -819,6 +819,23 @@ const ManageSiteSettings = () => {
       </form>
           </>
         );
+      case 'Cancellation Policy Content':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['cancellationContent'], 'Cancellation Policy Content')} className={styles.card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+            <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Cancellation Policy Content</h3>
+            <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
+          </div>
+          <div className={styles.formGrid}>
+            <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+              <textarea name="cancellationContent" value={formData.cancellationContent || ''} onChange={handleNestedChange} className={styles.textareaField} rows="15" />
+            </div>
+          </div>
+        </form>
+          </>
+        );
+
       
       case 'Payment Details Content':
         return (
@@ -931,6 +948,13 @@ const ManageSiteSettings = () => {
             Edit
           </button>
         </div>
+          <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Cancellation Policy Content</h3>
+            <button type="button" onClick={() => setActiveModal('Cancellation Policy Content')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+              Edit
+            </button>
+          </div>
+
         
         <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Payment Details Content</h3>

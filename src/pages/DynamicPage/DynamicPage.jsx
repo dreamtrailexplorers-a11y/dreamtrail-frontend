@@ -31,6 +31,59 @@ const DynamicPage = ({ title, contentKey }) => {
     fetchContent();
   }, [contentKey]);
 
+  
+  const renderFormattedText = (text) => {
+    if (!text) return null;
+    
+    // First, try to fix missing newlines before ## if user forgot them
+    let cleanText = text.replace(/([^\n])(##+ )/g, '$1\n\n$2');
+    
+    // Split by newlines
+    const paragraphs = cleanText.split(/\n+/);
+    
+    return paragraphs.map((para, i) => {
+      para = para.trim();
+      if (!para) return null;
+      
+      if (para.startsWith('## ')) {
+        return <h2 key={i} className={styles.manifestoHeading}>{para.replace('## ', '')}</h2>;
+      }
+      if (para.startsWith('### ')) {
+        return <h3 key={i} className={styles.manifestoSubheading}>{para.replace('### ', '')}</h3>;
+      }
+      if (para.startsWith('- ') || para.startsWith('* ') || para.startsWith('• ')) {
+        const bulletText = para.substring(2).trim();
+        const parts = bulletText.split(/(\*\*.*?\*\*)/g);
+        return (
+          <div key={i} className={styles.manifestoBullet}>
+             <span className={styles.bulletIcon}>•</span>
+             <span>
+              {parts.map((part, j) => {
+                if (part.startsWith('**') && part.endsWith('**')) {
+                  return <strong key={j}>{part.slice(2, -2)}</strong>;
+                }
+                return part;
+              })}
+             </span>
+          </div>
+        );
+      }
+      
+      // Parse bold **text**
+      const parts = para.split(/(\*\*.*?\*\*)/g);
+      return (
+        <p key={i} className={styles.manifestoParagraph}>
+          {parts.map((part, j) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+              return <strong key={j}>{part.slice(2, -2)}</strong>;
+            }
+            return part;
+          })}
+        </p>
+      );
+    });
+  };
+
   return (
     <div className={styles.pageContainer}>
       <Navbar />
@@ -44,10 +97,9 @@ const DynamicPage = ({ title, contentKey }) => {
               <div className={styles.spinner}></div>
             </div>
           ) : (
-            <div 
-              className={styles.textContent}
-              dangerouslySetInnerHTML={{ __html: content.replace(/\n/g, '<br/>') }}
-            />
+            <div className={styles.textContent}>
+              {renderFormattedText(content)}
+            </div>
           )}
         </div>
       </div>

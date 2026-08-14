@@ -122,6 +122,7 @@ const Footer = () => {
                 <Link to="/contact" className={styles.linkItem}>Contact Us</Link>
                 <Link to="/terms" className={styles.linkItem}>Terms & Conditions</Link>
                 <Link to="/privacy" className={styles.linkItem}>Privacy Policy</Link>
+                <Link to="/cancellation" className={styles.linkItem}>Cancellation and Refund Terms</Link>
                 <Link to="/payment" className={styles.linkItem}>Payment Details</Link>
               </>
             )}
