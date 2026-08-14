@@ -200,3 +200,80 @@
     display: block;
   }
 }
+
+.mobileSidebarOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  z-index: 2000;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mobileSidebar {
+  width: 80%;
+  max-width: 400px;
+  height: 100%;
+  background-color: #222222;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+  animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.mobileSidebarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #333;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.sidebarContent {
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sidebarSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebarHeading {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 0.2rem;
+}
+
+.sidebarLink {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0.2rem 0;
+}
+
+.sidebarLink:hover {
+  color: #fff;
+}
+

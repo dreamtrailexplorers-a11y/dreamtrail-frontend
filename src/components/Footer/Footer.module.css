@@ -262,3 +262,53 @@
     gap: 0.8rem;
   }
 }
+
+.subHeadingCol {
+  color: #ffffff;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+  font-size: 1rem;
+}
+
+.tourGrid {
+  display: flex;
+  gap: 2rem;
+}
+
+.tourCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.linksListFull {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.floatingWhatsapp {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: #25D366;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.floatingWhatsapp:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  color: white;
+}
+

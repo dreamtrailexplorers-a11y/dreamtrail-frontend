@@ -249,6 +249,75 @@ const ManageSiteSettings = () => {
     }
   };
 
+  
+  const handleMeetTheTeamNestedChange = (e) => {
+    setFormData({
+      ...formData,
+      meetTheTeam: {
+        ...(formData.meetTheTeam || {}),
+        [e.target.name]: e.target.value
+      }
+    });
+  };
+
+  const handleMeetTheTeamImageUpload = async (e, field) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const { uploadFile } = await import('../../services/api');
+      const res = await uploadFile(file);
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      setFormData({
+        ...formData,
+        meetTheTeam: {
+          ...(formData.meetTheTeam || {}),
+          [field]: fullUrl
+        }
+      });
+    } catch (err) {
+      alert('Upload failed');
+    }
+  };
+
+  const handleTeamMemberImageUpload = async (e, index) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const { uploadFile } = await import('../../services/api');
+      const res = await uploadFile(file);
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      handleTeamMemberChange(index, 'image', fullUrl);
+    } catch (err) {
+      alert('Upload failed');
+    }
+  };
+
+  const handleTeamMemberChange = (index, field, value) => {
+    const newMembers = [...(formData.meetTheTeam?.teamMembers || [])];
+    newMembers[index] = { ...newMembers[index], [field]: value };
+    setFormData({
+      ...formData,
+      meetTheTeam: { ...(formData.meetTheTeam || {}), teamMembers: newMembers }
+    });
+  };
+
+  const addTeamMember = () => {
+    const newMembers = [...(formData.meetTheTeam?.teamMembers || []), { name: '', role: '', description: '', image: '', whatsapp: '', orderNumber: '', teamType: 'Ride Marshal' }];
+    setFormData({
+      ...formData,
+      meetTheTeam: { ...(formData.meetTheTeam || {}), teamMembers: newMembers }
+    });
+  };
+
+  const removeTeamMember = (index) => {
+    const newMembers = (formData.meetTheTeam?.teamMembers || []).filter((_, i) => i !== index);
+    setFormData({
+      ...formData,
+      meetTheTeam: { ...(formData.meetTheTeam || {}), teamMembers: newMembers }
+    });
+  };
+
+
   if (loading) return <div>Loading...</div>;
   if (!formData) return <div>No settings found</div>;
 
