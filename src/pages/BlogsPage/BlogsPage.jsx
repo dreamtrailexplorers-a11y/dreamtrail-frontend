@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getBlogs } from '../../services/api';
 import BlogCard from '../../components/BlogSection/BlogCard';
+import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
 import styles from './BlogsPage.module.css';
 import { cleanImageUrl } from '../../utils/cleanUrl';
 
@@ -27,17 +29,19 @@ const BlogsPage = () => {
   const regularBlogs = blogsList.length > 1 ? blogsList.slice(1) : [];
 
   return (
-    <div className={styles.pageWrapper}>
-      {/* Hero Section */}
-      <div className={styles.heroSection}>
-        <div className={styles.heroContent}>
-          <span className={styles.categoryBadge}>Stories & Tips</span>
-          <h1 className={styles.heroTitle}>Our <span className={styles.highlight}>Blogs</span></h1>
-          <p className={styles.heroSubtitle}>
-            Dive into the world of adventure. Discover travel stories, expert tips, and unforgettable experiences from our riders.
-          </p>
+    <>
+      <Navbar />
+      <div className={styles.pageWrapper}>
+        {/* Hero Section */}
+        <div className={styles.heroSection}>
+          <div className={styles.heroContent}>
+            <span className={styles.categoryBadge}>Stories & Tips</span>
+            <h1 className={styles.heroTitle}>Our <span className={styles.highlight}>Blogs</span></h1>
+            <p className={styles.heroSubtitle}>
+              Dive into the world of adventure. Discover travel stories, expert tips, and unforgettable experiences from our riders.
+            </p>
+          </div>
         </div>
-      </div>
 
       <div className={styles.contentContainer}>
         {loading ? (
@@ -103,7 +107,8 @@ const BlogsPage = () => {
           </>
         )}
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 
