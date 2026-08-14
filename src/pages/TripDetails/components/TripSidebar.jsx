@@ -10,12 +10,24 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
   const origPriceNum = Number(trip.originalPrice) || 0;
   const discPriceNum = Number(trip.discountedPrice) || 0;
 
+  let finalPrice = 0;
+  let finalOrigPrice = null;
+
+  if (discPriceNum === 0 || discPriceNum >= origPriceNum) {
+    // No valid discount
+    finalPrice = origPriceNum;
+  } else {
+    // Valid discount
+    finalPrice = discPriceNum;
+    finalOrigPrice = origPriceNum;
+  }
+
   return (
     <div className={styles.stickySidebar}>
       {/* Save Pill */}
-      {origPriceNum > 0 && discPriceNum > 0 && origPriceNum !== discPriceNum && (
+      {finalOrigPrice && finalOrigPrice !== finalPrice && (
         <div className={styles.saveHeaderPill}>
-          <FiCheck size={14} /> Save {'\u20B9'} {Math.abs(origPriceNum - discPriceNum).toLocaleString('en-IN')}
+          <FiCheck size={14} /> Save {'\u20B9'} {Math.abs(finalOrigPrice - finalPrice).toLocaleString('en-IN')}
         </div>
       )}
 
@@ -24,12 +36,12 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
         <span className={styles.startFromLabel}>Starting from</span>
         <div className={styles.sidebarPriceRow}>
           <span className={styles.mainPrice}>
-            {'\u20B9'} {trip.discountedPrice ? Number(trip.discountedPrice).toLocaleString('en-IN') : '0'}
+            {'\u20B9'} {finalPrice.toLocaleString('en-IN')}
           </span>
           <div className={styles.perPersonSub}>
-            {origPriceNum > 0 && (
+            {finalOrigPrice && (
               <span className={styles.sidebarOldPrice}>
-                {'\u20B9'} {origPriceNum.toLocaleString('en-IN')}
+                {'\u20B9'} {finalOrigPrice.toLocaleString('en-IN')}
               </span>
             )}
             <span>per person</span>
@@ -150,7 +162,7 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
         isOpen={isBuyModalOpen}
         onClose={() => setIsBuyModalOpen(false)}
         tripTitle={selectedOptionTitle && selectedOptionTitle !== trip.title ? `${trip.title} (${selectedOptionTitle})` : trip.title}
-        pricePerPerson={discPriceNum}
+        pricePerPerson={finalPrice}
         duration={trip.duration}
         destination={trip.destination?.name || trip.destination || ''}
         selectedDepartureDate={selectedDepartureDate}
