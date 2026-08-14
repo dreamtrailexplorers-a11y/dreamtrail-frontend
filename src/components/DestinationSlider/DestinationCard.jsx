@@ -51,6 +51,7 @@ const DestinationCard = ({ destination }) => {
           src={getImageUrl(destination.image)}
           alt={destination.name}
           className={styles.cardImage}
+          referrerPolicy="no-referrer"
         />
       )}
       {/* Top Gradient for Title Readability */}

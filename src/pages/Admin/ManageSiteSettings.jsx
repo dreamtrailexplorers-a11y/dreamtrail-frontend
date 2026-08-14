@@ -1255,6 +1255,124 @@ const ManageSiteSettings = () => {
           </>
         );
       
+      case 'Meet The Team Page':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['meetTheTeam'], 'Meet The Team Page')} className={styles.card}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Meet The Team Page</h3>
+                <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
+              </div>
+              
+              <h4 style={{marginTop: '20px', marginBottom: '10px', color: '#334155', borderBottom: '1px solid #e2e8f0', paddingBottom: '5px'}}>Hero Section</h4>
+              <div className={styles.formGrid}>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <label className={styles.inputLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    Hero Background Image
+                    <label className={styles.btnSecondary} style={{ cursor: 'pointer', padding: '4px 10px', fontSize: '0.75rem' }}>
+                      Upload Image
+                      <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleMeetTheTeamImageUpload(e, 'heroImage')} />
+                    </label>
+                  </label>
+                  <input name="heroImage" value={formData.meetTheTeam?.heroImage || ''} onChange={handleMeetTheTeamNestedChange} className={styles.inputField} />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label className={styles.inputLabel}>Hero Title</label>
+                  <input name="heroTitle" value={formData.meetTheTeam?.heroTitle || ''} onChange={handleMeetTheTeamNestedChange} className={styles.inputField} />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label className={styles.inputLabel}>Hero Subtitle</label>
+                  <input name="heroSubtitle" value={formData.meetTheTeam?.heroSubtitle || ''} onChange={handleMeetTheTeamNestedChange} className={styles.inputField} />
+                </div>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <label className={styles.inputLabel}>Hero Text</label>
+                  <textarea name="heroText" value={formData.meetTheTeam?.heroText || ''} onChange={handleMeetTheTeamNestedChange} className={styles.textareaField} rows="2" />
+                </div>
+              </div>
+
+              <h4 style={{marginTop: '20px', marginBottom: '10px', color: '#334155', borderBottom: '1px solid #e2e8f0', paddingBottom: '5px'}}>Inspiration Section</h4>
+              <div className={styles.formGrid}>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <label className={styles.inputLabel}>Quote Text (What inspired me...)</label>
+                  <textarea name="quoteText" value={formData.meetTheTeam?.quoteText || ''} onChange={handleMeetTheTeamNestedChange} className={styles.textareaField} rows="3" />
+                </div>
+              </div>
+
+              <h4 style={{marginTop: '20px', marginBottom: '10px', color: '#334155', borderBottom: '1px solid #e2e8f0', paddingBottom: '5px'}}>Team Members</h4>
+              <div className={styles.formGrid}>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                    <label className={styles.inputLabel} style={{ margin: 0 }}>Manage Members</label>
+                    <button type="button" onClick={addTeamMember} className={styles.btnSecondary} style={{ padding: '4px 10px', fontSize: '0.8rem' }}>+ Add Member</button>
+                  </div>
+                  
+                  {(formData.meetTheTeam?.teamMembers || []).map((member, index) => (
+                    <div key={index} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', background: '#fafafa' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                        <span style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#64748b' }}>Member #{index + 1}</span>
+                        <button type="button" onClick={() => removeTeamMember(index)} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '2px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem' }}>Remove</button>
+                      </div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                        
+                        <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                          <label className={styles.inputLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            Member Photo
+                            <label className={styles.btnSecondary} style={{ cursor: 'pointer', padding: '2px 8px', fontSize: '0.7rem' }}>
+                              Upload
+                              <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleTeamMemberImageUpload(e, index)} />
+                            </label>
+                          </label>
+                          <input value={member.image || ''} onChange={(e) => handleTeamMemberChange(index, 'image', e.target.value)} className={styles.inputField} placeholder="Image URL" />
+                        </div>
+                        
+                        <div className={styles.inputGroup}>
+                          <label className={styles.inputLabel}>Name</label>
+                          <input value={member.name || ''} onChange={(e) => handleTeamMemberChange(index, 'name', e.target.value)} className={styles.inputField} />
+                        </div>
+                        
+                        <div className={styles.inputGroup}>
+                          <label className={styles.inputLabel}>Role</label>
+                          <input value={member.role || ''} onChange={(e) => handleTeamMemberChange(index, 'role', e.target.value)} className={styles.inputField} placeholder="e.g. Founder, Operations" />
+                        </div>
+
+                        <div className={styles.inputGroup}>
+                          <label className={styles.inputLabel}>Team Type</label>
+                          <select value={member.teamType || 'Ride Marshal'} onChange={(e) => handleTeamMemberChange(index, 'teamType', e.target.value)} className={styles.inputField}>
+                            <option value="Ride Marshal">Ride Marshal (or Main Founder)</option>
+                            <option value="Back Office">Back Office</option>
+                          </select>
+                        </div>
+                        
+                        <div className={styles.inputGroup}>
+                          <label className={styles.inputLabel}>Whatsapp Number (optional)</label>
+                          <input value={member.whatsapp || ''} onChange={(e) => handleTeamMemberChange(index, 'whatsapp', e.target.value)} className={styles.inputField} placeholder="e.g. 919876543210" />
+                        </div>
+                        
+                        <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                          <label className={styles.inputLabel}>Order Number / Watermark</label>
+                          <input value={member.orderNumber || ''} onChange={(e) => handleTeamMemberChange(index, 'orderNumber', e.target.value)} className={styles.inputField} placeholder="e.g. 01, 02" />
+                        </div>
+
+                        <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                          <label className={styles.inputLabel}>Description</label>
+                          <textarea value={member.description || ''} onChange={(e) => handleTeamMemberChange(index, 'description', e.target.value)} className={styles.textareaField} rows="2" />
+                        </div>
+                        
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {(!formData.meetTheTeam?.teamMembers || formData.meetTheTeam.teamMembers.length === 0) && (
+                    <div style={{ textAlign: 'center', padding: '20px', color: '#64748b', backgroundColor: '#f1f5f9', borderRadius: '8px' }}>
+                      No team members added yet.
+                    </div>
+                  )}
+                </div>
+              </div>
+
+            </form>
+          </>
+        );
       default:
         return null;
     }
@@ -1360,6 +1478,12 @@ const ManageSiteSettings = () => {
         <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Payment Details Content</h3>
           <button type="button" onClick={() => setActiveModal('Payment Details Content')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Meet The Team Page</h3>
+          <button type="button" onClick={() => setActiveModal('Meet The Team Page')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
             Edit
           </button>
         </div>
