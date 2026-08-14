@@ -4,7 +4,8 @@ import Home from '../pages/Home/Home';
 import TripDetails from '../pages/TripDetails/TripDetails';
 import CreatorTripDetails from '../pages/CreatorTripDetails/CreatorTripDetails';
 import CreatorTrips from '../pages/CreatorTrips/CreatorTrips';
-import GroupTrips from '../pages/GroupTrips/GroupTrips';
+
+import CategoryPage from '../pages/CategoryPage/CategoryPage';
 import TourPackages from '../pages/TourPackages/TourPackages';
 import UpcomingTripsPage from '../pages/UpcomingTripsPage/UpcomingTripsPage';
 
@@ -28,7 +29,8 @@ const AppRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/tour-packages" element={<TourPackages />} />
       <Route path="/upcoming-trips/:month" element={<UpcomingTripsPage />} />
-      <Route path="/group-trips" element={<GroupTrips />} />
+      <Route path="/group-trips" element={<Navigate to="/category/Group%20Tours" replace />} />
+      <Route path="/category/:categoryName" element={<CategoryPage />} />
       <Route path="/creator-trips" element={<CreatorTrips />} />
       <Route path="/destinations/:slug" element={<DestinationPage />} />
       <Route path="/attractions/:slug" element={<AttractionPage />} />

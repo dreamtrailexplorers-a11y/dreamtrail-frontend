@@ -463,6 +463,16 @@ const ManageSiteSettings = () => {
                   <label className={styles.inputLabel}>Pill Text (Bottom)</label>
                   <input value={banner.pillText || ''} onChange={(e) => handleBannerArrayChange(index, 'pillText', e.target.value)} className={styles.inputField} placeholder="e.g. Join solo or bring your buddy" />
                 </div>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1', margin: 0 }}>
+                  <label className={styles.inputLabel}>Link to Category</label>
+                  <select value={banner.categoryLink || ''} onChange={(e) => handleBannerArrayChange(index, 'categoryLink', e.target.value)} className={styles.inputField}>
+                    <option value="">No Link</option>
+                    <option value="Motorcycle Tours">Motorcycle Tours</option>
+                    <option value="Group Tours">Group Tours</option>
+                    <option value="Winter Tours">Winter Tours</option>
+                    <option value="Corporate Tours">Corporate Tours</option>
+                  </select>
+                </div>
               </div>
             </div>
           ))}

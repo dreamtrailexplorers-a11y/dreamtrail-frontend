@@ -434,11 +434,10 @@ const ManageDestinations = () => {
                   onChange={(e) => setPackageForm({...packageForm, category: e.target.value})} 
                   className={styles.inputField}
                 >
-                  <option value="Tour Package">Tour Package</option>
-                  <option value="Group Trip">Group Trip</option>
-                  <option value="Flight Package">Flight Package</option>
-                  <option value="Honeymoon">Honeymoon</option>
-                  <option value="Unique Experience">Unique Experience</option>
+                  <option value="Motorcycle Tours">Motorcycle Tours</option>
+                  <option value="Group Tours">Group Tours</option>
+                  <option value="Winter Tours">Winter Tours</option>
+                  <option value="Corporate Tours">Corporate Tours</option>
                 </select>
               </div>
               <div className={styles.inputGroup}>

@@ -47,7 +47,7 @@ const GroupTripBanner = () => {
       >
         {banners.map((banner, index) => (
           <SwiperSlide key={index}>
-            <Link to="/group-trips" className={styles.bannerLink}>
+            <Link to={banner.categoryLink ? `/category/${encodeURIComponent(banner.categoryLink)}` : "/group-trips"} className={styles.bannerLink}>
               <div className={styles.bannerCard}>
                 <img
                   src={banner.image || 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1600&q=80'}

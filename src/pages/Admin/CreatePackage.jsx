@@ -19,7 +19,7 @@ const CreatePackage = () => {
     route: 'TBD',
     originalPrice: 0,
     discountedPrice: 0,
-    image: '',
+    image: 'https://via.placeholder.com/150',
   });
 
   useEffect(() => {
@@ -61,10 +61,10 @@ const CreatePackage = () => {
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Category</label>
             <select name="category" value={formData.category} onChange={handleChange} className={styles.inputField}>
-              <option value="Tour Package">Tour Package</option>
-              <option value="Group Trip">Group Trip</option>
-              <option value="Flight Package">Flight Package</option>
-              <option value="Honeymoon">Honeymoon</option>
+              <option value="Motorcycle Tours">Motorcycle Tours</option>
+              <option value="Group Tours">Group Tours</option>
+              <option value="Winter Tours">Winter Tours</option>
+              <option value="Corporate Tours">Corporate Tours</option>
             </select>
           </div>
           <div className={styles.inputGroup}>

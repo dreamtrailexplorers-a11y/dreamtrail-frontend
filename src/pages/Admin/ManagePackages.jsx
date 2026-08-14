@@ -528,7 +528,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
       route: 'TBD',
       originalPrice: 0,
       discountedPrice: 0,
-      image: ''
+      image: 'https://via.placeholder.com/150'
     };
     try {
       await createTrip(newTrip);
@@ -666,11 +666,10 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
             <div className={styles.inputGroup}>
               <label className={styles.inputLabel}>Category</label>
               <select name="category" value={basicForm.category} onChange={handleBasicChange} required className={styles.inputField}>
-                <option value="Flight Package">Flight Package</option>
                 <option value="Motorcycle Tours">Motorcycle Tours</option>
                 <option value="Group Tours">Group Tours</option>
-                <option value="Honeymoon">Honeymoon</option>
-                <option value="Unique Experience">Unique Experience</option>
+                <option value="Winter Tours">Winter Tours</option>
+                <option value="Corporate Tours">Corporate Tours</option>
               </select>
             </div>
             <div className={styles.inputGroup} style={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -709,11 +708,10 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Category</label>
             <select name="category" value={formData.category || 'Motorcycle Tours'} onChange={handleChange} required className={styles.inputField}>
-                <option value="Flight Package">Flight Package</option>
                 <option value="Motorcycle Tours">Motorcycle Tours</option>
                 <option value="Group Tours">Group Tours</option>
-                <option value="Honeymoon">Honeymoon</option>
-                <option value="Unique Experience">Unique Experience</option>
+                <option value="Winter Tours">Winter Tours</option>
+                <option value="Corporate Tours">Corporate Tours</option>
             </select>
           </div>
           <div className={styles.inputGroup}>
