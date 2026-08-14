@@ -787,16 +787,6 @@ const ManageSiteSettings = () => {
                 <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
               </div>
               
-              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <button type="button" onClick={() => handleAddPolicyBlock('careersBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('careersBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('careersBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('careersBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
-                </div>
-              </div>
-              
               <div className={styles.formGrid}>
                 <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
                   {(formData.careersBlocks || []).map((block, idx) => (
@@ -842,6 +832,16 @@ const ManageSiteSettings = () => {
                   )}
                 </div>
               </div>
+              
+              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" onClick={() => handleAddPolicyBlock('careersBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('careersBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('careersBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('careersBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
+                </div>
+              </div>
             </form>
           </>
         );
@@ -853,16 +853,6 @@ const ManageSiteSettings = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                 <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Contact Us Content</h3>
                 <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
-              </div>
-              
-              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <button type="button" onClick={() => handleAddPolicyBlock('contactUsBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('contactUsBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('contactUsBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('contactUsBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
-                </div>
               </div>
               
               <div className={styles.formGrid}>
@@ -910,6 +900,16 @@ const ManageSiteSettings = () => {
                   )}
                 </div>
               </div>
+              
+              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" onClick={() => handleAddPolicyBlock('contactUsBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('contactUsBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('contactUsBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('contactUsBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
+                </div>
+              </div>
             </form>
           </>
         );
@@ -921,16 +921,6 @@ const ManageSiteSettings = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                 <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Terms & Conditions Content</h3>
                 <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
-              </div>
-              
-              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <button type="button" onClick={() => handleAddPolicyBlock('termsBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('termsBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('termsBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('termsBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
-                </div>
               </div>
               
               <div className={styles.formGrid}>
@@ -978,6 +968,16 @@ const ManageSiteSettings = () => {
                   )}
                 </div>
               </div>
+              
+              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" onClick={() => handleAddPolicyBlock('termsBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('termsBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('termsBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('termsBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
+                </div>
+              </div>
             </form>
           </>
         );
@@ -989,16 +989,6 @@ const ManageSiteSettings = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                 <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Privacy Policy Content</h3>
                 <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
-              </div>
-              
-              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <button type="button" onClick={() => handleAddPolicyBlock('privacyPolicyBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('privacyPolicyBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('privacyPolicyBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('privacyPolicyBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
-                </div>
               </div>
               
               <div className={styles.formGrid}>
@@ -1046,6 +1036,16 @@ const ManageSiteSettings = () => {
                   )}
                 </div>
               </div>
+              
+              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" onClick={() => handleAddPolicyBlock('privacyPolicyBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('privacyPolicyBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('privacyPolicyBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('privacyPolicyBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
+                </div>
+              </div>
             </form>
           </>
         );
@@ -1056,16 +1056,6 @@ const ManageSiteSettings = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                 <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Cancellation Policy Content</h3>
                 <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
-              </div>
-              
-              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <button type="button" onClick={() => handleAddPolicyBlock('cancellationBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('cancellationBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('cancellationBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('cancellationBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
-                </div>
               </div>
               
               <div className={styles.formGrid}>
@@ -1113,6 +1103,16 @@ const ManageSiteSettings = () => {
                   )}
                 </div>
               </div>
+              
+              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" onClick={() => handleAddPolicyBlock('cancellationBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('cancellationBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('cancellationBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('cancellationBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
+                </div>
+              </div>
             </form>
           </>
         );
@@ -1125,16 +1125,6 @@ const ManageSiteSettings = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                 <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Payment Details Content</h3>
                 <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
-              </div>
-              
-              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <button type="button" onClick={() => handleAddPolicyBlock('paymentDetailsBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('paymentDetailsBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('paymentDetailsBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('paymentDetailsBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
-                </div>
               </div>
               
               <div className={styles.formGrid}>
@@ -1180,6 +1170,16 @@ const ManageSiteSettings = () => {
                       No blocks added yet. Use the buttons above to start building your page.
                     </div>
                   )}
+                </div>
+              </div>
+              
+              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" onClick={() => handleAddPolicyBlock('paymentDetailsBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('paymentDetailsBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('paymentDetailsBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
+                  <button type="button" onClick={() => handleAddPolicyBlock('paymentDetailsBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
                 </div>
               </div>
             </form>
