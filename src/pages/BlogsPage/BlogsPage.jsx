@@ -107,6 +107,7 @@ const BlogsPage = () => {
           </>
         )}
       </div>
+      </div>
       <Footer />
     </>
   );
