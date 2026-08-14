@@ -21,38 +21,56 @@ const TripPackageOptions = ({ trip, options = [], selectedOptionIndex, onSelectO
     <div className={styles.container}>
       <h3 className={styles.sectionTitle}>Package Options</h3>
       
-      <div className={styles.categoriesGrid}>
+      <div className={styles.categoriesList}>
         {options.map((opt, index) => {
           const isActive = selectedOptionIndex === index;
           
-          let displayPrice = (Number(opt.price) || 0) + selectedVariantAddon;
-          let displayOrigPrice = opt.originalPrice || trip?.originalPrice;
-          if (displayOrigPrice) {
-            displayOrigPrice = Number(displayOrigPrice) + selectedVariantAddon;
+          let displayPrice = Number(opt.price) || 0;
+          let baseOrigPrice = Number(opt.originalPrice) || Number(trip?.originalPrice) || 0;
+          
+          let finalPrice = 0;
+          let finalOrigPrice = null;
+          
+          if (displayPrice === 0 || displayPrice >= baseOrigPrice) {
+            // No valid discount
+            finalPrice = baseOrigPrice + selectedVariantAddon;
+          } else {
+            // Valid discount
+            finalPrice = displayPrice + selectedVariantAddon;
+            finalOrigPrice = baseOrigPrice + selectedVariantAddon;
           }
 
           return (
             <div 
               key={index} 
-              className={`${styles.categoryCard} ${isActive ? styles.activeCard : ''}`}
+              className={`${styles.categoryRow} ${isActive ? styles.activeRow : ''}`}
               onClick={() => {
                 onSelectOption(isActive ? null : index);
                 onSelectSubOption(null); // Reset sub-option when changing main option
               }}
             >
-              <div className={styles.imageWrapper}>
-                {opt.image && <img src={opt.image} alt={opt.title} className={styles.image} />}
-                {trip?.duration && (
-                  <span className={styles.daysBadge}>
-                    {trip.duration.match(/(\d+\s*Days?)/i)?.[1] || trip.duration}
-                  </span>
+              <div className={styles.rowLeft}>
+                {opt.image && (
+                  <div className={styles.rowImageWrapper}>
+                    <img src={opt.image} alt={opt.title} className={styles.rowImage} />
+                  </div>
                 )}
+                <div className={styles.rowDetails}>
+                  <h4 className={styles.rowTitle}>{opt.title}</h4>
+                  {trip?.duration && (
+                    <span className={styles.rowBadge}>
+                      {trip.duration.match(/(\d+\s*Days?)/i)?.[1] || trip.duration}
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className={styles.details}>
-                <h4 className={styles.catTitle}>{opt.title}</h4>
-                <div className={styles.pricing}>
-                  {displayOrigPrice && <span className={styles.origPrice}>₹ {displayOrigPrice}</span>}
-                  <span className={styles.discPrice}>₹ {displayPrice}</span>
+              <div className={styles.rowRight}>
+                <div className={styles.rowPricing}>
+                  {finalOrigPrice && <span className={styles.rowOrigPrice}>₹ {finalOrigPrice}</span>}
+                  <span className={styles.rowDiscPrice}>₹ {finalPrice}</span>
+                </div>
+                <div className={styles.rowRadio}>
+                  {isActive && <div className={styles.radioInner} />}
                 </div>
               </div>
             </div>

@@ -492,23 +492,37 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     const file = e.target.files[0];
     if(!file) return;
     try {
-      // 1. Get the direct upload URL
+      // 1. Get the direct upload URL (Resumable Session)
       const initiateRes = await initiateUpload(file.name, file.type);
       const uploadUrl = initiateRes.data.uploadUrl;
       
-      // 2. Upload directly to Google Drive
-      const uploadRes = await fetch(uploadUrl, {
-        method: 'PUT',
-        body: file,
-        headers: {
-          'Content-Type': file.type,
+      // 2. Upload file in chunks via Backend Proxy to bypass CORS and Vercel 4.5MB limit
+      const chunkSize = 3 * 1024 * 1024; // 3MB chunks (under Vercel's 4.5MB limit)
+      let fileId = null;
+      
+      for (let start = 0; start < file.size; start += chunkSize) {
+        const end = Math.min(start + chunkSize, file.size);
+        const chunk = file.slice(start, end);
+        
+        const chunkRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/upload/chunk`, {
+          method: 'POST',
+          headers: {
+            'X-Upload-Url': uploadUrl,
+            'Content-Range': `bytes ${start}-${end - 1}/${file.size}`,
+            'Content-Type': 'application/octet-stream'
+          },
+          body: chunk
+        });
+        
+        if (!chunkRes.ok) throw new Error("Chunk upload failed");
+        
+        const chunkData = await chunkRes.json();
+        if (chunkData.status === 'complete') {
+          fileId = chunkData.fileId;
         }
-      });
-      
-      if (!uploadRes.ok) throw new Error("Upload failed");
-      
-      const fileData = await uploadRes.json();
-      const fileId = fileData.id;
+      }
+
+      if (!fileId) throw new Error("Upload did not complete successfully");
 
       // 3. Finalize upload to make public and get URL
       const finalizeRes = await finalizeUpload(fileId, file.type);
