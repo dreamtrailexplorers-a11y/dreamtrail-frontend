@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getTrips, createTrip, updateTrip, deleteTrip, uploadFile, initiateUpload, finalizeUpload } from '../../services/api';
+import { getTrips, createTrip, updateTrip, deleteTrip, uploadFile, initiateUpload, finalizeUpload, getSiteSettings } from '../../services/api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { cleanImageUrl } from '../../utils/cleanUrl';
 import styles from './Admin.module.css';
@@ -441,18 +441,20 @@ const StayDetailsInput = ({ data = [], onChange }) => {
   );
 };
 
-const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
+const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey: externalRefreshKey }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const destName = destNameProp || queryParams.get('dest');
   const [trips, setTrips] = useState([]);
+  const [footerOptions, setFooterOptions] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [showFullForm, setShowFullForm] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   
   const initialForm = {
-    title: '', slug: '', duration: '', route: '', destination: destName || '', category: 'Motorcycle Tours',
+    title: '', slug: '', duration: '', route: '', destination: destName || '', category: 'Motorcycle Tours', footerLink: '',
     originalPrice: '', discountedPrice: '', saveAmount: '',
     rating: '5', reviewsCount: '0', image: '', mapImage: '', tag: 'Trending', type: 'tour',
     galleryImages: ['', '', '', '', ''], itinerary: [], attractions: [], inclusions: [], tourHighlights: [], exclusions: [], amenities: [], aboutTrip: '',
@@ -467,7 +469,22 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
 
   useEffect(() => {
     fetchTrips();
-  }, [destName, refreshKey]);
+    fetchFooterOptions();
+  }, [destName, refreshKey, externalRefreshKey]);
+
+  const fetchFooterOptions = async () => {
+    try {
+      const { data } = await getSiteSettings();
+      if (data) {
+        const indiaTours = data.footerToursIndia?.map(t => t.label) || [];
+        const asiaTours = data.footerToursAsia?.map(t => t.label) || [];
+        const otherLinks = data.footerOtherLinks?.map(t => t.label) || [];
+        setFooterOptions([...new Set([...indiaTours, ...asiaTours, ...otherLinks])]);
+      }
+    } catch (err) {
+      console.error('Failed to fetch site settings', err);
+    }
+  };
 
   useEffect(() => {
     if (location.state?.createForDestination) {
@@ -819,6 +836,15 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
                 <option value="Group Tours">Group Tours</option>
                 <option value="Winter Tours">Winter Tours</option>
                 <option value="Corporate Tours">Corporate Tours</option>
+            </select>
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.inputLabel}>Connect to Footer Link (Optional)</label>
+            <select name="footerLink" value={formData.footerLink || ''} onChange={handleChange} className={styles.inputField}>
+              <option value="">-- No Footer Connection --</option>
+              {footerOptions.map(opt => (
+                <option key={opt} value={opt}>{opt}</option>
+              ))}
             </select>
           </div>
           <div className={styles.inputGroup}>

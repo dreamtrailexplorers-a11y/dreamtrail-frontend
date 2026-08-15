@@ -33,26 +33,22 @@ const Footer = () => {
   }, []);
 
   const renderTourLink = (link, idx) => {
-    const destTrips = trips.filter(t => t.destination && t.destination.toLowerCase() === link.label.toLowerCase());
+    // Find a trip that explicitly selected this footer link name
+    const linkedTrip = trips.find(t => t.footerLink && t.footerLink.toLowerCase() === link.label.toLowerCase());
     
-    if (destTrips.length > 0) {
+    if (linkedTrip) {
       return (
-        <div key={idx} className={styles.dropdownContainer}>
-          <span className={styles.linkItem} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            {link.label} <FiChevronDown size={14} />
-          </span>
-          <div className={styles.dropdownMenu}>
-            {destTrips.map(t => (
-              <Link key={t._id} to={`/tours/${t.slug || t._id}`} className={styles.dropdownItem}>
-                {t.title}
-              </Link>
-            ))}
-          </div>
-        </div>
+        <Link key={idx} to={`/tours/${linkedTrip.slug || linkedTrip._id}`} className={styles.linkItem}>
+          {link.label}
+        </Link>
       );
     }
     
-    return <Link key={idx} to={link.url} className={styles.linkItem}>{link.label}</Link>;
+    return (
+      <Link key={idx} to={link.url} className={styles.linkItem}>
+        {link.label}
+      </Link>
+    );
   };
 
   return (
