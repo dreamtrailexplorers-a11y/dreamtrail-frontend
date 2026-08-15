@@ -33,43 +33,21 @@ const Footer = () => {
   }, []);
 
   const renderTourLink = (link, idx) => {
-    const destTrips = trips.filter(t => t.destination && t.destination.toLowerCase() === link.label.toLowerCase() && t.status === 'Active');
+    const destTrips = trips.filter(t => t.destination && t.destination.toLowerCase() === link.label.toLowerCase());
     
     if (destTrips.length > 0) {
       return (
-        <div key={idx} style={{ position: 'relative', display: 'inline-block' }}>
-          <select 
-            className={styles.linkItem} 
-            style={{ 
-              background: 'transparent', 
-              border: 'none', 
-              cursor: 'pointer', 
-              outline: 'none', 
-              padding: '0 15px 0 0', 
-              margin: 0,
-              appearance: 'none',
-              WebkitAppearance: 'none',
-              MozAppearance: 'none',
-              color: '#cbd5e1',
-              fontFamily: 'inherit',
-              fontSize: '0.88rem'
-            }}
-            onChange={(e) => { 
-              if(e.target.value) {
-                navigate(`/tours/${e.target.value}`);
-                e.target.value = "";
-              }
-            }}
-            defaultValue=""
-          >
-            <option value="" disabled style={{color: '#000'}}>{link.label}</option>
+        <div key={idx} className={styles.dropdownContainer}>
+          <span className={styles.linkItem} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            {link.label} <FiChevronDown size={14} />
+          </span>
+          <div className={styles.dropdownMenu}>
             {destTrips.map(t => (
-              <option key={t._id} value={t.slug || t._id} style={{color: '#000'}}>
+              <Link key={t._id} to={`/tours/${t.slug || t._id}`} className={styles.dropdownItem}>
                 {t.title}
-              </option>
+              </Link>
             ))}
-          </select>
-          <FiChevronDown style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#cbd5e1' }} size={14} />
+          </div>
         </div>
       );
     }
