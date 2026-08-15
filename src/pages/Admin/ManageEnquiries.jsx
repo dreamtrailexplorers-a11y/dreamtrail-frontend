@@ -16,7 +16,7 @@ const ManageEnquiries = () => {
     const dd = String(date.getDate()).padStart(2, '0');
     const mm = String(date.getMonth() + 1).padStart(2, '0');
     const yy = String(date.getFullYear()).slice(-2);
-    return `${dd}/${mm}/${yy}`;
+    return ${dd}//;
   };
 
   // Filters
@@ -24,6 +24,7 @@ const ManageEnquiries = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
+  const [activeTab, setActiveTab] = useState('packages'); // 'packages' | 'contact'
 
   useEffect(() => {
     fetchEnquiries();
@@ -53,6 +54,11 @@ const ManageEnquiries = () => {
 
   // Filter Logic
   const filteredEnquiries = enquiries.filter(enq => {
+    // 0. Tab Filter
+    const isContact = enq.tripTitle === 'General Contact';
+    if (activeTab === 'packages' && isContact) return false;
+    if (activeTab === 'contact' && !isContact) return false;
+
     // 1. Search Query
     const searchLower = searchQuery.toLowerCase();
     const matchesSearch = 
@@ -76,7 +82,7 @@ const ManageEnquiries = () => {
     // 3. Month/Year Filter (format: YYYY-MM)
     let matchesMonth = true;
     if (selectedMonth) {
-      const enqMonthStr = `${enqDate.getFullYear()}-${String(enqDate.getMonth() + 1).padStart(2, '0')}`;
+      const enqMonthStr = ${enqDate.getFullYear()}-;
       matchesMonth = (enqMonthStr === selectedMonth);
     }
 
@@ -89,9 +95,9 @@ const ManageEnquiries = () => {
     
     // Add Title
     doc.setFontSize(16);
-    doc.text('Enquiries Report', 14, 15);
+    doc.text(activeTab === 'packages' ? 'Package Enquiries Report' : 'Contact Us Enquiries Report', 14, 15);
     doc.setFontSize(10);
-    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 22);
+    doc.text(Generated on:  + new Date().toLocaleDateString(), 14, 22);
 
     // Table Data
     const tableColumn = ["Date", "Name", "Email", "Phone", "Destination", "Package", "Travel Date", "Pax", "Message"];
@@ -106,7 +112,7 @@ const ManageEnquiries = () => {
         enq.destination || '-',
         enq.tripTitle || '-',
         enq.date || '-',
-        enq.travellers ? `${enq.travellers}` : '-',
+        enq.travellers ? String(enq.travellers) : '-',
         enq.message || '-'
       ];
       tableRows.push(rowData);
@@ -116,32 +122,32 @@ const ManageEnquiries = () => {
       head: [tableColumn],
       body: tableRows,
       startY: 30,
-      styles: { fontSize: 8, cellPadding: 2 },
+      styles: { fontSize: 8 },
       headStyles: { fillColor: [59, 130, 246] }
     });
 
-    doc.save(`Enquiries_Report_${new Date().getTime()}.pdf`);
+    doc.save(Enquiries_Report_ + new Date().getTime() + .pdf);
   };
 
-  // Excel (CSV) Export
+  // CSV Export
   const handleDownloadExcel = () => {
-    const tableColumn = ["Date", "Name", "Email", "Phone", "Destination", "Package", "Travel Date", "Pax", "Message"];
+    const headers = ["Date", "Name", "Email", "Phone", "Destination", "Package", "Travel Date", "Pax", "Message"];
     const csvRows = [];
-    csvRows.push(tableColumn.join(','));
+    csvRows.push(headers.join(','));
 
     filteredEnquiries.forEach(enq => {
       const rowData = [
         formatDate(enq.createdAt),
         enq.name || '-',
         enq.email || '-',
-        enq.phone ? `\t${enq.phone}` : '-',
+        enq.phone ? \t + enq.phone : '-',
         enq.destination || '-',
         enq.tripTitle || '-',
-        enq.date ? `\t${enq.date}` : '-',
-        enq.travellers ? `${enq.travellers}` : '-',
+        enq.date ? \t + enq.date : '-',
+        enq.travellers ? String(enq.travellers) : '-',
         enq.message ? enq.message.replace(/"/g, '""') : '-'
       ];
-      csvRows.push(rowData.map(item => `"${item}"`).join(','));
+      csvRows.push(rowData.map(item => " + item + ").join(','));
     });
 
     const csvData = new Blob(['\ufeff' + csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
@@ -149,7 +155,7 @@ const ManageEnquiries = () => {
     const hiddenElement = document.createElement('a');
     hiddenElement.href = csvUrl;
     hiddenElement.target = '_blank';
-    hiddenElement.download = `Enquiries_Report_${new Date().getTime()}.csv`;
+    hiddenElement.download = Enquiries_Report_ + new Date().getTime() + .csv;
     hiddenElement.click();
   };
 
@@ -173,6 +179,22 @@ const ManageEnquiries = () => {
             <FiDownload /> Download PDF
           </button>
         </div>
+      </div>
+
+      {/* TABS FOR ENQUIRY TYPES */}
+      <div style={{ display: 'flex', gap: '20px', marginBottom: '20px', borderBottom: '2px solid #e2e8f0' }}>
+        <button 
+          onClick={() => setActiveTab('packages')}
+          style={{ padding: '10px 20px', border: 'none', background: 'none', borderBottom: activeTab === 'packages' ? '3px solid #3b82f6' : 'none', color: activeTab === 'packages' ? '#3b82f6' : '#64748b', fontWeight: '600', cursor: 'pointer', fontSize: '1rem', marginBottom: '-2px' }}
+        >
+          Package Enquiries
+        </button>
+        <button 
+          onClick={() => setActiveTab('contact')}
+          style={{ padding: '10px 20px', border: 'none', background: 'none', borderBottom: activeTab === 'contact' ? '3px solid #3b82f6' : 'none', color: activeTab === 'contact' ? '#3b82f6' : '#64748b', fontWeight: '600', cursor: 'pointer', fontSize: '1rem', marginBottom: '-2px' }}
+        >
+          Contact Us Messages
+        </button>
       </div>
 
       {/* Filters Toolbar */}
@@ -242,7 +264,7 @@ const ManageEnquiries = () => {
       
       {filteredEnquiries.length === 0 ? (
         <p style={{ textAlign: 'center', padding: '40px', color: '#64748b', background: '#f8fafc', borderRadius: '8px' }}>
-          No enquiries found matching your filters.
+          No {activeTab === 'packages' ? 'package enquiries' : 'contact us messages'} found.
         </p>
       ) : (
         <div style={{ overflowX: 'auto' }}>
@@ -252,10 +274,10 @@ const ManageEnquiries = () => {
                 <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Date</th>
                 <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Name</th>
                 <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Phone</th>
-                <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Destination</th>
-                <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Package</th>
-                <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Travel Date</th>
-                <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Pax</th>
+                {activeTab === 'packages' && <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Destination</th>}
+                {activeTab === 'packages' && <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Package</th>}
+                {activeTab === 'packages' && <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Travel Date</th>}
+                {activeTab === 'packages' && <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Pax</th>}
                 <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Message</th>
                 <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Actions</th>
               </tr>
@@ -266,20 +288,26 @@ const ManageEnquiries = () => {
                   <td style={{ padding: '12px' }}>{formatDate(enq.createdAt)}</td>
                   <td style={{ padding: '12px', fontWeight: '600' }}>{enq.name}<br/><small>{enq.email}</small></td>
                   <td style={{ padding: '12px' }}>{enq.phone}</td>
-                  <td style={{ padding: '12px' }}>{enq.destination || '-'}</td>
-                  <td style={{ padding: '12px' }}>
-                      {enq.tripTitle?.includes(' (') ? (
-                        <>
-                          <div style={{fontWeight: 600, color: '#0f172a'}}>{enq.tripTitle.split(' (')[0]}</div>
-                          <div style={{fontSize: '0.85em', color: '#64748b'}}>{enq.tripTitle.split(' (')[1].replace(')', '')}</div>
-                        </>
-                      ) : (
-                        enq.tripTitle
-                      )}
-                    </td>
-                  <td style={{ padding: '12px' }}>{enq.date || '-'}</td>
-                  <td style={{ padding: '12px' }}>{enq.travellers || '-'}</td>
-                  <td style={{ padding: '12px', maxWidth: '200px' }}>{enq.message}</td>
+                  
+                  {activeTab === 'packages' && (
+                    <>
+                      <td style={{ padding: '12px' }}>{enq.destination || '-'}</td>
+                      <td style={{ padding: '12px' }}>
+                          {enq.tripTitle?.includes(' (') ? (
+                            <>
+                              <div style={{fontWeight: 600, color: '#0f172a'}}>{enq.tripTitle.split(' (')[0]}</div>
+                              <div style={{fontSize: '0.85em', color: '#64748b'}}>{enq.tripTitle.split(' (')[1].replace(')', '')}</div>
+                            </>
+                          ) : (
+                            enq.tripTitle
+                          )}
+                        </td>
+                      <td style={{ padding: '12px' }}>{enq.date || '-'}</td>
+                      <td style={{ padding: '12px' }}>{enq.travellers || '-'}</td>
+                    </>
+                  )}
+
+                  <td style={{ padding: '12px', maxWidth: activeTab === 'contact' ? '400px' : '200px' }}>{enq.message}</td>
                   <td style={{ padding: '12px' }}>
                     <button onClick={() => handleDelete(enq._id)} className={styles.btnDanger} style={{ padding: '6px' }}>
                       <FiTrash2 />
