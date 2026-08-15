@@ -44,8 +44,8 @@ const TourPackages = () => {
 
   const handleCategoryClick = (id) => {
     setActiveCategory(id);
-    // Optionally scroll to the top of the main container so the grid is visible
-    window.scrollTo({ top: 300, behavior: 'smooth' });
+    // Scroll to the top of the page so the grid is perfectly visible below the sticky nav
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const scrollNav = (direction) => {
