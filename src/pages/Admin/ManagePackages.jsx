@@ -128,6 +128,80 @@ const AmenitiesCheckboxInput = ({ data = [], onChange }) => {
   );
 };
 
+const StructuredArrayInput = ({ title, data = [], onChange }) => {
+  const normalizedData = (data || []).map(item => {
+    if (typeof item === 'string') {
+      return { title: '', points: [item] };
+    }
+    return item;
+  });
+
+  const handleAddGroup = () => onChange([...normalizedData, { title: '', points: [''] }]);
+  const handleRemoveGroup = (i) => onChange(normalizedData.filter((_, idx) => idx !== i));
+  const handleGroupTitleChange = (i, value) => {
+    const newData = [...normalizedData];
+    newData[i].title = value;
+    onChange(newData);
+  };
+  
+  const handleAddPoint = (groupIndex) => {
+    const newData = [...normalizedData];
+    newData[groupIndex].points.push('');
+    onChange(newData);
+  };
+  const handleRemovePoint = (groupIndex, pointIndex) => {
+    const newData = [...normalizedData];
+    newData[groupIndex].points = newData[groupIndex].points.filter((_, idx) => idx !== pointIndex);
+    onChange(newData);
+  };
+  const handlePointChange = (groupIndex, pointIndex, value) => {
+    const newData = [...normalizedData];
+    newData[groupIndex].points[pointIndex] = value;
+    onChange(newData);
+  };
+
+  return (
+    <div className={styles.card} style={{ marginBottom: '20px' }}>
+      <h3 className={styles.cardTitle}>{title}</h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        {normalizedData.map((group, gIdx) => (
+          <div key={gIdx} style={{ padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', backgroundColor: '#f8fafc' }}>
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
+              <input 
+                type="text" 
+                value={group.title || ''} 
+                onChange={(e) => handleGroupTitleChange(gIdx, e.target.value)} 
+                className={styles.inputField} 
+                placeholder="Title (Optional, will be bold)"
+                style={{ flex: 1, fontWeight: 'bold' }}
+              />
+              <button type="button" onClick={() => handleRemoveGroup(gIdx)} className={styles.btnDanger} style={{ padding: '0 15px' }}>Remove</button>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingLeft: '10px' }}>
+              {group.points && group.points.map((point, pIdx) => (
+                <div key={pIdx} style={{ display: 'flex', gap: '10px' }}>
+                  <input 
+                    type="text" 
+                    value={point} 
+                    onChange={(e) => handlePointChange(gIdx, pIdx, e.target.value)} 
+                    className={styles.inputField} 
+                    placeholder="Point detail"
+                    style={{ flex: 1 }}
+                  />
+                  <button type="button" onClick={() => handleRemovePoint(gIdx, pIdx)} className={styles.btnDanger}>X</button>
+                </div>
+              ))}
+              <button type="button" onClick={() => handleAddPoint(gIdx)} className={styles.btnSecondary} style={{ alignSelf: 'flex-start', marginTop: '5px', padding: '4px 10px', fontSize: '0.8rem' }}>+ Add Point</button>
+            </div>
+          </div>
+        ))}
+      </div>
+      <button type="button" onClick={handleAddGroup} className={styles.btnSecondary} style={{ marginTop: '15px' }}>+ Add New Group</button>
+    </div>
+  );
+};
+
 const StringArrayInput = ({ title, data = [], onChange, isImage = false, maxItems }) => {
   const handleAdd = () => onChange([...data, '']);
   const handleRemove = (i) => onChange(data.filter((_, idx) => idx !== i));
@@ -870,8 +944,8 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
           data={formData.itinerary} 
           onChange={(d) => setFormData({...formData, itinerary: d})} 
         />
-        <StringArrayInput title="Inclusions" data={formData.inclusions} onChange={(d) => setFormData({...formData, inclusions: d})} />
-        <StringArrayInput title="Exclusions" data={formData.exclusions} onChange={(d) => setFormData({...formData, exclusions: d})} />
+        <StructuredArrayInput title="Inclusions" data={formData.inclusions} onChange={(d) => setFormData({...formData, inclusions: d})} />
+        <StructuredArrayInput title="Exclusions" data={formData.exclusions} onChange={(d) => setFormData({...formData, exclusions: d})} />
         <div className={styles.card} style={{ marginBottom: '20px' }}>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>About The Tour (Description)</label>

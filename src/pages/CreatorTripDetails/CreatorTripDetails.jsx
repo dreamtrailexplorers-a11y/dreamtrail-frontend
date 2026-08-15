@@ -127,26 +127,60 @@ const CreatorTripDetails = () => {
             
             <section id="inclusions" className={styles.sectionBlock}>
               <h3 className={styles.sectionTitle}>Inclusion</h3>
-              <div className={styles.listGrid}>
-                {inclusions.map((item, idx) => (
-                  <div key={idx} className={styles.listItem}>
-                    <FiCheck className={styles.checkIcon} />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
+                <div className={styles.listGrid} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                  {inclusions.map((item, idx) => {
+                    if (typeof item === 'string') {
+                      return (
+                        <div key={idx} className={styles.listItem} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                          <FiCheck className={styles.checkIcon} style={{ marginTop: '4px', flexShrink: 0 }} />
+                          <span>{item}</span>
+                        </div>
+                      );
+                    }
+                    return (
+                      <div key={idx} className={styles.structuredGroup}>
+                        {item.title && <div style={{ fontWeight: 'bold', marginBottom: '6px' }}>{item.title}</div>}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          {(item.points || []).map((pt, pIdx) => (
+                            <div key={pIdx} className={styles.listItem} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                              <FiCheck className={styles.checkIcon} style={{ marginTop: '4px', flexShrink: 0 }} />
+                              <span>{pt}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
             </section>
             
             <section id="exclusions" className={styles.sectionBlock}>
               <h3 className={styles.sectionTitle}>Exclusion</h3>
-              <div className={styles.listGrid}>
-                {exclusions.map((item, idx) => (
-                  <div key={idx} className={styles.listItem}>
-                    <FiX className={styles.crossIcon} />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
+                <div className={styles.listGrid} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                  {exclusions.map((item, idx) => {
+                    if (typeof item === 'string') {
+                      return (
+                        <div key={idx} className={styles.listItem} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                          <FiX className={styles.crossIcon} style={{ marginTop: '4px', flexShrink: 0 }} />
+                          <span>{item}</span>
+                        </div>
+                      );
+                    }
+                    return (
+                      <div key={idx} className={styles.structuredGroup}>
+                        {item.title && <div style={{ fontWeight: 'bold', marginBottom: '6px' }}>{item.title}</div>}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          {(item.points || []).map((pt, pIdx) => (
+                            <div key={pIdx} className={styles.listItem} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                              <FiX className={styles.crossIcon} style={{ marginTop: '4px', flexShrink: 0 }} />
+                              <span>{pt}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
             </section>
 
           </div>
