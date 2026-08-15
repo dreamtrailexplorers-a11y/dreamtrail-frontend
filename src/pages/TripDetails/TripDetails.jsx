@@ -294,6 +294,14 @@ const TripDetails = () => {
                     <FiArrowRight />
                   </button>
                 )}
+                {Array.isArray(currentTrip.quickInfo.generalNote) && currentTrip.quickInfo.generalNote.length > 0 && (
+                  <button className={styles.quickInfoBtn} onClick={() => setQuickInfoModal({ isOpen: true, title: 'General Note', content: currentTrip.quickInfo.generalNote })}>
+                    <div className={styles.btnLeft}>
+                      <MdInfoOutline className={styles.btnIcon} /> General Note
+                    </div>
+                    <FiArrowRight />
+                  </button>
+                )}
               </div>
             </section>
           </div>

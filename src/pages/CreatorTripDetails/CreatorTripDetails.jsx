@@ -246,6 +246,14 @@ const CreatorTripDetails = () => {
                     <FiArrowRight />
                   </button>
                 )}
+                {Array.isArray(currentTrip.quickInfo.generalNote) && currentTrip.quickInfo.generalNote.length > 0 && (
+                  <button className={styles.quickInfoBtn} onClick={() => setQuickInfoModal({ isOpen: true, title: 'General Note', content: currentTrip.quickInfo.generalNote })}>
+                    <div className={styles.btnLeft}>
+                      <MdInfoOutline className={styles.btnIcon} /> General Note
+                    </div>
+                    <FiArrowRight />
+                  </button>
+                )}
               </div>
             </section>
           )}  
@@ -269,13 +277,28 @@ const CreatorTripDetails = () => {
             </div>
             <div style={{ lineHeight: '1.6', color: '#334155' }}>
               {Array.isArray(quickInfoModal.content) ? (
-                <ul style={{ paddingLeft: '20px', margin: 0 }}>
+                <div style={{ margin: 0 }}>
                   {quickInfoModal.content.map((point, i) => (
-                    <li key={i} style={{ marginBottom: '10px' }}>{point}</li>
+                    <div key={i} style={{ marginBottom: '15px' }}>
+                      {typeof point === 'object' && point !== null ? (
+                        <>
+                          {point.title && <h4 style={{ margin: '0 0 8px 0', fontSize: '1.05rem', color: '#1e293b' }}>{point.title}</h4>}
+                          {point.desc && (
+                            <p style={{ margin: 0, color: '#475569', fontSize: '0.95rem', whiteSpace: 'pre-wrap' }}>{point.desc}</p>
+                          )}
+                        </>
+                      ) : (
+                        <p style={{ margin: 0, color: '#475569', fontSize: '0.95rem' }}>{point}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.95rem', color: '#475569' }}>
+                  {String(quickInfoModal.content).split('\n').filter(line => line.trim() !== '').map((line, idx) => (
+                    <li key={idx} style={{ marginBottom: '6px', lineHeight: '1.5' }}>{line}</li>
                   ))}
                 </ul>
-              ) : (
-                <p>{quickInfoModal.content}</p>
               )}
             </div>
           </div>

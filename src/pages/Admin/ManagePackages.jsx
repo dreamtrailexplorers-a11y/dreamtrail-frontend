@@ -457,7 +457,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     rating: '5', reviewsCount: '0', image: '', mapImage: '', tag: 'Trending', type: 'tour',
     galleryImages: ['', '', '', '', ''], itinerary: [], attractions: [], inclusions: [], tourHighlights: [], exclusions: [], amenities: [], aboutTrip: '',
     departureDates: [], faqs: [], packageOptions: [], variants: [], pricingTable: [], stayDetails: [],
-    quickInfo: { packingList: [], bookFlight: [], knowBeforeYouGo: [], paymentPolicy: [], termsAndConditions: [], cancellationAndRefundPolicy: [] }
+    quickInfo: { packingList: [], bookFlight: [], knowBeforeYouGo: [], paymentPolicy: [], termsAndConditions: [], cancellationAndRefundPolicy: [], generalNote: [] }
   };
   
   const [formData, setFormData] = useState(initialForm);
@@ -982,7 +982,8 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
               { key: 'knowBeforeYouGo', label: 'Know Before You Go' },
               { key: 'paymentPolicy', label: 'Payment Policy' },
               { key: 'termsAndConditions', label: 'Terms and Conditions' },
-              { key: 'cancellationAndRefundPolicy', label: 'Cancellation and Refund Policy' }
+              { key: 'cancellationAndRefundPolicy', label: 'Cancellation and Refund Policy' },
+              { key: 'generalNote', label: 'General Note' }
             ].map(info => (
               <div key={info.key} className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
                 <ArrayInput 
