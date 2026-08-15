@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   FaWhatsapp, 
   FaInstagram, 
@@ -7,24 +7,75 @@ import {
   FaLinkedinIn,
   FaYoutube
 } from 'react-icons/fa';
-import { FiMapPin } from 'react-icons/fi';
-import { getSiteSettings } from '../../services/api';
+import { FiMapPin, FiChevronDown } from 'react-icons/fi';
+import { getSiteSettings, getTrips } from '../../services/api';
 import styles from './Footer.module.css';
 
 const Footer = () => {
   const [settings, setSettings] = useState(null);
+  const [trips, setTrips] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchSettings = async () => {
+    const fetchSettingsAndTrips = async () => {
       try {
-        const { data } = await getSiteSettings();
-        setSettings(data);
+        const [settingsRes, tripsRes] = await Promise.all([
+          getSiteSettings(),
+          getTrips()
+        ]);
+        setSettings(settingsRes.data);
+        setTrips(tripsRes.data);
       } catch (err) {
-        console.error('Failed to load settings', err);
+        console.error('Failed to load settings or trips', err);
       }
     };
-    fetchSettings();
+    fetchSettingsAndTrips();
   }, []);
+
+  const renderTourLink = (link, idx) => {
+    const destTrips = trips.filter(t => t.destination && t.destination.toLowerCase() === link.label.toLowerCase() && t.status === 'Active');
+    
+    if (destTrips.length > 0) {
+      return (
+        <div key={idx} style={{ position: 'relative', display: 'inline-block' }}>
+          <select 
+            className={styles.linkItem} 
+            style={{ 
+              background: 'transparent', 
+              border: 'none', 
+              cursor: 'pointer', 
+              outline: 'none', 
+              padding: '0 15px 0 0', 
+              margin: 0,
+              appearance: 'none',
+              WebkitAppearance: 'none',
+              MozAppearance: 'none',
+              color: '#cbd5e1',
+              fontFamily: 'inherit',
+              fontSize: '0.88rem'
+            }}
+            onChange={(e) => { 
+              if(e.target.value) {
+                navigate(`/tours/${e.target.value}`);
+                e.target.value = "";
+              }
+            }}
+            defaultValue=""
+          >
+            <option value="" disabled style={{color: '#000'}}>{link.label}</option>
+            {destTrips.map(t => (
+              <option key={t._id} value={t.slug || t._id} style={{color: '#000'}}>
+                {t.title}
+              </option>
+            ))}
+          </select>
+          <FiChevronDown style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#cbd5e1' }} size={14} />
+        </div>
+      );
+    }
+    
+    return <Link key={idx} to={link.url} className={styles.linkItem}>{link.label}</Link>;
+  };
 
   return (
     <>
@@ -97,14 +148,10 @@ const Footer = () => {
                 <div className={styles.subHeadingCol}>INDIA</div>
                 <div className={styles.tourGrid}>
                   <div className={styles.tourCol}>
-                    {settings.footerToursIndia.slice(0, Math.ceil(settings.footerToursIndia.length / 2)).map((link, idx) => (
-                      <Link key={idx} to={link.url} className={styles.linkItem}>{link.label}</Link>
-                    ))}
+                    {settings.footerToursIndia.slice(0, Math.ceil(settings.footerToursIndia.length / 2)).map((link, idx) => renderTourLink(link, idx))}
                   </div>
                   <div className={styles.tourCol}>
-                    {settings.footerToursIndia.slice(Math.ceil(settings.footerToursIndia.length / 2)).map((link, idx) => (
-                      <Link key={idx} to={link.url} className={styles.linkItem}>{link.label}</Link>
-                    ))}
+                    {settings.footerToursIndia.slice(Math.ceil(settings.footerToursIndia.length / 2)).map((link, idx) => renderTourLink(link, idx + 100))}
                   </div>
                 </div>
               </>
@@ -115,14 +162,10 @@ const Footer = () => {
                 <div className={styles.subHeadingCol}>ASIA</div>
                 <div className={styles.tourGrid}>
                   <div className={styles.tourCol}>
-                    {settings.footerToursAsia.slice(0, Math.ceil(settings.footerToursAsia.length / 2)).map((link, idx) => (
-                      <Link key={idx} to={link.url} className={styles.linkItem}>{link.label}</Link>
-                    ))}
+                    {settings.footerToursAsia.slice(0, Math.ceil(settings.footerToursAsia.length / 2)).map((link, idx) => renderTourLink(link, idx + 200))}
                   </div>
                   <div className={styles.tourCol}>
-                    {settings.footerToursAsia.slice(Math.ceil(settings.footerToursAsia.length / 2)).map((link, idx) => (
-                      <Link key={idx} to={link.url} className={styles.linkItem}>{link.label}</Link>
-                    ))}
+                    {settings.footerToursAsia.slice(Math.ceil(settings.footerToursAsia.length / 2)).map((link, idx) => renderTourLink(link, idx + 300))}
                   </div>
                 </div>
               </>

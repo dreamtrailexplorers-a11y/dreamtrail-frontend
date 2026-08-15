@@ -461,7 +461,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     if (name === 'originalPrice' || name === 'discountedPrice') {
       const orig = Number(newFormData.originalPrice) || 0;
       const disc = Number(newFormData.discountedPrice) || 0;
-      newFormData.saveAmount = orig > disc ? orig - disc : 0;
+      newFormData.saveAmount = (orig > disc && disc > 0) ? orig - disc : 0;
     }
     
     setFormData(newFormData);
@@ -620,7 +620,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
         <div style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '15px' }}>
           <div style={{ marginBottom: '6px' }}><strong>Category:</strong> <span style={{ backgroundColor: '#f1f5f9', padding: '2px 6px', borderRadius: '4px' }}>{trip.category}</span></div>
           <div style={{ marginBottom: '6px' }}><strong>Duration:</strong> {trip.duration || '0 Days'}</div>
-          <div style={{ marginBottom: '6px' }}><strong>Price:</strong> <span style={{ color: '#10b981', fontWeight: 'bold' }}>₹{trip.discountedPrice?.toLocaleString('en-IN') || 0}</span> <span style={{textDecoration:'line-through', fontSize:'0.75rem'}}>₹{trip.originalPrice?.toLocaleString('en-IN') || 0}</span></div>
+          <div style={{ marginBottom: '6px' }}><strong>Price:</strong> <span style={{ color: '#10b981', fontWeight: 'bold' }}>{'\u20B9'}{(Number(trip.discountedPrice) > 0 ? trip.discountedPrice : trip.originalPrice)?.toLocaleString('en-IN') || 0}</span> {Number(trip.discountedPrice) > 0 && <span style={{textDecoration:'line-through', fontSize:'0.75rem'}}>{'\u20B9'}{trip.originalPrice?.toLocaleString('en-IN') || 0}</span>}</div>
         </div>
       </div>
       <div style={{ display: 'flex', gap: '8px' }}>

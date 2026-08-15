@@ -62,22 +62,30 @@ const TrendingCard = ({ trip, basePath = '/tours' }) => {
         </div>
 
         <div className={styles.priceBlock}>
-          {trip.saveAmount && (
+          {Number(trip.discountedPrice) > 0 && trip.saveAmount && (
             <div className={styles.saveBadge}>
               <FaCheckCircle size={14} className={styles.checkIcon} /> Save {Number(trip.saveAmount || 0).toLocaleString('en-IN')}
             </div>
           )}
 
           <div className={styles.priceRow}>
-            {(trip.discountedPrice !== undefined && trip.discountedPrice !== null && trip.discountedPrice !== '') && (
-              <span className={styles.discountedPrice}>
-                {'\u20B9'} {Number(trip.discountedPrice).toLocaleString('en-IN')}
-              </span>
-            )}
-            {(trip.originalPrice !== undefined && trip.originalPrice !== null && trip.originalPrice !== '') && (
-              <span className={styles.originalPrice}>
-                {'\u20B9'} {Number(trip.originalPrice).toLocaleString('en-IN')}
-              </span>
+            {Number(trip.discountedPrice) > 0 ? (
+              <>
+                <span className={styles.discountedPrice}>
+                  {'\u20B9'} {Number(trip.discountedPrice).toLocaleString('en-IN')}
+                </span>
+                {(trip.originalPrice !== undefined && trip.originalPrice !== null && trip.originalPrice !== '') && (
+                  <span className={styles.originalPrice}>
+                    {'\u20B9'} {Number(trip.originalPrice).toLocaleString('en-IN')}
+                  </span>
+                )}
+              </>
+            ) : (
+              (trip.originalPrice !== undefined && trip.originalPrice !== null && trip.originalPrice !== '') ? (
+                <span className={styles.discountedPrice}>
+                  {'\u20B9'} {Number(trip.originalPrice).toLocaleString('en-IN')}
+                </span>
+              ) : null
             )}
           </div>
         </div>
