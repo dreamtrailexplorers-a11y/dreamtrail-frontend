@@ -33,22 +33,50 @@ const Footer = () => {
   }, []);
 
   const renderTourLink = (link, idx) => {
-    // Find a trip that explicitly selected this footer link name
-    const linkedTrip = trips.find(t => t.footerLink && t.footerLink.toLowerCase() === link.label.toLowerCase());
+    const destTrips = trips.filter(t => t.destination && t.destination.toLowerCase() === link.label.toLowerCase());
     
-    if (linkedTrip) {
+    if (destTrips.length > 0) {
       return (
-        <Link key={idx} to={`/tours/${linkedTrip.slug || linkedTrip._id}`} className={styles.linkItem}>
-          {link.label}
-        </Link>
+        <div key={idx} style={{ position: 'relative', display: 'block', marginBottom: '10px' }}>
+          <select 
+            className={styles.linkItem} 
+            style={{ 
+              background: 'transparent', 
+              border: 'none', 
+              cursor: 'pointer', 
+              outline: 'none', 
+              padding: '0 20px 0 0', 
+              margin: 0,
+              appearance: 'none',
+              WebkitAppearance: 'none',
+              MozAppearance: 'none',
+              color: '#cbd5e1',
+              fontFamily: 'inherit',
+              fontSize: '1.1rem',
+              width: '100%',
+              display: 'block'
+            }}
+            onChange={(e) => { 
+              if(e.target.value) {
+                navigate(`/tours/${e.target.value}`);
+                e.target.value = "";
+              }
+            }}
+            defaultValue=""
+          >
+            <option value="" disabled style={{color: '#000'}}>{link.label}</option>
+            {destTrips.map(t => (
+              <option key={t._id} value={t.slug || t._id} style={{color: '#000'}}>
+                {t.title}
+              </option>
+            ))}
+          </select>
+          <FiChevronDown style={{ position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#cbd5e1' }} size={16} />
+        </div>
       );
     }
     
-    return (
-      <Link key={idx} to={link.url} className={styles.linkItem}>
-        {link.label}
-      </Link>
-    );
+    return <Link key={idx} to={link.url} className={styles.linkItem} style={{display: 'block', marginBottom: '10px', fontSize: '1.1rem'}}>{link.label}</Link>;
   };
 
   return (

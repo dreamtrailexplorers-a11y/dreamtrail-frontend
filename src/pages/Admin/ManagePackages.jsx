@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getTrips, createTrip, updateTrip, deleteTrip, uploadFile, initiateUpload, finalizeUpload, getSiteSettings } from '../../services/api';
+import { getTrips, getDestinations, createTrip, updateTrip, deleteTrip, uploadFile, initiateUpload, finalizeUpload } from '../../services/api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { cleanImageUrl } from '../../utils/cleanUrl';
 import styles from './Admin.module.css';
@@ -25,8 +25,8 @@ const ArrayInput = ({ title, fields, data = [], onChange }) => {
   };
 
   return (
-    <div style={{ marginTop: '20px', borderTop: '1px solid #eee', paddingTop: '10px' }}>
-      <h4>{title}</h4>
+    <div className={styles.card} style={{ marginBottom: '20px' }}>
+      <h3 className={styles.cardTitle}>{title}</h3>
       {data.map((item, i) => (
         <div key={i} className={styles.responsiveFlexRow}>
           {fields.map(f => {
@@ -80,26 +80,19 @@ const ArrayInput = ({ title, fields, data = [], onChange }) => {
               />
             );
           })}
-          <button type="button" onClick={() => handleRemove(i)} className={styles.btnDanger}>X</button>
+          <button type="button" onClick={() => handleRemove(i)} className={styles.btnDanger} style={{ height: 'fit-content' }}>Remove</button>
         </div>
       ))}
-      <button type="button" onClick={handleAdd} className={styles.btnSecondary} style={{ marginTop: '10px' }}>+ Add {title}</button>
+      <button type="button" onClick={handleAdd} className={styles.btnSecondary} style={{ marginTop: '10px' }}>+ Add Item</button>
     </div>
   );
 };
 
 const AmenitiesCheckboxInput = ({ data = [], onChange }) => {
-  const PREDEFINED_AMENITIES = [
-    'Stay',
-    'Meals',
-    'Travelling',
-    'Sightseeing',
-    'Trip Leader',
-    'Train Ticket',
-    'Bike & Fuel',
-    'Backup Vehicle'
+  const allAmenities = [
+    "Meals", "Transfers", "Sightseeing", "Accommodation", "Flights", "Guide"
   ];
-
+  
   const handleCheckboxChange = (amenity) => {
     if (data.includes(amenity)) {
       onChange(data.filter(a => a !== amenity));
@@ -109,10 +102,10 @@ const AmenitiesCheckboxInput = ({ data = [], onChange }) => {
   };
 
   return (
-    <div className={styles.card} style={{ marginTop: '20px', padding: '15px' }}>
-      <h4 className={styles.cardTitle} style={{ fontSize: '1.1rem', marginBottom: '15px', color: '#1e293b' }}>Amenities (Top Section)</h4>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '15px' }}>
-        {PREDEFINED_AMENITIES.map(amenity => (
+    <div className={styles.card} style={{ marginBottom: '20px' }}>
+      <h3 className={styles.cardTitle}>Amenities Included</h3>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
+        {allAmenities.map(amenity => (
           <label key={amenity} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.95rem' }}>
             <input 
               type="checkbox" 
@@ -224,24 +217,32 @@ const StringArrayInput = ({ title, data = [], onChange, isImage = false, maxItem
   };
 
   return (
-    <div className={styles.card} style={{ marginTop: '20px', padding: '15px' }}>
-      <h4 className={styles.cardTitle} style={{ fontSize: '1rem' }}>{title}</h4>
+    <div className={styles.card} style={{ marginBottom: '20px' }}>
+      <h3 className={styles.cardTitle}>{title}</h3>
       {data.map((item, i) => (
-        <div key={i} className={styles.responsiveFlexRow} style={{ marginBottom: '5px' }}>
-          {isImage && (
-            <label style={{ cursor: 'pointer', background: '#3498db', color: 'white', padding: '8px', borderRadius: '4px', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
-              Upload Image
-              <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleUploadImage(e, i)} />
-            </label>
+        <div key={i} style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+          {isImage ? (
+            <div style={{ display: 'flex', gap: '5px', flex: 1 }}>
+              <label style={{ cursor: 'pointer', background: '#3498db', color: 'white', padding: '8px', borderRadius: '4px', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
+                Upload
+                <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleUploadImage(e, i)} />
+              </label>
+              <input type="text" value={item} onChange={(e) => handleChange(i, e.target.value)} placeholder="Or paste Image URL" className={styles.inputField} style={{ flex: 1, padding: '8px', backgroundColor: '#f9f9f9' }} />
+            </div>
+          ) : (
+            <input 
+              type="text" 
+              value={item} 
+              onChange={(e) => handleChange(i, e.target.value)} 
+              className={styles.inputField} 
+              style={{ flex: 1, padding: '8px' }} 
+            />
           )}
-          <input value={item} onChange={(e) => handleChange(i, e.target.value)} className={styles.inputField} style={{ flex: 1, padding: '8px', backgroundColor: isImage ? '#f9f9f9' : '#fff' }} />
-          <button type="button" onClick={() => handleRemove(i)} className={styles.btnDanger}>X</button>
+          <button type="button" onClick={() => handleRemove(i)} className={styles.btnDanger}>Remove</button>
         </div>
       ))}
       {(!maxItems || data.length < maxItems) && (
-        <button type="button" onClick={handleAdd} className={styles.btnSecondary} style={{ marginTop: '10px' }}>
-          {isImage ? '+ Add Image' : '+ Add Point'}
-        </button>
+        <button type="button" onClick={handleAdd} className={styles.btnSecondary} style={{ marginTop: '10px' }}>+ Add Item</button>
       )}
     </div>
   );
@@ -267,7 +268,7 @@ const PackageOptionsInput = ({ data = [], onChange }) => {
     if(!file) return;
     try {
       const res = await uploadFile(file);
-      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : "${import.meta.env.VITE_BACKEND_URL}";
       handleChangeOption(i, 'image', fullUrl);
     } catch(err) {
       alert('Upload failed');
@@ -289,11 +290,11 @@ const PackageOptionsInput = ({ data = [], onChange }) => {
               <input placeholder="e.g. Own Bike" value={opt.title} onChange={(e) => handleChangeOption(i, 'title', e.target.value)} className={styles.inputField} />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>Original Price (₹)</label>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>Original Price (?)</label>
               <input type="number" placeholder="0" value={opt.originalPrice} onChange={(e) => handleChangeOption(i, 'originalPrice', e.target.value)} className={styles.inputField} />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>Discounted Price (₹)</label>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>Discounted Price (?)</label>
               <input type="number" placeholder="0" value={opt.price} onChange={(e) => handleChangeOption(i, 'price', e.target.value)} className={styles.inputField} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', gap: '5px' }}>
@@ -341,7 +342,6 @@ const PricingTableInput = ({ data = [], packageOptions = [], onChange }) => {
     onChange(newData);
   };
 
-  // Ensure options stay synced if new packageOptions are added (basic sync for new rows)
   return (
     <div className={styles.card} style={{ marginTop: '20px', padding: '15px' }}>
       <h4 className={styles.cardTitle} style={{ fontSize: '1rem' }}>Package Price Compare (Table)</h4>
@@ -366,29 +366,31 @@ const PricingTableInput = ({ data = [], packageOptions = [], onChange }) => {
 const StayDetailsInput = ({ data = [], onChange }) => {
   const handleAddLocation = () => onChange([...data, { locationName: '', nights: '', hotels: [] }]);
   const handleRemoveLocation = (i) => onChange(data.filter((_, idx) => idx !== i));
-  const handleChangeLocation = (i, field, val) => {
+  const handleChangeLocation = (i, field, value) => {
     const newData = [...data];
-    newData[i][field] = val;
+    newData[i][field] = value;
     onChange(newData);
   };
-
+  
   const handleAddHotel = (locIndex) => {
     const newData = [...data];
     if(!newData[locIndex].hotels) newData[locIndex].hotels = [];
     newData[locIndex].hotels.push({ name: '', rating: '', roomType: '', mealPlan: '', image: '' });
     onChange(newData);
   };
+  
   const handleRemoveHotel = (locIndex, hotelIndex) => {
     const newData = [...data];
-    newData[locIndex].hotels.splice(hotelIndex, 1);
+    newData[locIndex].hotels = newData[locIndex].hotels.filter((_, idx) => idx !== hotelIndex);
     onChange(newData);
   };
+  
   const handleChangeHotel = (locIndex, hotelIndex, field, value) => {
     const newData = [...data];
     newData[locIndex].hotels[hotelIndex][field] = value;
     onChange(newData);
   };
-
+  
   const handleUploadImage = async (e, locIndex, hotelIndex) => {
     const file = e.target.files[0];
     if(!file) return;
@@ -441,20 +443,19 @@ const StayDetailsInput = ({ data = [], onChange }) => {
   );
 };
 
-const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey: externalRefreshKey }) => {
+const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const destName = destNameProp || queryParams.get('dest');
   const [trips, setTrips] = useState([]);
-  const [footerOptions, setFooterOptions] = useState([]);
+  const [destinations, setDestinations] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [showFullForm, setShowFullForm] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0);
   
   const initialForm = {
-    title: '', slug: '', duration: '', route: '', destination: destName || '', category: 'Motorcycle Tours', footerLink: '',
+    title: '', slug: '', duration: '', route: '', destination: destName || '', category: 'Motorcycle Tours',
     originalPrice: '', discountedPrice: '', saveAmount: '',
     rating: '5', reviewsCount: '0', image: '', mapImage: '', tag: 'Trending', type: 'tour',
     galleryImages: ['', '', '', '', ''], itinerary: [], attractions: [], inclusions: [], tourHighlights: [], exclusions: [], amenities: [], aboutTrip: '',
@@ -465,24 +466,19 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey: externalRefre
   const [formData, setFormData] = useState(initialForm);
 
   // Basic form for initial creation
-  const [basicForm, setBasicForm] = useState({ title: '', slug: '', category: 'Motorcycle Tours' });
+  const [basicForm, setBasicForm] = useState({ title: '', slug: '', category: 'Motorcycle Tours', destination: destName || '' });
 
   useEffect(() => {
     fetchTrips();
-    fetchFooterOptions();
-  }, [destName, refreshKey, externalRefreshKey]);
+    fetchDestinationsList();
+  }, [destName, refreshKey]);
 
-  const fetchFooterOptions = async () => {
+  const fetchDestinationsList = async () => {
     try {
-      const { data } = await getSiteSettings();
-      if (data) {
-        const indiaTours = data.footerToursIndia?.map(t => t.label) || [];
-        const asiaTours = data.footerToursAsia?.map(t => t.label) || [];
-        const otherLinks = data.footerOtherLinks?.map(t => t.label) || [];
-        setFooterOptions([...new Set([...indiaTours, ...asiaTours, ...otherLinks])]);
-      }
+      const res = await getDestinations();
+      setDestinations(res.data);
     } catch (err) {
-      console.error('Failed to fetch site settings', err);
+      console.error(err);
     }
   };
 
@@ -640,8 +636,8 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey: externalRefre
 
   const handleBasicSubmit = async (e) => {
     e.preventDefault();
-    if(!destName) {
-      alert('Please select a destination first from Manage Destinations.');
+    if(!basicForm.destination) {
+      alert('Please select a destination.');
       return;
     }
     const newTrip = {
@@ -649,7 +645,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey: externalRefre
       title: basicForm.title,
       slug: basicForm.slug,
       category: basicForm.category,
-      destination: destName,
+      destination: basicForm.destination,
       duration: 'TBD',
       route: 'TBD',
       originalPrice: 0,
@@ -658,7 +654,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey: externalRefre
     };
     try {
       await createTrip(newTrip);
-      setBasicForm({ title: '', slug: '', category: 'Motorcycle Tours' });
+      setBasicForm({ title: '', slug: '', category: 'Motorcycle Tours', destination: destName || '' });
       fetchTrips();
     } catch (error) {
       alert(error.response?.data?.message || 'Error creating package. Make sure the Slug is unique!');
@@ -775,7 +771,7 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey: externalRefre
       )}
 
       {/* BASIC CREATION FORM */}
-      {!showFullForm && destName && !hideBasicForm && (
+      {!showFullForm && !hideBasicForm && (
         <form onSubmit={handleBasicSubmit} className={styles.card} style={{ marginBottom: '20px' }}>
           <h3 className={styles.cardTitle}>Create New Package</h3>
           <div className={styles.formGrid}>
@@ -796,8 +792,17 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey: externalRefre
                 <option value="Corporate Tours">Corporate Tours</option>
               </select>
             </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Destination</label>
+              <select name="destination" value={basicForm.destination} onChange={handleBasicChange} required className={styles.inputField}>
+                <option value="" disabled>Select Destination</option>
+                {destinations.map(d => (
+                  <option key={d._id} value={d.name}>{d.name}</option>
+                ))}
+              </select>
+            </div>
             <div className={styles.inputGroup} style={{ display: 'flex', alignItems: 'flex-end' }}>
-              <button type="submit" className={styles.btnPrimary} style={{ height: '40px' }}>Create Package</button>
+              <button type="submit" className={styles.btnPrimary} style={{ height: '40px', width: '100%' }}>Create Package</button>
             </div>
           </div>
         </form>
@@ -827,7 +832,12 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey: externalRefre
           </div>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Destination</label>
-            <input name="destination" value={formData.destination || ''} readOnly className={styles.inputField} style={{ backgroundColor: '#f1f5f9', color: '#64748b' }} />
+            <select name="destination" value={formData.destination || ''} onChange={handleChange} required className={styles.inputField}>
+              <option value="" disabled>Select Destination</option>
+              {destinations.map(d => (
+                <option key={d._id} value={d.name}>{d.name}</option>
+              ))}
+            </select>
           </div>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Category</label>
@@ -836,15 +846,6 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey: externalRefre
                 <option value="Group Tours">Group Tours</option>
                 <option value="Winter Tours">Winter Tours</option>
                 <option value="Corporate Tours">Corporate Tours</option>
-            </select>
-          </div>
-          <div className={styles.inputGroup}>
-            <label className={styles.inputLabel}>Connect to Footer Link (Optional)</label>
-            <select name="footerLink" value={formData.footerLink || ''} onChange={handleChange} className={styles.inputField}>
-              <option value="">-- No Footer Connection --</option>
-              {footerOptions.map(opt => (
-                <option key={opt} value={opt}>{opt}</option>
-              ))}
             </select>
           </div>
           <div className={styles.inputGroup}>
@@ -1094,3 +1095,4 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey: externalRefre
 };
 
 export default ManagePackages;
+
