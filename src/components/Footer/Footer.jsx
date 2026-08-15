@@ -52,7 +52,7 @@ const Footer = () => {
               MozAppearance: 'none',
               color: '#cbd5e1',
               fontFamily: 'inherit',
-              fontSize: '1.1rem',
+              fontSize: '1rem',
               width: '100%',
               display: 'block'
             }}
@@ -64,7 +64,7 @@ const Footer = () => {
             }}
             defaultValue=""
           >
-            <option value="" disabled style={{color: '#000'}}>{link.label}</option>
+            <option value="" disabled style={{color: '#fff'}}>{link.label}</option>
             {destTrips.map(t => (
               <option key={t._id} value={t.slug || t._id} style={{color: '#000'}}>
                 {t.title}
@@ -76,7 +76,7 @@ const Footer = () => {
       );
     }
     
-    return <Link key={idx} to={link.url} className={styles.linkItem} style={{display: 'block', marginBottom: '10px', fontSize: '1.1rem'}}>{link.label}</Link>;
+    return <Link key={idx} to={link.url} className={styles.linkItem} style={{display: 'block', marginBottom: '10px', fontSize: '1rem'}}>{link.label}</Link>;
   };
 
   return (
@@ -208,3 +208,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
