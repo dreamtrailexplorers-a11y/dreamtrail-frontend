@@ -16,7 +16,7 @@ const ManageEnquiries = () => {
     const dd = String(date.getDate()).padStart(2, '0');
     const mm = String(date.getMonth() + 1).padStart(2, '0');
     const yy = String(date.getFullYear()).slice(-2);
-    return ${dd}//;
+    return `${dd}/${mm}/${yy}`;
   };
 
   // Filters
@@ -82,7 +82,7 @@ const ManageEnquiries = () => {
     // 3. Month/Year Filter (format: YYYY-MM)
     let matchesMonth = true;
     if (selectedMonth) {
-      const enqMonthStr = ${enqDate.getFullYear()}-;
+      const enqMonthStr = `${enqDate.getFullYear()}-${String(enqDate.getMonth() + 1).padStart(2, '0')}`;
       matchesMonth = (enqMonthStr === selectedMonth);
     }
 
@@ -97,7 +97,7 @@ const ManageEnquiries = () => {
     doc.setFontSize(16);
     doc.text(activeTab === 'packages' ? 'Package Enquiries Report' : 'Contact Us Enquiries Report', 14, 15);
     doc.setFontSize(10);
-    doc.text(Generated on:  + new Date().toLocaleDateString(), 14, 22);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 22);
 
     // Table Data
     const tableColumn = ["Date", "Name", "Email", "Phone", "Destination", "Package", "Travel Date", "Pax", "Message"];
@@ -126,7 +126,7 @@ const ManageEnquiries = () => {
       headStyles: { fillColor: [59, 130, 246] }
     });
 
-    doc.save(Enquiries_Report_ + new Date().getTime() + .pdf);
+    doc.save(`Enquiries_Report_${new Date().getTime()}.pdf`);
   };
 
   // CSV Export
@@ -140,14 +140,14 @@ const ManageEnquiries = () => {
         formatDate(enq.createdAt),
         enq.name || '-',
         enq.email || '-',
-        enq.phone ? \t + enq.phone : '-',
+        enq.phone ? `\t${enq.phone}` : '-',
         enq.destination || '-',
         enq.tripTitle || '-',
-        enq.date ? \t + enq.date : '-',
+        enq.date ? `\t${enq.date}` : '-',
         enq.travellers ? String(enq.travellers) : '-',
         enq.message ? enq.message.replace(/"/g, '""') : '-'
       ];
-      csvRows.push(rowData.map(item => " + item + ").join(','));
+      csvRows.push(rowData.map(item => `"${item}"`).join(','));
     });
 
     const csvData = new Blob(['\ufeff' + csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
@@ -155,7 +155,7 @@ const ManageEnquiries = () => {
     const hiddenElement = document.createElement('a');
     hiddenElement.href = csvUrl;
     hiddenElement.target = '_blank';
-    hiddenElement.download = Enquiries_Report_ + new Date().getTime() + .csv;
+    hiddenElement.download = `Enquiries_Report_${new Date().getTime()}.csv`;
     hiddenElement.click();
   };
 
@@ -220,7 +220,6 @@ const ManageEnquiries = () => {
             value={selectedMonth}
             onChange={(e) => {
               setSelectedMonth(e.target.value);
-              // Clear date range if month is selected to avoid confusion
               if(e.target.value) { setStartDate(''); setEndDate(''); }
             }}
             style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #cbd5e1', outline: 'none', fontFamily: 'inherit' }}
@@ -235,7 +234,7 @@ const ManageEnquiries = () => {
             value={startDate}
             onChange={(e) => {
               setStartDate(e.target.value);
-              if(e.target.value) setSelectedMonth(''); // Clear month if specific date is used
+              if(e.target.value) setSelectedMonth('');
             }}
             style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #cbd5e1', outline: 'none', fontFamily: 'inherit' }}
           />
