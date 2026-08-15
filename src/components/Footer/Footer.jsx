@@ -34,7 +34,7 @@ const Footer = () => {
 
   const handleTourLinkClick = (e, link) => {
     e.preventDefault();
-    const destTrips = trips.filter(t => t.destination && t.destination.toLowerCase() === link.label.toLowerCase());
+    const destTrips = trips.filter(t => t.destination && t.destination.toLowerCase().includes(link.label.toLowerCase()));
     
     if (destTrips.length === 1) {
       navigate(`/tours/${destTrips[0].slug || destTrips[0]._id}`);

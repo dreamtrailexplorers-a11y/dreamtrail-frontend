@@ -793,15 +793,12 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
               </select>
             </div>
             <div className={styles.inputGroup}>
-              <label className={styles.inputLabel}>Footer Link (Destination)</label>
+              <label className={styles.inputLabel}>Destination</label>
               <select name="destination" value={basicForm.destination} onChange={handleBasicChange} required className={styles.inputField}>
-                <option value="" disabled>Select Footer Link</option>
-                <option value="Ladakh">Ladakh</option>
-                <option value="Spiti">Spiti</option>
-                <option value="Zanskar">Zanskar</option>
-                <option value="Tawang">Tawang</option>
-                <option value="Bhutan">Bhutan</option>
-                <option value="Nepal">Nepal</option>
+                <option value="" disabled>Select Destination</option>
+                {destinations.map(d => (
+                  <option key={d._id} value={d.name}>{d.name}</option>
+                ))}
               </select>
             </div>
             <div className={styles.inputGroup} style={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -834,15 +831,12 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
             <input name="slug" value={formData.slug || ''} onChange={handleChange} placeholder="slug (e.g. bali-tour)" required className={styles.inputField} />
           </div>
           <div className={styles.inputGroup}>
-            <label className={styles.inputLabel}>Footer Link (Destination)</label>
+            <label className={styles.inputLabel}>Destination</label>
             <select name="destination" value={formData.destination || ''} onChange={handleChange} required className={styles.inputField}>
-              <option value="" disabled>Select Footer Link</option>
-              <option value="Ladakh">Ladakh</option>
-              <option value="Spiti">Spiti</option>
-              <option value="Zanskar">Zanskar</option>
-              <option value="Tawang">Tawang</option>
-              <option value="Bhutan">Bhutan</option>
-              <option value="Nepal">Nepal</option>
+              <option value="" disabled>Select Destination</option>
+              {destinations.map(d => (
+                <option key={d._id} value={d.name}>{d.name}</option>
+              ))}
             </select>
           </div>
           <div className={styles.inputGroup}>
