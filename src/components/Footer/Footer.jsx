@@ -8,27 +8,55 @@ import {
   FaYoutube
 } from 'react-icons/fa';
 import { FiMapPin } from 'react-icons/fi';
-import { getSiteSettings } from '../../services/api';
+import { getSiteSettings, getTrips } from '../../services/api';
 import styles from './Footer.module.css';
 
 const Footer = () => {
   const [settings, setSettings] = useState(null);
+  const [trips, setTrips] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchSettings = async () => {
+    const fetchSettingsAndTrips = async () => {
       try {
-        const settingsRes = await getSiteSettings();
+        const [settingsRes, tripsRes] = await Promise.all([
+          getSiteSettings(),
+          getTrips()
+        ]);
         setSettings(settingsRes.data);
+        setTrips(tripsRes.data);
       } catch (err) {
-        console.error('Failed to load settings', err);
+        console.error('Failed to load settings or trips', err);
       }
     };
-    fetchSettings();
+    fetchSettingsAndTrips();
   }, []);
 
+  const handleTourLinkClick = (e, link) => {
+    e.preventDefault();
+    const destTrips = trips.filter(t => t.destination && t.destination.toLowerCase() === link.label.toLowerCase());
+    
+    if (destTrips.length === 1) {
+      navigate(`/tours/${destTrips[0].slug || destTrips[0]._id}`);
+    } else if (destTrips.length > 1) {
+      navigate(`/destinations/${link.label.toLowerCase().replace(/\s+/g, '-')}`);
+    } else {
+      navigate(link.url);
+    }
+  };
+
   const renderTourLink = (link, idx) => {
-    return <Link key={idx} to={link.url} className={styles.linkItem}>{link.label}</Link>;
+    return (
+      <a 
+        key={idx} 
+        href={link.url}
+        onClick={(e) => handleTourLinkClick(e, link)} 
+        className={styles.linkItem}
+        style={{ cursor: 'pointer' }}
+      >
+        {link.label}
+      </a>
+    );
   };
 
   return (
@@ -160,4 +188,5 @@ const Footer = () => {
 };
 
 export default Footer;
+
 
