@@ -174,14 +174,16 @@ const AboutUs = () => {
                   onError={(e) => handleImageError(e, 'https://images.unsplash.com/photo-1533560904424-a0c61dc306fc')}
                 />
                 <img 
-                  src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800" 
+                  src={aboutPage.storyImage2 || 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800'} 
                   alt="Story aesthetic 1" 
                   className={styles.storyImgSub1}
+                  onError={(e) => handleImageError(e, 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800')}
                 />
                 <img 
-                  src="https://images.unsplash.com/photo-1519904981063-b0cf448d479e" 
+                  src={aboutPage.storyImage3 || 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e'} 
                   alt="Story aesthetic 2" 
                   className={styles.storyImgSub2}
+                  onError={(e) => handleImageError(e, 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e')}
                 />
               </div>
             </div>

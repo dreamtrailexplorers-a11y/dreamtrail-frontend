@@ -720,13 +720,33 @@ const ManageSiteSettings = () => {
         <div className={styles.formGrid}>
           <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
             <label className={styles.inputLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              Story Image
+              Story Image 1 (Main)
               <label className={styles.btnSecondary} style={{ cursor: 'pointer', padding: '4px 10px', fontSize: '0.75rem' }}>
                 Upload Image
                 <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleAboutImageUpload(e, 'aboutPage', 'storyImage')} />
               </label>
             </label>
             <input name="storyImage" value={formData.aboutPage?.storyImage || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} />
+          </div>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              Story Image 2 (Sub 1)
+              <label className={styles.btnSecondary} style={{ cursor: 'pointer', padding: '4px 10px', fontSize: '0.75rem' }}>
+                Upload Image
+                <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleAboutImageUpload(e, 'aboutPage', 'storyImage2')} />
+              </label>
+            </label>
+            <input name="storyImage2" value={formData.aboutPage?.storyImage2 || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} />
+          </div>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              Story Image 3 (Sub 2)
+              <label className={styles.btnSecondary} style={{ cursor: 'pointer', padding: '4px 10px', fontSize: '0.75rem' }}>
+                Upload Image
+                <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleAboutImageUpload(e, 'aboutPage', 'storyImage3')} />
+              </label>
+            </label>
+            <input name="storyImage3" value={formData.aboutPage?.storyImage3 || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} />
           </div>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Story Title</label>
