@@ -13,8 +13,13 @@ import Footer from '../../components/Footer/Footer';
 const AboutUs = () => {
   const [siteSettings, setSiteSettings] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [openAccordionId, setOpenAccordionId] = useState(null);
   const [selectedIntro, setSelectedIntro] = useState(null);
   const [expandedStory, setExpandedStory] = useState(false);
+
+  const toggleAccordion = (index) => {
+    setOpenAccordionId(openAccordionId === index ? null : index);
+  };
 
   useEffect(() => {
     const fetchSiteSettings = async () => {
@@ -72,9 +77,6 @@ const AboutUs = () => {
 
   const hasLongStory = aboutPage.storyText && aboutPage.storyText.split(/\n+/).filter(Boolean).length > 2;
 
-  // Icon mapping for Why Choose Us
-  const icons = [<FiCompass />, <FiAward />, <FiShield />, <FiCheck />];
-
   return (
     <>
       <Navbar />
@@ -114,9 +116,28 @@ const AboutUs = () => {
           <div className={styles.introLeft}>
             <h2 className={styles.sectionTitle}>{aboutPage.introTitle1 || 'Crafting Extraordinary Experiences.'}</h2>
             <div className={styles.introTextWrapper}>
-              <p className={styles.sectionText}>{aboutPage.introText1?.substring(0, 200)}...</p>
+              <p className={styles.sectionText}>
+                {aboutPage.introText1 && aboutPage.introText1.length > 200 
+                  ? `${aboutPage.introText1.substring(0, 200)}... ` 
+                  : aboutPage.introText1}
+                {aboutPage.introText1 && aboutPage.introText1.length > 200 && (
+                  <button className={styles.readMoreBtnInline} onClick={() => setSelectedIntro({ title: aboutPage.introTitle1, text: aboutPage.introText1 })}>
+                    Read More
+                  </button>
+                )}
+              </p>
+              
               <h3 className={styles.sectionSubtitle}>{aboutPage.introTitle2 || 'Expanding Horizon'}</h3>
-              <p className={styles.sectionText}>{aboutPage.introText2?.substring(0, 200)}...</p>
+              <p className={styles.sectionText}>
+                {aboutPage.introText2 && aboutPage.introText2.length > 200 
+                  ? `${aboutPage.introText2.substring(0, 200)}... ` 
+                  : aboutPage.introText2}
+                {aboutPage.introText2 && aboutPage.introText2.length > 200 && (
+                  <button className={styles.readMoreBtnInline} onClick={() => setSelectedIntro({ title: aboutPage.introTitle2, text: aboutPage.introText2 })}>
+                    Read More
+                  </button>
+                )}
+              </p>
             </div>
           </div>
           
@@ -165,27 +186,36 @@ const AboutUs = () => {
           </div>
         </section>
 
-        {/* 5. Why Choose Us Section (Cards) */}
+        {/* 5. Why Choose Us Section (Accordion) */}
         {(aboutPage.whyChooseUsTitle || (aboutPage.whyChooseUsPoints && aboutPage.whyChooseUsPoints.length > 0)) && (
-          <section className={styles.whyChooseUsSectionCards}>
-            <div className={styles.whyChooseUsContainerCards}>
-              <div className={styles.whyChooseUsHeaderCards}>
-                <h2 className={styles.whyChooseUsTitleCards}>{aboutPage.whyChooseUsTitle || 'Why Choose Us'}</h2>
-              </div>
-              
-              {aboutPage.whyChooseUsPoints && aboutPage.whyChooseUsPoints.length > 0 && (
-                <div className={styles.whyChooseUsGridCards}>
-                  {aboutPage.whyChooseUsPoints.map((point, index) => (
-                    <div key={index} className={styles.whyChooseUsCard}>
-                      <div className={styles.whyChooseUsCardIcon}>
-                        {icons[index % icons.length]}
-                      </div>
-                      <h3 className={styles.whyChooseUsCardTitle}>{point.title || 'Point ' + (index + 1)}</h3>
-                      <p className={styles.whyChooseUsCardText}>{point.text}</p>
-                    </div>
-                  ))}
+          <section className={styles.whyChooseUsSection}>
+            <div className={styles.whyChooseUsContainer}>
+              {aboutPage.whyChooseUsTitle && (
+                <div className={styles.whyChooseUsHeader}>
+                  <h2 className={styles.whyChooseUsTitle}>{aboutPage.whyChooseUsTitle}</h2>
                 </div>
               )}
+              
+              {aboutPage.whyChooseUsPoints && aboutPage.whyChooseUsPoints.length > 0 && (
+                  <div className={styles.whyChooseUsList}>
+                    {aboutPage.whyChooseUsPoints.map((point, index) => (
+                      <div 
+                        key={index} 
+                        className={`${styles.whyChooseUsItem} ${openAccordionId === index ? styles.accordionOpen : ''}`}
+                      >
+                        <div className={styles.accordionHeader} onClick={() => toggleAccordion(index)}>
+                          <div className={styles.whyChooseUsIcon}>
+                            <FiChevronDown strokeWidth={3} className={styles.accordionIcon} />
+                          </div>
+                          <h3 className={styles.accordionTitle}>{point.title || 'Point ' + (index + 1)}</h3>
+                        </div>
+                        <div className={styles.accordionContent}>
+                          <p className={styles.whyChooseUsText}>{point.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
             </div>
           </section>
         )}
@@ -195,7 +225,7 @@ const AboutUs = () => {
           <div className={styles.manifestoContainer}>
             <h2 className={styles.manifestoTitle}>{aboutPage.communityTitle || 'Join the Passionate Rider Community'}</h2>
             <div className={styles.communityTextSummary}>
-              <p className={styles.manifestoParagraph}>{aboutPage.communityText?.split('\n')[0]}</p>
+              {renderFormattedText(aboutPage.communityText)}
             </div>
           </div>
           <div className={styles.featuresGrid}>
@@ -251,13 +281,19 @@ const AboutUs = () => {
             </section>
         )}
 
-        {/* Modal for Discover More */}
+        {/* Modal for Discover More & Read More texts */}
         {selectedIntro && (
           <div className={styles.modalOverlay} onClick={() => setSelectedIntro(null)}>
             <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
               <button className={styles.modalCloseBtn} onClick={() => setSelectedIntro(null)}>&times;</button>
               {selectedIntro.title && <h3 className={styles.modalTitle}>{selectedIntro.title}</h3>}
-              {selectedIntro.text && <p className={styles.modalText}>{selectedIntro.text}</p>}
+              {selectedIntro.text && (
+                <div className={styles.modalText}>
+                  {selectedIntro.text.split('\n').map((line, i) => (
+                    <p key={i} style={{ marginBottom: '10px' }}>{line}</p>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}

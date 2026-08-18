@@ -234,93 +234,140 @@
   margin-bottom: 15px;
 }
 
-.readMoreStoryBtn {
+.readMoreBtnInline {
   background: none;
-  border: 1px solid #e85d22;
+  border: none;
   color: #e85d22;
-  padding: 10px 25px;
-  border-radius: 30px;
-  font-size: 0.95rem;
   font-weight: 600;
+  padding: 0;
+  margin-left: 5px;
   cursor: pointer;
-  margin-top: 20px;
-  transition: all 0.3s;
+  text-decoration: underline;
 }
 
-.readMoreStoryBtn:hover {
-  background: #e85d22;
-  color: white;
+.readMoreBtnInline:hover {
+  color: #c04c1a;
 }
 
-/* 5. Why Choose Us (Cards) */
-.whyChooseUsSectionCards {
-  padding: 100px 20px;
+/* 5. Why Choose Us Section (Accordion) */
+.whyChooseUsSection {
+  width: 100%;
+  padding: 60px 20px;
   background-color: #f8fafc;
 }
 
-.whyChooseUsContainerCards {
-  max-width: 1200px;
+.whyChooseUsContainer {
+  max-width: 1000px;
   margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
 }
 
-.whyChooseUsHeaderCards {
-  text-align: center;
-  margin-bottom: 50px;
+.whyChooseUsHeader {
+  margin-bottom: 30px;
 }
 
-.whyChooseUsTitleCards {
+.whyChooseUsTitle {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  color: #0f172a;
-}
-
-.whyChooseUsGridCards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-}
-
-.whyChooseUsCard {
-  background: white;
-  padding: 40px 30px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-  transition: transform 0.3s;
-  border: 1px solid #f1f5f9;
-}
-
-.whyChooseUsCard:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-}
-
-.whyChooseUsCardIcon {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto 20px;
-  background-color: #fff7ed;
   color: #e85d22;
+  border-left: 5px solid #e85d22;
+  padding-left: 15px;
+  margin: 0;
+}
+
+.whyChooseUsList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.whyChooseUsItem {
+  display: block;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.whyChooseUsItem:last-child {
+  border-bottom: none;
+}
+
+.accordionHeader {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background: white;
+  transition: background 0.3s ease;
+}
+
+.accordionHeader:hover {
+  background: #fafafa;
+}
+
+.accordionTitle {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  word-break: normal;
+  white-space: normal;
+  overflow-wrap: normal;
+  flex: 1;
+}
+
+.whyChooseUsIcon {
+  margin-right: 15px;
+  background-color: var(--primary-color);
+  color: white;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  flex-shrink: 0;
 }
 
-.whyChooseUsCardTitle {
-  font-family: var(--font-heading);
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 15px;
+.accordionIcon {
+  transition: transform 0.3s ease;
 }
 
-.whyChooseUsCardText {
-  color: #64748b;
-  line-height: 1.6;
-  font-size: 1rem;
+.accordionOpen .accordionIcon {
+  transform: rotate(180deg);
+}
+
+.accordionOpen {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border-color: #e2e8f0;
+}
+
+.accordionContent {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  background: white;
+}
+
+.accordionOpen .accordionContent {
+  max-height: 500px;
+  padding: 0 20px 20px 67px;
+}
+
+.whyChooseUsText {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+  font-size: 1.1rem;
 }
 
 /* Community Section */
@@ -332,16 +379,52 @@
 }
 
 .manifestoContainer {
-  max-width: 800px;
-  margin: 0 auto 50px;
+  max-width: 900px;
+  margin: 0 auto 60px auto;
+  text-align: left;
+  background: #fafaf9;
+  padding: 50px 60px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  border: 1px solid #f5f5f4;
 }
 
 .manifestoTitle {
   font-family: var(--font-heading);
   font-size: 2.2rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.manifestoParagraph {
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: #475569;
   margin-bottom: 20px;
+  font-family: 'Georgia', serif;
+}
+
+.manifestoParagraph strong {
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.manifestoHeading {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  color: #0f172a;
+  margin: 40px 0 20px 0;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 10px;
+}
+
+.manifestoSubheading {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: #334155;
+  margin: 30px 0 15px 0;
 }
 
 .communityTextSummary {
@@ -447,6 +530,8 @@
   max-width: 700px;
   width: 100%;
   position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .modalCloseBtn {
@@ -470,4 +555,5 @@
   .asymmetricCollage { grid-template-columns: 1fr; }
   .collageImg1, .collageImg2, .collageImg3, .collageImg4 { grid-column: 1; grid-row: auto; height: 200px; }
   .storyContainerDark { flex-direction: column; }
+  .manifestoContainer { padding: 30px 20px; }
 }
