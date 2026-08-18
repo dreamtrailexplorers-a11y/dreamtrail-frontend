@@ -38,7 +38,7 @@ const renderIncExcList = (items, IconComponent, iconClass) => {
 
 const TripInclusions = ({ inclusions, exclusions, mapImage }) => {
   return (
-    <div className={styles.incExcContainer} style={{ gridTemplateColumns: mapImage ? '1fr 1fr 1fr' : '1fr 1fr' }}>
+    <div className={`${styles.incExcContainer} ${mapImage ? styles.hasMap : ''}`}>
       {/* Inclusions Card */}
       <div className={styles.incBox}>
         <h3 className={styles.incHeading}>Inclusions</h3>
