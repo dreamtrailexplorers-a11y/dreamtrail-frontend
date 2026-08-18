@@ -403,6 +403,170 @@ const StayDetailsInput = ({ data = [], onChange }) => {
     }
   };
 
+  return (
+    <div className={styles.card} style={{ marginTop: '20px', padding: '15px' }}>
+      <h4 className={styles.cardTitle} style={{ fontSize: '1rem' }}>Stay Details</h4>
+      {data.map((loc, i) => (
+        <div key={i} style={{ border: '1px solid #ddd', padding: '10px', marginBottom: '15px', borderRadius: '5px' }}>
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+            <input placeholder="Location (e.g. Kuta)" value={loc.locationName} onChange={e => handleChangeLocation(i, 'locationName', e.target.value)} className={styles.inputField} style={{ flex: 1 }} />
+            <input type="number" placeholder="Nights" value={loc.nights} onChange={e => handleChangeLocation(i, 'nights', e.target.value)} className={styles.inputField} style={{ width: '100px' }} />
+            <button type="button" onClick={() => handleRemoveLocation(i)} className={styles.btnDanger}>Remove Location</button>
+          </div>
+          
+          <div style={{ marginLeft: '20px', padding: '10px', background: '#f5f5f5', borderRadius: '5px' }}>
+            <h5>Hotels for {loc.locationName || 'this location'}</h5>
+            {(loc.hotels || []).map((hotel, j) => (
+              <div key={j} style={{ display: 'flex', gap: '10px', marginBottom: '10px', flexWrap: 'wrap', borderBottom: '1px dashed #ccc', paddingBottom: '10px' }}>
+                <input placeholder="Hotel Name" value={hotel.name} onChange={e => handleChangeHotel(i, j, 'name', e.target.value)} className={styles.inputField} style={{ flex: 1 }} />
+                <input placeholder="Rating (e.g. 4 * Hotel)" value={hotel.rating} onChange={e => handleChangeHotel(i, j, 'rating', e.target.value)} className={styles.inputField} style={{ width: '120px' }} />
+                <input placeholder="Room Type (e.g. Deluxe)" value={hotel.roomType} onChange={e => handleChangeHotel(i, j, 'roomType', e.target.value)} className={styles.inputField} style={{ width: '150px' }} />
+                <input placeholder="Meal Plan (e.g. Breakfast)" value={hotel.mealPlan} onChange={e => handleChangeHotel(i, j, 'mealPlan', e.target.value)} className={styles.inputField} style={{ width: '150px' }} />
+                
+                <div style={{ display: 'flex', gap: '5px', width: '100%' }}>
+                  <label style={{ cursor: 'pointer', background: '#3498db', color: 'white', padding: '8px', borderRadius: '4px', fontSize: '0.8rem' }}>
+                    Upload Image
+                    <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleUploadImage(e, i, j)} />
+                  </label>
+                  <input placeholder="Image URL" value={hotel.image || ''} readOnly className={styles.inputField} style={{ flex: 1, backgroundColor: '#f9f9f9' }} />
+                </div>
+                
+                <button type="button" onClick={() => handleRemoveHotel(i, j)} className={styles.btnDanger} style={{marginTop: '5px'}}>Remove Hotel</button>
+              </div>
+            ))}
+            <button type="button" onClick={() => handleAddHotel(i)} className={styles.btnSecondary} style={{ fontSize: '0.8rem' }}>+ Add Hotel</button>
+          </div>
+        </div>
+      ))}
+      <button type="button" onClick={handleAddLocation} className={styles.btnPrimary}>+ Add Location</button>
+    </div>
+  );
+};
+
+// ===================== ITINERARY INPUT =====================
+const ItineraryInput = ({ data = [], onChange }) => {
+  const handleAddDay = () =>
+    onChange([...data, { day: '', title: '', desc: '', paragraphs: [], points: [], image: '' }]);
+  const handleRemoveDay = (i) => onChange(data.filter((_, idx) => idx !== i));
+  const handleFieldChange = (i, field, value) => {
+    const newData = [...data];
+    newData[i] = { ...newData[i], [field]: value };
+    onChange(newData);
+  };
+  const handleAddParagraph = (i) => {
+    const newData = [...data];
+    newData[i].paragraphs = [...(newData[i].paragraphs || []), ''];
+    onChange(newData);
+  };
+  const handleRemoveParagraph = (i, pIdx) => {
+    const newData = [...data];
+    newData[i].paragraphs = newData[i].paragraphs.filter((_, idx) => idx !== pIdx);
+    onChange(newData);
+  };
+  const handleParagraphChange = (i, pIdx, value) => {
+    const newData = [...data];
+    newData[i].paragraphs[pIdx] = value;
+    onChange(newData);
+  };
+  const handleAddPoint = (i) => {
+    const newData = [...data];
+    newData[i].points = [...(newData[i].points || []), ''];
+    onChange(newData);
+  };
+  const handleRemovePoint = (i, ptIdx) => {
+    const newData = [...data];
+    newData[i].points = newData[i].points.filter((_, idx) => idx !== ptIdx);
+    onChange(newData);
+  };
+  const handlePointChange = (i, ptIdx, value) => {
+    const newData = [...data];
+    newData[i].points[ptIdx] = value;
+    onChange(newData);
+  };
+  const handleUploadItineraryImage = async (e, i) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const res = await uploadFile(file);
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+      handleFieldChange(i, 'image', fullUrl);
+    } catch { alert('Upload failed'); }
+  };
+  return (
+    <div className={styles.card} style={{ marginBottom: '20px' }}>
+      <h3 className={styles.cardTitle}>Itinerary</h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        {data.map((item, i) => (
+          <div key={i} style={{ border: '1px solid #cbd5e1', borderRadius: '10px', padding: '16px', backgroundColor: '#f8fafc' }}>
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '14px', flexWrap: 'wrap' }}>
+              <input placeholder="DAY 01" value={item.day || ''} onChange={(e) => handleFieldChange(i, 'day', e.target.value)} className={styles.inputField} style={{ width: '100px' }} />
+              <input placeholder="Day Title (e.g. Arrival in Srinagar)" value={item.title || ''} onChange={(e) => handleFieldChange(i, 'title', e.target.value)} className={styles.inputField} style={{ flex: 1 }} />
+              <button type="button" onClick={() => handleRemoveDay(i)} className={styles.btnDanger}>Remove Day</button>
+            </div>
+            <div style={{ marginBottom: '12px' }}>
+              <label style={{ fontSize: '0.8rem', fontWeight: '600', color: '#475569', display: 'block', marginBottom: '6px' }}>📝 Paragraphs (Normal Text)</label>
+              {(item.paragraphs || []).map((para, pIdx) => (
+                <div key={pIdx} style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                  <textarea value={para} onChange={(e) => handleParagraphChange(i, pIdx, e.target.value)} placeholder="Enter paragraph text..." className={styles.inputField} style={{ flex: 1, minHeight: '70px', resize: 'vertical' }} />
+                  <button type="button" onClick={() => handleRemoveParagraph(i, pIdx)} className={styles.btnDanger} style={{ height: 'fit-content' }}>✕</button>
+                </div>
+              ))}
+              <button type="button" onClick={() => handleAddParagraph(i)} className={styles.btnSecondary} style={{ fontSize: '0.8rem', padding: '4px 12px', marginTop: '4px' }}>+ Add Paragraph</button>
+            </div>
+            <div style={{ marginBottom: '12px' }}>
+              <label style={{ fontSize: '0.8rem', fontWeight: '600', color: '#475569', display: 'block', marginBottom: '6px' }}>• Bullet Points</label>
+              {(item.points || []).map((pt, ptIdx) => (
+                <div key={ptIdx} style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                  <input value={pt} onChange={(e) => handlePointChange(i, ptIdx, e.target.value)} placeholder="Bullet point text..." className={styles.inputField} style={{ flex: 1 }} />
+                  <button type="button" onClick={() => handleRemovePoint(i, ptIdx)} className={styles.btnDanger}>✕</button>
+                </div>
+              ))}
+              <button type="button" onClick={() => handleAddPoint(i)} className={styles.btnSecondary} style={{ fontSize: '0.8rem', padding: '4px 12px', marginTop: '4px' }}>+ Add Bullet Point</button>
+            </div>
+            <div>
+              <label style={{ fontSize: '0.8rem', fontWeight: '600', color: '#475569', display: 'block', marginBottom: '6px' }}>🖼 Day Image (Optional)</label>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <label style={{ cursor: 'pointer', background: '#3498db', color: 'white', padding: '8px', borderRadius: '4px', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
+                  Upload Image
+                  <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleUploadItineraryImage(e, i)} />
+                </label>
+                <input value={item.image || ''} onChange={(e) => handleFieldChange(i, 'image', e.target.value)} placeholder="Or paste image URL" className={styles.inputField} style={{ flex: 1, backgroundColor: '#f9f9f9' }} />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <button type="button" onClick={handleAddDay} className={styles.btnSecondary} style={{ marginTop: '15px' }}>+ Add Day</button>
+    </div>
+  );
+};
+// ===========================================================
+
+const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const destName = destNameProp || queryParams.get('dest');
+  const [trips, setTrips] = useState([]);
+  const [destinations, setDestinations] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [editingId, setEditingId] = useState(null);
+  const [showFullForm, setShowFullForm] = useState(false);
+  
+  const initialForm = {
+    title: '', slug: '', duration: '', route: '', destination: destName || '', category: 'Motorcycle Tours',
+    originalPrice: '', discountedPrice: '', saveAmount: '',
+    rating: '5', reviewsCount: '0', image: '', mapImage: '', tag: 'Trending', type: 'tour',
+    galleryImages: ['', '', '', '', ''], itinerary: [], attractions: [], inclusions: [], tourHighlights: [], exclusions: [], amenities: [], aboutTrip: '',
+    departureDates: [], faqs: [], packageOptions: [], variants: [], pricingTable: [], stayDetails: [],
+    quickInfo: { packingList: [], bookFlight: [], knowBeforeYouGo: [], paymentPolicy: [], termsAndConditions: [], cancellationAndRefundPolicy: [], generalNote: [] }
+  };
+  
+  const [formData, setFormData] = useState(initialForm);
+
+  // Basic form for initial creation
+  const [basicForm, setBasicForm] = useState({ title: '', slug: '', category: 'Motorcycle Tours', destination: destName || '' });
+
   useEffect(() => {
     if (location.state?.createForDestination) {
       if (!showFullForm) {
@@ -881,17 +1045,11 @@ const StayDetailsInput = ({ data = [], onChange }) => {
           onChange={(d) => setFormData({...formData, departureDates: d})} 
         />
 
-        <ArrayInput 
-          title="Itinerary" 
-          fields={[
-            {name: 'day', placeholder: 'Day'}, 
-            {name: 'title', placeholder: 'Title'}, 
-            {name: 'desc', type: 'textarea', placeholder: 'Description (Enter for bullets)'},
-            {name: 'image', placeholder: 'Image URL'}
-          ]} 
+        <ItineraryInput 
           data={formData.itinerary} 
           onChange={(d) => setFormData({...formData, itinerary: d})} 
         />
+        
         <StructuredArrayInput title="Inclusions" data={formData.inclusions} onChange={(d) => setFormData({...formData, inclusions: d})} />
         <StructuredArrayInput title="Exclusions" data={formData.exclusions} onChange={(d) => setFormData({...formData, exclusions: d})} />
         <div className={styles.card} style={{ marginBottom: '20px' }}>

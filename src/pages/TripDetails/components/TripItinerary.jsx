@@ -53,12 +53,32 @@ const TripItinerary = ({ itineraryDays, onOpenEnquiry }) => {
               </div>
               {isExpanded && (
                 <div className={styles.itineraryBody}>
-                  <ul className={styles.itineraryDescList}>
-                    {(item.desc || '').split('\n').map((line, lIdx) => {
-                      if(!line.trim()) return null;
-                      return <li key={lIdx}>{line}</li>;
-                    })}
-                  </ul>
+                  {item.paragraphs && item.paragraphs.length > 0 && (
+                    <div className={styles.itineraryParagraphs}>
+                      {item.paragraphs.map((para, pIdx) => (
+                        <p key={pIdx} style={{ marginBottom: '10px', lineHeight: '1.6', color: '#475569' }}>
+                          {para}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                  {item.points && item.points.length > 0 && (
+                    <ul className={styles.itineraryDescList}>
+                      {item.points.map((point, ptIdx) => (
+                        <li key={ptIdx}>{point}</li>
+                      ))}
+                    </ul>
+                  )}
+                  
+                  {/* Fallback for old data without paragraphs/points */}
+                  {!(item.paragraphs?.length) && !(item.points?.length) && item.desc && (
+                    <ul className={styles.itineraryDescList}>
+                      {item.desc.split('\n').map((line, lIdx) => {
+                        if(!line.trim()) return null;
+                        return <li key={lIdx}>{line}</li>;
+                      })}
+                    </ul>
+                  )}
                   {item.image && (
                     <div style={{ marginTop: '15px' }}>
                       <img src={item.image} alt={item.title} style={{ width: '160px', height: '160px', borderRadius: '12px', objectFit: 'cover', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', border: '1px solid #e2e8f0' }} />
