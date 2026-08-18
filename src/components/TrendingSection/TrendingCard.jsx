@@ -54,22 +54,28 @@ const TrendingCard = ({ trip, basePath = '/tours' }) => {
         </div>
       </div>
 
-      <div className={styles.cardBody}>
-        <div style={{ padding: '0.5rem 0' }}>
-          {trip.duration && (
-            <p style={{ textAlign: 'left', fontSize: '0.85rem', color: '#64748b', marginBottom: '0.2rem' }}>
-              {trip.duration}
-            </p>
-          )}
-          <h3 className={styles.cardTitle} style={{ textAlign: 'center', fontSize: '1.4rem', marginBottom: '0.3rem', color: '#0f172a', fontWeight: 'bold' }}>
-            {trip.destination}
-          </h3>
-          <p className={styles.durationText} style={{ textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.3rem', fontSize: '0.85rem', color: '#64748b' }}>
+      <div className={styles.cardBody} style={{ padding: '1.2rem', display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+            {trip.destination && (
+              <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#ea580c', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                {trip.destination}
+              </span>
+            )}
+            {trip.duration && (
+              <span style={{ fontSize: '0.75rem', color: '#475569', backgroundColor: '#f1f5f9', padding: '3px 8px', borderRadius: '12px', fontWeight: '600' }}>
+                {trip.duration}
+              </span>
+            )}
+          </div>
+          
+          <h3 className={styles.cardTitle} style={{ textAlign: 'left', fontSize: '1.15rem', color: '#0f172a', fontWeight: '800', marginBottom: '0.5rem', lineHeight: '1.3' }}>
             {trip.title}
-          </p>
+          </h3>
+          
           {trip.route && (
-            <p style={{ textAlign: 'left', fontSize: '0.85rem', color: '#64748b', marginBottom: 0 }}>
-              {trip.route}
+            <p style={{ textAlign: 'left', fontSize: '0.85rem', color: '#64748b', marginBottom: '1rem', lineHeight: '1.4', display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+              <span style={{ marginRight: '4px' }}>📍</span>{trip.route}
             </p>
           )}
         </div>
