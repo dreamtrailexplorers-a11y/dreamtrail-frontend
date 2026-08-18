@@ -1,7 +1,7 @@
 .aboutUsContainer {
   font-family: var(--font-body);
   color: var(--text-primary);
-  background-color: var(--light-bg);
+  background-color: #ffffff;
   word-break: break-word;
   overflow-wrap: anywhere;
 }
@@ -9,12 +9,10 @@
 /* 1. Hero Section */
 .heroSection {
   position: relative;
-  height: 60vh;
-  min-height: 400px;
+  height: 80vh;
+  min-height: 500px;
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
-  background-color: var(--dark-card); /* Fallback */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +22,7 @@
 .heroOverlay {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.7));
 }
 
 .heroContent {
@@ -32,33 +30,80 @@
   z-index: 1;
   color: white;
   padding: 0 20px;
-  max-width: 800px;
+  max-width: 900px;
 }
 
 .heroTitle {
   font-family: var(--font-heading);
   font-size: 3.5rem;
-  font-weight: 700;
-  margin-bottom: 15px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  line-height: 1.2;
 }
 
 .heroSubtitle {
   font-family: var(--font-sans-heading);
   font-size: 1.2rem;
-  font-weight: 500;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--primary-color);
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: #e2e8f0;
 }
 
-/* 2. Intro Section */
+/* 2. Stats Bar */
+.statsBar {
+  background-color: #0f172a;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  gap: 60px;
+  position: relative;
+  margin-top: -50px;
+  z-index: 10;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statNumber {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #94a3b8;
+  margin-top: 5px;
+}
+
+.statDivider {
+  width: 60px;
+  height: 2px;
+  background-color: #e85d22;
+}
+
+/* 3. Intro Section & Collage */
 .introSection {
   display: flex;
   flex-wrap: wrap;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 20px;
+  margin: 80px auto;
+  padding: 0 20px;
   gap: 60px;
+  align-items: center;
 }
 
 .introLeft {
@@ -68,144 +113,241 @@
 
 .sectionTitle {
   font-family: var(--font-heading);
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 20px;
-  position: relative;
-  display: inline-block;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 30px;
+  line-height: 1.2;
 }
 
-.sectionTitle::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 50px;
-  height: 3px;
-  background-color: var(--primary-color);
+.introTextWrapper {
+  border-left: 3px solid #e85d22;
+  padding-left: 20px;
+}
+
+.sectionSubtitle {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: #1e293b;
+  margin: 25px 0 10px;
 }
 
 .sectionText {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   line-height: 1.8;
-  color: var(--text-secondary);
-  margin-bottom: 30px;
-  text-align: justify;
+  color: #475569;
 }
 
 .introRight {
   flex: 1;
   min-width: 300px;
+}
+
+.asymmetricCollage {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 15px;
+}
+
+.collageImg1 {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.collageImg2 {
+  grid-column: 2;
+  grid-row: 1;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.collageImg3 {
+  grid-column: 2;
+  grid-row: 2;
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.collageImg4 {
+  grid-column: 1 / 3;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-top: 15px;
+}
+
+/* 4. Our Story (Dark) */
+.storySectionDark {
+  background-color: #0f172a;
+  padding: 100px 20px;
+  color: white;
+}
+
+.storyContainerDark {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.storyImageBlockDark {
+  flex: 1;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+.storyImageBlockDark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 450px;
+}
+
+.storyTextBlockDark {
+  flex: 1;
+}
+
+.storyTitleDark {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.storyTextDark {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #cbd5e1;
+  margin-bottom: 15px;
+}
+
+.readMoreStoryBtn {
+  background: none;
+  border: 1px solid #e85d22;
+  color: #e85d22;
+  padding: 10px 25px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s;
+}
+
+.readMoreStoryBtn:hover {
+  background: #e85d22;
+  color: white;
+}
+
+/* 5. Why Choose Us (Cards) */
+.whyChooseUsSectionCards {
+  padding: 100px 20px;
+  background-color: #f8fafc;
+}
+
+.whyChooseUsContainerCards {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.whyChooseUsHeaderCards {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.whyChooseUsTitleCards {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.whyChooseUsGridCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.whyChooseUsCard {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  transition: transform 0.3s;
+  border: 1px solid #f1f5f9;
+}
+
+.whyChooseUsCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+}
+
+.whyChooseUsCardIcon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+  background-color: #fff7ed;
+  color: #e85d22;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.5rem;
 }
 
-.collageGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  width: 100%;
-}
-
-.collageItem {
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
-  aspect-ratio: 1;
-  background-color: var(--border-color);
-}
-
-.collageItem img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* 3. Our Story Section */
-.storySection {
-  background-color: var(--card-bg);
-  padding: 80px 20px;
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
-}
-
-.storyContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 50px;
-}
-
-.storyImageBlock {
-  flex: 1;
-  min-width: 300px;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  background-color: var(--border-color);
-}
-
-.storyImageBlock img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  min-height: 400px;
-  max-height: 600px;
-}
-
-.storyTextBlock {
-  flex: 1;
-  min-width: 300px;
-}
-
-.storyTitle {
+.whyChooseUsCardTitle {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 20px;
+  color: #1e293b;
+  margin-bottom: 15px;
 }
 
-.storyText {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: var(--text-secondary);
+.whyChooseUsCardText {
+  color: #64748b;
+  line-height: 1.6;
+  font-size: 1rem;
 }
 
-@media (max-width: 768px) {
-  .storyContainer {
-    flex-direction: column-reverse;
-  }
-}
-
-/* 4. Community Section */
+/* Community Section */
 .communitySection {
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 20px;
+  margin: 80px auto;
+  padding: 0 20px;
   text-align: center;
 }
 
-.communityHeader {
+.manifestoContainer {
   max-width: 800px;
-  margin: 0 auto 50px auto;
+  margin: 0 auto 50px;
 }
 
-.communityTitle {
+.manifestoTitle {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #0f172a;
   margin-bottom: 20px;
 }
 
-.communityText {
+.communityTextSummary {
+  color: #475569;
   font-size: 1.1rem;
-  line-height: 1.8;
-  color: var(--text-secondary);
+  line-height: 1.7;
 }
 
 .featuresGrid {
@@ -219,146 +361,27 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  min-width: 250px;
-  background-color: var(--card-bg);
-  padding: 20px 30px;
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-color);
+  background: white;
+  padding: 15px 25px;
+  border-radius: 30px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
 }
 
 .featureIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  background-color: var(--badge-green-bg);
-  color: var(--primary-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: #10b981;
   font-size: 1.2rem;
 }
 
 .featureText {
-  font-family: var(--font-sans-heading);
-  font-size: 1.05rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #1e293b;
 }
 
-/* 5. Bottom Banner */
-.bottomBannerSection {
-  position: relative;
-  height: 350px;
-  background-size: cover;
-  background-position: center;
-  background-color: var(--dark-bg); /* Fallback */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-bottom: -4rem; /* Pull footer up to remove white gap */
-  padding-bottom: 2rem; /* Give some breathing room inside */
-}
-
-.bannerOverlay {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-}
-
-.bannerContent {
-  position: relative;
-  z-index: 1;
-  color: white;
-  padding: 0 20px;
-}
-
-.bannerTitle {
-  font-family: var(--font-heading);
-  font-size: 3rem;
-  font-weight: 800;
-  margin-bottom: 10px;
-}
-
-.bannerSubtitle {
-  font-family: var(--font-sans-heading);
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--primary-color);
-}
-
-/* 5. Why Choose Us Section (Redesigned) */
-.whyChooseUsSection {
-  width: 100%;
-  padding: 60px 20px;
-  background-color: #f8fafc;
-}
-
-.whyChooseUsContainer {
-  max-width: 1000px;
-  margin: 0 auto;
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 40px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e2e8f0;
-}
-
-.whyChooseUsHeader {
-  margin-bottom: 30px;
-}
-
-.whyChooseUsTitle {
-  font-family: var(--font-heading);
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #e85d22;
-  border-left: 5px solid #e85d22;
-  padding-left: 15px;
-  margin: 0;
-}
-
-.whyChooseUsList {
-  display: flex;
-  flex-direction: column;
-}
-
-
-
-.whyChooseUsItem:last-child {
-  border-bottom: none;
-}
-
-.whyChooseUsIcon {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: #e85d22;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  flex-shrink: 0;
-  margin-top: 3px;
-}
-
-.whyChooseUsText {
-  font-size: 1.1rem;
-  color: #334155;
-  line-height: 1.6;
-  font-weight: 600;
-}
-
-
-
-/* 2.5 Deep Dive Section (Extra Intros) */
+/* Deep Dive & Modal */
 .deepDiveSection {
-  background-color: #f8fafc;
-  padding: 100px 20px;
-  position: relative;
+  background-color: #ffffff;
+  padding: 80px 20px;
 }
 
 .deepDiveContainer {
@@ -368,187 +391,48 @@
 
 .deepDiveHeader {
   text-align: center;
-  margin-bottom: 60px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-bottom: 50px;
 }
 
 .deepDiveTitle {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 15px;
-}
-
-.deepDiveSubtitle {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-.deepDiveGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 40px;
+  font-size: 2.2rem;
+  color: #0f172a;
 }
 
 .deepDiveCard {
-  background: white;
-  border-radius: 16px;
-  padding: 40px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(0,0,0,0.03);
-  display: flex;
-  flex-direction: column;
-}
-
-.deepDiveCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  background: #f8fafc;
+  padding: 30px;
+  border-radius: 12px;
+  cursor: pointer;
+  height: 100%;
 }
 
 .cardTitle {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 20px;
-  position: relative;
-  display: inline-block;
-  padding-bottom: 10px;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: #1e293b;
 }
 
-.cardTitle::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 40px;
-  height: 3px;
-  background-color: var(--primary-color);
-  border-radius: 2px;
-}
-
-.cardText {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  color: var(--text-secondary);
-  text-align: justify;
-  margin: 0;
-  flex-grow: 1;
-}
-
-@media (max-width: 768px) {
-  .deepDiveGrid {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-  .deepDiveCard {
-    padding: 30px 25px;
-  }
-  .deepDiveTitle {
-    font-size: 2rem;
-  }
-}
-
-
-/* Accordion Specific Overrides */
-.whyChooseUsList {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.whyChooseUsItem {
-  display: block;
-  background: white;
-  border-radius: 8px;
-  border: 1px solid #eee;
+.truncatedText {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  transition: all 0.3s ease;
-  padding: 0;
+  color: #64748b;
+  margin-bottom: 15px;
 }
 
-.accordionHeader {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  background: white;
-  transition: background 0.3s ease;
-}
-
-.accordionHeader:hover {
-  background: #fafafa;
-}
-
-.accordionTitle {
-  font-family: var(--font-heading);
-  font-size: 1.2rem;
+.readMoreBtn {
+  color: #e85d22;
   font-weight: 600;
-  color: var(--text-primary);
-  margin: 0;
-  word-break: normal;
-  white-space: normal;
-  overflow-wrap: normal;
-  flex: 1;
 }
 
-.whyChooseUsIcon {
-  margin-right: 15px;
-  background-color: var(--primary-color);
-  color: white;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.accordionIcon {
-  transition: transform 0.3s ease;
-}
-
-.accordionOpen .accordionIcon {
-  transform: rotate(180deg);
-}
-
-.accordionOpen {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  border-color: #e2e8f0;
-}
-
-.accordionContent {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease, padding 0.4s ease;
-  background: white;
-}
-
-.accordionOpen .accordionContent {
-  max-height: 500px; /* arbitrary large value */
-  padding: 0 20px 20px 67px;
-}
-
-.whyChooseUsText {
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin: 0;
-}
-
-/* Slider Modal Styles */
 .modalOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -559,142 +443,31 @@
 .modalContent {
   background: white;
   padding: 40px;
-  border-radius: 12px;
-  max-width: 800px;
+  border-radius: 16px;
+  max-width: 700px;
   width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
   position: relative;
 }
 
 .modalCloseBtn {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 20px;
+  right: 20px;
   background: #f1f5f9;
   border: none;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+  cursor: pointer;
   font-size: 1.2rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #334155;
-  transition: all 0.2s ease;
 }
 
-.modalCloseBtn:hover {
-  background: #e2e8f0;
-  color: #0f172a;
-}
-
-.modalTitle {
-  font-family: var(--font-heading);
-  font-size: 1.8rem;
-  color: var(--primary-color);
-  margin-bottom: 20px;
-  border-bottom: 2px solid #f1f5f9;
-  padding-bottom: 10px;
-}
-
-.modalText {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  color: var(--text-secondary);
-}
-
-.truncatedText {
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 15px;
-}
-
-.readMoreBtn {
-  background: none;
-  border: none;
-  color: var(--primary-color);
-  font-weight: 600;
-  padding: 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.readMoreBtn:hover {
-  text-decoration: underline;
-}
-
-.deepDiveCard {
-  cursor: pointer;
-  height: 100%;
-}
-.deepDiveCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-}
-
-.deepDiveGrid {
-  display: block; /* Override grid for swiper wrapper if needed, but we'll remove it in JSX */
-}
-
-/* Redesigned Community Section */
-.manifestoContainer {
-  max-width: 900px;
-  margin: 0 auto 60px auto;
-  text-align: left;
-  background: #fafaf9;
-  padding: 50px 60px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-  border: 1px solid #f5f5f4;
-}
-
-.manifestoTitle {
-  font-family: var(--font-heading);
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.manifestoParagraph {
-  font-size: 1.15rem;
-  line-height: 1.9;
-  color: #475569;
-  margin-bottom: 20px;
-  font-family: 'Georgia', serif; /* Gives an editorial feel */
-}
-
-.manifestoParagraph strong {
-  color: #1e293b;
-  font-weight: 700;
-}
-
-.manifestoHeading {
-  font-family: var(--font-heading);
-  font-size: 1.8rem;
-  color: #0f172a;
-  margin: 40px 0 20px 0;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 10px;
-}
-
-.manifestoSubheading {
-  font-family: var(--font-heading);
-  font-size: 1.4rem;
-  color: #334155;
-  margin: 30px 0 15px 0;
-}
-
+/* Responsive */
 @media (max-width: 768px) {
-  .manifestoContainer {
-    padding: 30px 20px;
-  }
+  .heroTitle { font-size: 2.5rem; }
+  .statsBar { flex-direction: column; gap: 30px; margin-top: -30px; }
+  .statDivider { width: 40px; height: 1px; }
+  .asymmetricCollage { grid-template-columns: 1fr; }
+  .collageImg1, .collageImg2, .collageImg3, .collageImg4 { grid-column: 1; grid-row: auto; height: 200px; }
+  .storyContainerDark { flex-direction: column; }
 }

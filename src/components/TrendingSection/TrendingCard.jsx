@@ -55,10 +55,13 @@ const TrendingCard = ({ trip, basePath = '/tours' }) => {
       </div>
 
       <div className={styles.cardBody}>
-        <div>
-          <span className={styles.durationText}>{trip.duration}</span>
-          <h3 className={styles.cardTitle}>{trip.title}</h3>
-          <p className={styles.cardRoute}>{trip.route}</p>
+        <div style={{ textAlign: 'center', padding: '0.5rem 0' }}>
+          <h3 className={styles.cardTitle} style={{ fontSize: '1.4rem', marginBottom: '0.3rem' }}>
+            {trip.destination}
+          </h3>
+          <p className={styles.durationText} style={{ textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 0 }}>
+            {trip.title}
+          </p>
         </div>
 
         <div className={styles.priceBlock}>
