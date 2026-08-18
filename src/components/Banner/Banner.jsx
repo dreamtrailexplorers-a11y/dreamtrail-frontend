@@ -8,6 +8,7 @@ const Banner = () => {
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef(null);
   const [settings, setSettings] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -16,6 +17,8 @@ const Banner = () => {
         setSettings(data);
       } catch (err) {
         console.error('Failed to load banner settings', err);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchSettings();
@@ -86,11 +89,11 @@ const Banner = () => {
         {/* Overlay Dark Gradient */}
         <div className={styles.bannerOverlay}>
           <div className={styles.centerTitleWrapper}>
-            {(settings ? settings.bannerVideoTitle : 'Ladakh') && (
-              <h1 className={styles.ladakhScriptTitle}>{settings ? settings.bannerVideoTitle : 'Ladakh'}</h1>
+            {(settings ? settings.bannerVideoTitle : (isLoading ? '' : 'Ladakh')) && (
+              <h1 className={styles.ladakhScriptTitle}>{settings ? settings.bannerVideoTitle : (isLoading ? '' : 'Ladakh')}</h1>
             )}
-            {(settings ? settings.bannerVideoSubtitle : 'Uncharted Expeditions & Bike Trips') && (
-              <p className={styles.ladakhSubtitle}>{settings ? settings.bannerVideoSubtitle : 'Uncharted Expeditions & Bike Trips'}</p>
+            {(settings ? settings.bannerVideoSubtitle : (isLoading ? '' : 'Uncharted Expeditions & Bike Trips')) && (
+              <p className={styles.ladakhSubtitle}>{settings ? settings.bannerVideoSubtitle : (isLoading ? '' : 'Uncharted Expeditions & Bike Trips')}</p>
             )}
           </div>
 

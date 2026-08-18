@@ -10,6 +10,7 @@ import styles from './GroupTripBanner.module.css';
 
 const GroupTripBanner = () => {
   const [settings, setSettings] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -18,12 +19,14 @@ const GroupTripBanner = () => {
         setSettings(data);
       } catch (err) {
         console.error('Failed to load group trip banner settings', err);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchSettings();
   }, []);
 
-  const defaultBanners = [{
+  const defaultBanners = isLoading ? [] : [{
     image: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1600&q=80',
     title: 'Group Trips',
     subtitle: 'It\'s time for',

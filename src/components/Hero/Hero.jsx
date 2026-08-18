@@ -6,6 +6,7 @@ import styles from './Hero.module.css';
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [settings, setSettings] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -14,17 +15,19 @@ const Hero = () => {
         setSettings(data);
       } catch (err) {
         console.error('Failed to load hero settings', err);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchSettings();
   }, []);
 
-  const slides = settings?.heroSliders?.length > 0 ? settings.heroSliders : [
+  const slides = settings?.heroSliders?.length > 0 ? settings.heroSliders : (isLoading ? [] : [
     {
       image: 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1920&q=80',
       heading: 'Experiences for\nTourist Explorers'
     }
-  ];
+  ]);
 
   useEffect(() => {
     if (slides.length <= 1) return;
