@@ -5,6 +5,7 @@ import CategoryMenu from '../../components/CategoryMenu/CategoryMenu';
 import TrendingCard from '../../components/TrendingSection/TrendingCard';
 import CreatorFaqs from '../CreatorTripDetails/components/CreatorFaqs';
 import Footer from '../../components/Footer/Footer';
+import Loader from '../../components/Loader/Loader';
 import { FiSend, FiUsers, FiBriefcase, FiMapPin, FiStar } from 'react-icons/fi';
 import { FaCarSide } from 'react-icons/fa';
 import styles from './DestinationPage.module.css';
@@ -54,7 +55,7 @@ const DestinationPage = () => {
   };
   const title = currentDestination ? currentDestination.name : formatTitle(slug);
 
-  if (!currentDestination) return <div>Loading...</div>;
+  if (!currentDestination) return <Loader fullScreen={true} />;
 
   // Group trips dynamically by reading their new explicit category field.
   const flightPackages = allTrips.filter(t => t.category === 'Flight Package');

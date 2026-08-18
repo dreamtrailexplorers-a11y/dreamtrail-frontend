@@ -3,7 +3,7 @@ import { FiDownload, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import styles from './TripItinerary.module.css';
 
 const TripItinerary = ({ itineraryDays, onOpenEnquiry }) => {
-  const [expandedItinerary, setExpandedItinerary] = useState({ 0: true, 1: true });
+  const [expandedItinerary, setExpandedItinerary] = useState({ 0: true });
   const isAllExpanded = itineraryDays.length > 0 && itineraryDays.every((_, idx) => expandedItinerary[idx]);
 
   const toggleItineraryDay = (dayIndex) => {

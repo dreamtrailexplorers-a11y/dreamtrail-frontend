@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
+import Loader from '../../components/Loader/Loader';
 
 const DynamicCustomPage = () => {
   const { slug } = useParams();
@@ -31,8 +32,8 @@ const DynamicCustomPage = () => {
     return (
       <>
         <Navbar />
-        <div style={{ padding: '100px 20px', textAlign: 'center', minHeight: '60vh' }}>
-          <h2>Loading...</h2>
+        <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Loader />
         </div>
         <Footer />
       </>

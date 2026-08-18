@@ -16,6 +16,7 @@ import TripAbout from './components/TripAbout';
 import TripItinerary from './components/TripItinerary';
 import TripInclusions from './components/TripInclusions';
 import TripPackages from './components/TripPackages';
+import Loader from '../../components/Loader/Loader';
 import TripReviews from './components/TripReviews';
 import TripSidebar from './components/TripSidebar';
 import TripPackageOptions from './components/TripPackageOptions';
@@ -74,7 +75,7 @@ const TripDetails = () => {
 
   const handleOpenEnquiry = () => setIsEnquiryModalOpen(true);
 
-  if (!currentTrip) return <div>Loading...</div>;
+  if (!currentTrip) return <Loader fullScreen={true} />;
   if (currentTrip === 'not-found') return <div style={{textAlign: 'center', padding: '100px'}}><h2>Package Not Found</h2><p>Please check the URL and try again.</p></div>;
 
   const galleryImages = currentTrip.galleryImages?.length > 0 ? currentTrip.galleryImages : [

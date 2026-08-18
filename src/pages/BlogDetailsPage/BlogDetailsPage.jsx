@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getBlogs } from '../../services/api';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
+import Loader from '../../components/Loader/Loader';
 import styles from './BlogDetailsPage.module.css';
 import { cleanImageUrl } from '../../utils/cleanUrl';
 
@@ -31,7 +32,7 @@ const BlogDetailsPage = () => {
     }
   };
 
-  if (loading) return <div style={{ textAlign: 'center', padding: '100px' }}>Loading...</div>;
+  if (loading) return <Loader fullScreen={true} />;
   if (!blog) return <div style={{ textAlign: 'center', padding: '100px' }}>Blog not found</div>;
 
   return (

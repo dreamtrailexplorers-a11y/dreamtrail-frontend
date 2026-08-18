@@ -9,6 +9,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Footer from '../../components/Footer/Footer';
+import Loader from '../../components/Loader/Loader';
 
 const AboutUs = () => {
   const [siteSettings, setSiteSettings] = useState(null);
@@ -37,7 +38,7 @@ const AboutUs = () => {
   }, []);
 
   if (loading) {
-    return <div style={{ padding: '100px', textAlign: 'center' }}>Loading...</div>;
+    return <Loader fullScreen={true} />;
   }
 
   const aboutPage = siteSettings?.aboutPage || {};
