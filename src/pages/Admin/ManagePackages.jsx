@@ -648,6 +648,19 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     }));
   };
 
+  useEffect(() => {
+    fetchTrips();
+    const fetchDestinations = async () => {
+      try {
+        const { data } = await getDestinations();
+        setDestinations(data);
+      } catch (err) {
+        console.error('Failed to fetch destinations');
+      }
+    };
+    fetchDestinations();
+  }, [destName, refreshKey]);
+
   const handleUploadMainImage = async (e) => {
     const file = e.target.files[0];
     if(!file) return;

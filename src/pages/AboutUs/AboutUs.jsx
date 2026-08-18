@@ -166,19 +166,35 @@ const AboutUs = () => {
         <section className={styles.storySectionDark}>
           <div className={styles.storyContainerDark}>
             <div className={styles.storyImageBlockDark}>
-              <img 
-                src={aboutPage.storyImage || 'https://images.unsplash.com/photo-1533560904424-a0c61dc306fc'} 
-                alt="Our Story" 
-                onError={(e) => handleImageError(e, 'https://images.unsplash.com/photo-1533560904424-a0c61dc306fc')}
-              />
+              <div className={styles.storyCollage}>
+                <img 
+                  src={aboutPage.storyImage || 'https://images.unsplash.com/photo-1533560904424-a0c61dc306fc'} 
+                  alt="Our Story Main" 
+                  className={styles.storyImgMain}
+                  onError={(e) => handleImageError(e, 'https://images.unsplash.com/photo-1533560904424-a0c61dc306fc')}
+                />
+                <img 
+                  src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800" 
+                  alt="Story aesthetic 1" 
+                  className={styles.storyImgSub1}
+                />
+                <img 
+                  src="https://images.unsplash.com/photo-1519904981063-b0cf448d479e" 
+                  alt="Story aesthetic 2" 
+                  className={styles.storyImgSub2}
+                />
+              </div>
             </div>
             <div className={styles.storyTextBlockDark}>
               <h2 className={styles.storyTitleDark}>{aboutPage.storyTitle || 'Our Story'}</h2>
               <div className={styles.storyContentDark}>
                 {renderFormattedText(aboutPage.storyText, styles.storyTextDark, true)}
                 {hasLongStory && (
-                  <button className={styles.readMoreStoryBtn} onClick={() => setExpandedStory(!expandedStory)}>
-                    {expandedStory ? 'Read Less' : 'Read Full Story'}
+                  <button 
+                    className={styles.readMoreStoryBtn} 
+                    onClick={() => setSelectedIntro({ title: aboutPage.storyTitle || 'Our Story', text: aboutPage.storyText })}
+                  >
+                    Read Full Story
                   </button>
                 )}
               </div>
@@ -220,23 +236,27 @@ const AboutUs = () => {
           </section>
         )}
 
-        {/* 6. Community Section */}
-        <section className={styles.communitySection}>
-          <div className={styles.manifestoContainer}>
-            <h2 className={styles.manifestoTitle}>{aboutPage.communityTitle || 'Join the Passionate Rider Community'}</h2>
-            <div className={styles.communityTextSummary}>
-              {renderFormattedText(aboutPage.communityText)}
-            </div>
-          </div>
-          <div className={styles.featuresGrid}>
-            {(aboutPage.communityPoints || []).map((point, index) => (
-              <div key={index} className={styles.featureItem}>
-                <div className={styles.featureIcon}>
-                  <FiCheck />
-                </div>
-                <span className={styles.featureText}>{point.text}</span>
+        {/* 6. Community Section (Redesigned as Premium Section) */}
+        <section className={styles.communitySectionPremium}>
+          <div className={styles.communityPremiumOverlay}></div>
+          <div className={styles.communityPremiumContent}>
+            <div className={styles.communityPremiumHeader}>
+              <h2 className={styles.communityPremiumTitle}>{aboutPage.communityTitle || 'Join the Passionate Rider Community'}</h2>
+              <div className={styles.communityPremiumText}>
+                {renderFormattedText(aboutPage.communityText, styles.communityPremiumDesc)}
               </div>
-            ))}
+            </div>
+            
+            <div className={styles.communityFeaturesRow}>
+              {(aboutPage.communityPoints || []).map((point, index) => (
+                <div key={index} className={styles.communityFeatureCard}>
+                  <div className={styles.communityFeatureIcon}>
+                    <FiCheck />
+                  </div>
+                  <span className={styles.communityFeatureText}>{point.text}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
