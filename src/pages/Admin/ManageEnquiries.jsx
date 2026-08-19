@@ -306,7 +306,8 @@ const ManageEnquiries = () => {
                   )}
 
                   <td data-label="Message">{enq.message}</td>
-                  <td data-label="Actions">`n                    <button onClick={() => handleDelete(enq._id)} className={styles.btnDanger} style={{ padding: '6px' }}>
+                  <td data-label="Actions">
+<button onClick={() => handleDelete(enq._id)} className={styles.btnDanger} style={{ padding: '6px' }}>
                       <FiTrash2 />
                     </button>
                   </td>
