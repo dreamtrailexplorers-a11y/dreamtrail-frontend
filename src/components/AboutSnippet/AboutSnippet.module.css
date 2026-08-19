@@ -158,3 +158,10 @@
   margin: 0 auto !important;
 }
 
+
+
+@media (max-width: 768px) {
+  .snippetSection {
+    padding-top: 180px !important; 
+  }
+}

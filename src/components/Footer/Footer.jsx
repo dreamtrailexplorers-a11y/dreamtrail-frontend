@@ -108,7 +108,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className={styles.companyCol}>
             <div className={styles.brandLogo}>
-              <img src="/footer-logo.png" alt="DreamTrail Logo" style={{ height: '110px', width: 'auto' }} />
+              <img src="/footer-logo.png" alt="DreamTrail Logo" className={styles.responsiveLogo} />
             </div>
 
             <a 

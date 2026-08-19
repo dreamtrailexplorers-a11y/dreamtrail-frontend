@@ -163,3 +163,23 @@
   border: 2px solid #000;
   font-weight: 600;
 }
+
+
+@media (max-width: 640px) {
+  .metaChipsRow {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .shareBtn {
+    margin-left: 0;
+    margin-top: 1rem;
+    width: 100%;
+    justify-content: center;
+  }
+  .title {
+    font-size: 1.4rem;
+  }
+  .subtitle {
+    font-size: 0.85rem;
+  }
+}

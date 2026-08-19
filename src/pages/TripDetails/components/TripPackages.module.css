@@ -271,3 +271,25 @@
   font-size: 0.7rem;
   color: #64748b;
 }
+
+
+@media (max-width: 640px) {
+  .dateRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+  .dateInfo {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .availabilityCol {
+    justify-content: flex-start;
+    width: 100%;
+  }
+  .datePriceBlock {
+    align-items: flex-start;
+    width: 100%;
+  }
+}

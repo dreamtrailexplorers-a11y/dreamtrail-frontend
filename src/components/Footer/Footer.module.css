@@ -312,3 +312,33 @@
   color: white;
 }
 
+
+.responsiveLogo {
+  height: 110px;
+  width: auto;
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .responsiveLogo {
+    height: 70px; /* Much smaller on mobile */
+  }
+  
+  .mainFooter {
+    padding: 1.5rem 1rem 1rem;
+    gap: 1.5rem;
+  }
+  
+  .tourGrid {
+    gap: 1.5rem;
+  }
+  
+  .subHeadingCol {
+    margin-top: 1rem;
+  }
+  
+  .colHeading {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+}

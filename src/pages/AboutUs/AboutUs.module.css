@@ -602,12 +602,55 @@
 }
 
 /* Responsive */
+
 @media (max-width: 768px) {
-  .heroTitle { font-size: 2.5rem; }
+  .heroTitle { font-size: 2.2rem; }
   .statsBar { flex-direction: column; gap: 30px; margin-top: -30px; }
   .statDivider { width: 40px; height: 1px; }
-  .asymmetricCollage { grid-template-columns: 1fr; }
-  .collageImg1, .collageImg2, .collageImg3, .collageImg4 { grid-column: 1; grid-row: auto; height: 200px; }
-  .storyContainerDark { flex-direction: column; }
-  .manifestoContainer { padding: 30px 20px; }
+  
+  .introSection {
+    padding: 0 15px;
+    gap: 40px;
+    margin: 40px auto;
+  }
+  
+  .introRight {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .asymmetricCollage {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .collageImg1, .collageImg2, .collageImg3, .collageImg4 { 
+    width: 100% !important;
+    height: 220px !important; 
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  
+  .storyContainerDark { flex-direction: column; padding: 40px 15px; }
+  .storyImageBlockDark { width: 100%; min-width: 100%; }
+  
+  .storyCollage {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .storyImgMain, .storyImgSub1, .storyImgSub2 {
+    position: static;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: none;
+    transform: none;
+  }
+  
+  .manifestoContainer { padding: 30px 15px; }
 }
+
