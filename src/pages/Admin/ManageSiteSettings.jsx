@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { getSiteSettings, updateSiteSettings, uploadFile } from '../../services/api';
 import styles from './Admin.module.css';
 
@@ -324,6 +324,41 @@ const ManageSiteSettings = () => {
 
   const renderModalContent = () => {
     switch(activeModal) {
+
+      case 'Pre-Booking Settings':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['preBookingSettings'], 'Pre-Booking Settings')} className={styles.card}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Pre-Booking & Reminders</h3>
+                <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
+              </div>
+              <div className={styles.formGrid}>
+                <div className={styles.inputGroup}>
+                  <label className={styles.inputLabel}>Pre-Booking Amount (₹)</label>
+                  <input type="number" value={formData.preBookingSettings?.amount || 5000} onChange={(e) => setFormData({ ...formData, preBookingSettings: { ...formData.preBookingSettings, amount: Number(e.target.value) }})} className={styles.inputField} />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label className={styles.inputLabel}>Reminder Start Days</label>
+                  <input type="number" value={formData.preBookingSettings?.reminderDaysLeft || 10} onChange={(e) => setFormData({ ...formData, preBookingSettings: { ...formData.preBookingSettings, reminderDaysLeft: Number(e.target.value) }})} className={styles.inputField} />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label className={styles.inputLabel}>Reminder Time 1</label>
+                  <input type="time" value={formData.preBookingSettings?.reminderTime1 || '10:00'} onChange={(e) => setFormData({ ...formData, preBookingSettings: { ...formData.preBookingSettings, reminderTime1: e.target.value }})} className={styles.inputField} />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label className={styles.inputLabel}>Reminder Time 2</label>
+                  <input type="time" value={formData.preBookingSettings?.reminderTime2 || '18:00'} onChange={(e) => setFormData({ ...formData, preBookingSettings: { ...formData.preBookingSettings, reminderTime2: e.target.value }})} className={styles.inputField} />
+                </div>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <label className={styles.inputLabel}>Refund Policy Text</label>
+                  <textarea value={formData.preBookingSettings?.refundPolicyText || ''} onChange={(e) => setFormData({ ...formData, preBookingSettings: { ...formData.preBookingSettings, refundPolicyText: e.target.value }})} className={styles.inputField} style={{ minHeight: '80px' }} />
+                </div>
+              </div>
+            </form>
+          </>
+        );
+
       
       case 'Hero Section':
         return (
@@ -899,7 +934,7 @@ const ManageSiteSettings = () => {
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
                       >
-                        ×
+                        Ã—
                       </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
@@ -967,7 +1002,7 @@ const ManageSiteSettings = () => {
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
                       >
-                        ×
+                        Ã—
                       </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
@@ -1035,7 +1070,7 @@ const ManageSiteSettings = () => {
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
                       >
-                        ×
+                        Ã—
                       </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
@@ -1103,7 +1138,7 @@ const ManageSiteSettings = () => {
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
                       >
-                        ×
+                        Ã—
                       </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
@@ -1170,7 +1205,7 @@ const ManageSiteSettings = () => {
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
                       >
-                        ×
+                        Ã—
                       </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
@@ -1239,7 +1274,7 @@ const ManageSiteSettings = () => {
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
                       >
-                        ×
+                        Ã—
                       </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
@@ -1413,6 +1448,12 @@ const ManageSiteSettings = () => {
       <h2 className={styles.pageHeader}>Manage Site Settings</h2>
       
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Pre-Booking Settings</h3>
+          <button type="button" onClick={() => setActiveModal('Pre-Booking Settings')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
         
         <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Hero Section</h3>

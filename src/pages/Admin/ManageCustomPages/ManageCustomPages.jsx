@@ -230,7 +230,7 @@ const ManageCustomPages = () => {
             </div>
 
             <div className={styles.adminCard}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <div className={styles.adminResponsiveHeader}>
                 <h3>Page Builder (Blocks)</h3>
                 <select 
                   onChange={(e) => {
@@ -330,3 +330,4 @@ const ManageCustomPages = () => {
 };
 
 export default ManageCustomPages;
+

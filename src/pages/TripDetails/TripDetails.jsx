@@ -93,8 +93,18 @@ const TripDetails = () => {
 
   const packageOptions = currentTrip.packageOptions || [];
   
-  let displayDiscPrice = currentTrip.discountedPrice;
-  let displayOrigPrice = currentTrip.originalPrice;
+  // Calculate base display prices
+  let baseDisc = Number(currentTrip.discountedPrice) || 0;
+  let baseOrig = Number(currentTrip.originalPrice) || 0;
+  
+  // If no discount is provided, the original price BECOMES the final selling price
+  if (baseDisc === 0 && baseOrig > 0) {
+    baseDisc = baseOrig;
+    baseOrig = 0; // Don't show crossed out price
+  }
+
+  let displayDiscPrice = baseDisc;
+  let displayOrigPrice = baseOrig > 0 ? baseOrig : null;
   
   let selectedSidebarTitle = currentTrip.title;
   let selectedSidebarDuration = currentTrip.duration || "5 Days 4 Nights";
@@ -108,35 +118,40 @@ const TripDetails = () => {
   }
 
   if (packageOptions && packageOptions.length > 0) {
-    const opt = selectedOptionIndex !== null ? packageOptions[selectedOptionIndex] : null;
-    if (opt) {
-      let basePrice = Number(opt.price) || Number(currentTrip.discountedPrice) || 0;
-      let baseOrigPrice = Number(opt.originalPrice) || Number(currentTrip.originalPrice) || 0;
-      
-      if (variant && variant.name) {
-        selectedSidebarTitle = `${opt.title} Package with ${variant.name}`;
+      const opt = selectedOptionIndex !== null ? packageOptions[selectedOptionIndex] : null;
+      if (opt) {
+        let optBasePrice = Number(opt.price) || baseDisc;
+        let optBaseOrigPrice = Number(opt.originalPrice) || baseOrig;
+        
+        if (optBasePrice === 0 && optBaseOrigPrice > 0) {
+          optBasePrice = optBaseOrigPrice;
+          optBaseOrigPrice = 0;
+        }
+
+        if (variant && variant.name) {
+          selectedSidebarTitle = `${opt.title} Package with ${variant.name}`;
+        } else {
+          selectedSidebarTitle = `${opt.title} Package`;
+        }
+        
+        displayDiscPrice = optBasePrice + variantAddon;
+        displayOrigPrice = optBaseOrigPrice > 0 ? optBaseOrigPrice + variantAddon : null;
       } else {
-        selectedSidebarTitle = `${opt.title} Package`;
+        displayDiscPrice = baseDisc + variantAddon;
+        displayOrigPrice = baseOrig > 0 ? (baseOrig + variantAddon) : null;
+        if (variant && variant.name) {
+          selectedSidebarTitle = `${currentTrip.title} with ${variant.name}`;
+        }
       }
-      
-      displayDiscPrice = basePrice + variantAddon;
-      displayOrigPrice = baseOrigPrice > 0 ? baseOrigPrice + variantAddon : "";
     } else {
-      displayDiscPrice = (Number(currentTrip.discountedPrice) || 0) + variantAddon;
-      displayOrigPrice = Number(currentTrip.originalPrice) > 0 ? (Number(currentTrip.originalPrice) + variantAddon) : "";
+      displayDiscPrice = baseDisc + variantAddon;
+      displayOrigPrice = baseOrig > 0 ? (baseOrig + variantAddon) : null;
       if (variant && variant.name) {
         selectedSidebarTitle = `${currentTrip.title} with ${variant.name}`;
       }
     }
-  } else {
-    displayDiscPrice = (Number(currentTrip.discountedPrice) || 0) + variantAddon;
-    displayOrigPrice = Number(currentTrip.originalPrice) > 0 ? (Number(currentTrip.originalPrice) + variantAddon) : "";
-    if (variant && variant.name) {
-      selectedSidebarTitle = `${currentTrip.title} with ${variant.name}`;
-    }
-  }
-
-  return (
+  
+    return (
     <div className={styles.pageWrapper}>
       <Navbar sticky={false} />
 
@@ -330,6 +345,7 @@ const TripDetails = () => {
         <BuyNowModal 
           isOpen={isBuyModalOpen}
           onClose={() => setIsBuyModalOpen(false)}
+          mode="pre-book"
           tripTitle={selectedSidebarTitle && selectedSidebarTitle !== currentTrip.title ? `${currentTrip.title} (${selectedSidebarTitle})` : currentTrip.title}
           pricePerPerson={Number(displayDiscPrice) || 0}
           duration={currentTrip.duration}

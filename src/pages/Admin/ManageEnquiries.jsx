@@ -163,9 +163,9 @@ const ManageEnquiries = () => {
 
   return (
     <div className={styles.adminPage}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      <div className={styles.adminResponsiveHeader}>
         <h2 className={styles.pageTitle} style={{ margin: 0 }}>Manage Enquiries (Leads)</h2>
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button 
             onClick={handleDownloadExcel} 
             style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', backgroundColor: '#10b981', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}
@@ -213,7 +213,7 @@ const ManageEnquiries = () => {
         </div>
 
         {/* Month Selector */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           <label style={{ fontSize: '0.9rem', color: '#475569', fontWeight: '500' }}>Month:</label>
           <input 
             type="month" 
@@ -227,7 +227,7 @@ const ManageEnquiries = () => {
         </div>
 
         {/* Date Range */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           <label style={{ fontSize: '0.9rem', color: '#475569', fontWeight: '500' }}>From:</label>
           <input 
             type="date" 
@@ -267,7 +267,7 @@ const ManageEnquiries = () => {
         </p>
       ) : (
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
+          <table className={styles.table}>
             <thead>
               <tr style={{ background: '#f1f5f9', textAlign: 'left' }}>
                 <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Date</th>
@@ -284,15 +284,14 @@ const ManageEnquiries = () => {
             <tbody>
               {filteredEnquiries.map((enq) => (
                 <tr key={enq._id} style={{ borderBottom: '1px solid #e2e8f0' }}>
-                  <td style={{ padding: '12px' }}>{formatDate(enq.createdAt)}</td>
-                  <td style={{ padding: '12px', fontWeight: '600' }}>{enq.name}<br/><small>{enq.email}</small></td>
-                  <td style={{ padding: '12px' }}>{enq.phone}</td>
+                  <td data-label="Date">{formatDate(enq.createdAt)}</td>
+                  <td data-label="Name" style={{fontWeight:"600"}}>{enq.name}<br/><small>{enq.email}</small></td>
+                  <td data-label="Phone">{enq.phone}</td>
                   
                   {activeTab === 'packages' && (
                     <>
-                      <td style={{ padding: '12px' }}>{enq.destination || '-'}</td>
-                      <td style={{ padding: '12px' }}>
-                          {enq.tripTitle?.includes(' (') ? (
+                      <td data-label="Destination">{enq.destination || '-'}</td>
+                      <td data-label="Package">`n                          {enq.tripTitle?.includes(' (') ? (
                             <>
                               <div style={{fontWeight: 600, color: '#0f172a'}}>{enq.tripTitle.split(' (')[0]}</div>
                               <div style={{fontSize: '0.85em', color: '#64748b'}}>{enq.tripTitle.split(' (')[1].replace(')', '')}</div>
@@ -301,14 +300,13 @@ const ManageEnquiries = () => {
                             enq.tripTitle
                           )}
                         </td>
-                      <td style={{ padding: '12px' }}>{enq.date || '-'}</td>
-                      <td style={{ padding: '12px' }}>{enq.travellers || '-'}</td>
+                      <td data-label="Travel Date">{enq.date || '-'}</td>
+                      <td data-label="Pax">{enq.travellers || '-'}</td>
                     </>
                   )}
 
-                  <td style={{ padding: '12px', maxWidth: activeTab === 'contact' ? '400px' : '200px' }}>{enq.message}</td>
-                  <td style={{ padding: '12px' }}>
-                    <button onClick={() => handleDelete(enq._id)} className={styles.btnDanger} style={{ padding: '6px' }}>
+                  <td data-label="Message">{enq.message}</td>
+                  <td data-label="Actions">`n                    <button onClick={() => handleDelete(enq._id)} className={styles.btnDanger} style={{ padding: '6px' }}>
                       <FiTrash2 />
                     </button>
                   </td>
@@ -323,3 +321,8 @@ const ManageEnquiries = () => {
 };
 
 export default ManageEnquiries;
+
+
+
+
+

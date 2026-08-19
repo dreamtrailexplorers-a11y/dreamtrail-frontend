@@ -10,17 +10,11 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
   const origPriceNum = Number(trip.originalPrice) || 0;
   const discPriceNum = Number(trip.discountedPrice) || 0;
 
-  let finalPrice = 0;
-  let finalOrigPrice = null;
+  // The parent component (TripDetails) has already calculated the correct selling price
+  // and passed it as discountedPrice. The originalPrice is only passed if there is a valid discount.
+  let finalPrice = discPriceNum > 0 ? discPriceNum : origPriceNum;
+  let finalOrigPrice = origPriceNum > 0 && origPriceNum > finalPrice ? origPriceNum : null;
 
-  if (discPriceNum === 0 || discPriceNum >= origPriceNum) {
-    // No valid discount
-    finalPrice = origPriceNum;
-  } else {
-    // Valid discount
-    finalPrice = discPriceNum;
-    finalOrigPrice = origPriceNum;
-  }
 
   return (
     <div className={styles.stickySidebar}>
@@ -161,6 +155,7 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
       <BuyNowModal 
         isOpen={isBuyModalOpen}
         onClose={() => setIsBuyModalOpen(false)}
+        mode="full"
         tripTitle={selectedOptionTitle && selectedOptionTitle !== trip.title ? `${trip.title} (${selectedOptionTitle})` : trip.title}
         pricePerPerson={finalPrice}
         duration={trip.duration}

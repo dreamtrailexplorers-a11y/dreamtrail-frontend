@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../services/api';
 import styles from './ManageBookings.module.css';
+import adminStyles from '../Admin.module.css';
 import { FiDownload, FiSearch } from 'react-icons/fi';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -176,9 +177,9 @@ const ManageBookings = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className={adminStyles.adminResponsiveHeader}>
         <h1 className={styles.title} style={{ margin: 0 }}>Manage Bookings</h1>
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button 
             onClick={handleDownloadExcel} 
             style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', backgroundColor: '#10b981', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}
@@ -269,7 +270,9 @@ const ManageBookings = () => {
               <th>Travel / Dep Date</th>
               <th>Duration</th>
               <th>Persons</th>
-              <th>Amount</th>
+              <th>Total Amount</th>
+              <th>Pre-Booked</th>
+              <th>Balance Due/Paid</th>
               <th>Payment Status</th>
               <th>Order ID</th>
               <th>Action</th>
@@ -279,8 +282,8 @@ const ManageBookings = () => {
             {filteredBookings.length > 0 ? (
               filteredBookings.map((booking) => (
                 <tr key={booking._id}>
-                  <td>{formatDate(booking.createdAt)}</td>
-                  <td>
+                  <td data-label="Date">{formatDate(booking.createdAt)}</td>
+                  <td data-label="Customer">
                     {booking.user ? (
                       <div>
                         <strong>{booking.user.name}</strong><br/>
@@ -288,8 +291,8 @@ const ManageBookings = () => {
                       </div>
                     ) : 'N/A'}
                   </td>
-                  <td>
-                      {booking.tripTitle?.includes(' (') ? (
+                  <td data-label="Trip/Package">
+                    {booking.tripTitle?.includes(' (') ? (
                         <>
                           <div style={{fontWeight: 600, color: '#0f172a'}}>{booking.tripTitle.split(' (')[0]}</div>
                           <div style={{fontSize: '0.85em', color: '#64748b'}}>{booking.tripTitle.split(' (')[1].replace(')', '')}</div>
@@ -298,34 +301,57 @@ const ManageBookings = () => {
                         booking.tripTitle
                       )}
                     </td>
-                  <td>{booking.destination || '-'}</td>
-                  <td>{booking.departureDate || '-'}</td>
-                  <td>{booking.duration || '-'}</td>
-                  <td>{booking.numberOfPersons}</td>
-                  <td>{booking.totalAmount?.toLocaleString('en-IN')}</td>
-                  <td>
+                  <td data-label="Destination">{booking.destination || '-'}</td>
+                  <td data-label="Dep Date">{booking.departureDate || '-'}</td>
+                  <td data-label="Duration">{booking.duration || '-'}</td>
+                  <td data-label="Persons">{booking.numberOfPersons}</td>
+                  <td data-label="Total Amount">
+  <div style={{fontWeight: 600}}>₹{booking.totalAmount?.toLocaleString('en-IN')}</div>
+</td>
+<td data-label="Pre-Booked">
+  {booking.paymentDetails && booking.paymentDetails.preBookPaid > 0 ? (
+    <div style={{ color: booking.paymentStatus === 'Pending' ? '#ef4444' : '#10b981', fontSize: '0.85rem' }}>
+      {booking.paymentStatus === 'Pending' ? 'Pending:' : 'Paid:'} ₹{booking.paymentDetails.preBookPaid?.toLocaleString('en-IN')}
+      <br/><span style={{fontSize: '0.75rem', color: '#64748b'}}>{new Date(booking.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+    </div>
+  ) : (
+    <div style={{ color: '#64748b', fontSize: '0.85rem' }}>-</div>
+  )}
+</td>
+<td data-label="Balance Due/Paid">
+  {booking.paymentDetails && booking.paymentDetails.preBookPaid > 0 ? (
+    booking.paymentStatus === 'Fully Paid' && booking.paymentDetails.balancePaidAt ? (
+      <div style={{ color: '#10b981', fontSize: '0.85rem' }}>
+        Paid: ₹{booking.paymentDetails.balancePaid?.toLocaleString('en-IN') || (booking.totalAmount - booking.paymentDetails.preBookPaid).toLocaleString('en-IN')}
+        <br/><span style={{fontSize: '0.75rem', color: '#64748b'}}>{new Date(booking.paymentDetails.balancePaidAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+      </div>
+    ) : (
+      <div style={{ color: '#ef4444', fontSize: '0.85rem' }}>
+        Due: ₹{booking.paymentDetails.balanceDue?.toLocaleString('en-IN')}
+      </div>
+    )
+  ) : (
+    booking.paymentStatus === 'Paid' ? (
+      <div style={{ color: '#10b981', fontSize: '0.85rem' }}>
+        Fully Paid
+      </div>
+    ) : (
+      <div style={{ color: '#64748b', fontSize: '0.85rem' }}>-</div>
+    )
+  )}
+</td>
+                  <td data-label="Payment Status">
                     <span className={`${styles.badge} ${getBadgeClass(booking.paymentStatus)}`}>
                       {booking.paymentStatus}
                     </span>
                   </td>
-                  <td>{booking.razorpayOrderId || '-'}</td>
-                  <td>
-                    <button 
-                      onClick={() => handleDelete(booking._id)}
-                      style={{
-                        padding: '6px 12px',
-                        backgroundColor: '#fee2e2',
-                        color: '#ef4444',
-                        border: '1px solid #fca5a5',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        fontWeight: '600',
-                        fontSize: '0.85rem'
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
+                  <td data-label="Order ID">{booking.razorpayOrderId || '-'}</td>
+                  <td data-label="Action" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+  <button onClick={() => handleDelete(booking._id)} style={{ padding: '6px 12px', backgroundColor: '#fee2e2', color: '#dc2626', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Delete</button>
+  {booking.paymentDetails && booking.paymentDetails.balancePaymentLinkUrl && booking.paymentStatus === 'Pre-Booked' && (
+    <a href={`https://wa.me/?text=Hi %2A${booking.user?.name}%2A, your balance payment of Rs. ${booking.paymentDetails.balanceDue} for ${booking.tripTitle} is pending. Pay here: ${booking.paymentDetails.balancePaymentLinkUrl}`} target="_blank" rel="noreferrer" style={{ backgroundColor: '#25D366', color: 'white', padding: '6px 12px', borderRadius: '4px', textDecoration: 'none', textAlign: 'center', fontSize: '0.85rem' }}>WhatsApp Link</a>
+  )}
+</td>
                 </tr>
               ))
             ) : (

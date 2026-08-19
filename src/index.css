@@ -85,3 +85,34 @@ ul, ol {
 .swiper-pagination-bullet-active {
   background-color: var(--primary-color) !important;
 }
+
+/* Global Swiper Mobile Navigation Fix */
+@media (max-width: 768px) {
+  body .swiper-button-next {
+    right: 5px !important;
+    width: 32px !important;
+    height: 32px !important;
+  }
+  body .swiper-button-prev {
+    left: 5px !important;
+    width: 32px !important;
+    height: 32px !important;
+  }
+  body .swiper-button-next:after,
+  body .swiper-button-prev:after {
+    font-size: 12px !important;
+  }
+}
+
+/* Global Swiper Navigation Position Fix (Desktop & Mobile) */
+body .swiper-button-next,
+body [class*="swiper-button-next"],
+:global(.swiper-button-next) {
+  right: 15px !important;
+}
+
+body .swiper-button-prev,
+body [class*="swiper-button-prev"],
+:global(.swiper-button-prev) {
+  left: 15px !important;
+}

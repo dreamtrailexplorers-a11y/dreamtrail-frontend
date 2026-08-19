@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getSubscribers, deleteSubscriber } from '../../../services/api';
-import styles from '../ManageBookings/ManageBookings.module.css'; // Reusing similar table styles
+import styles from '../ManageBookings/ManageBookings.module.css';
+import adminStyles from '../Admin.module.css'; // Reusing similar table styles
 
 const ManageSubscribers = () => {
   const [subscribers, setSubscribers] = useState([]);
@@ -38,7 +39,7 @@ const ManageSubscribers = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
+      <div className={adminStyles.adminResponsiveHeader}>
         <h2 className={styles.title}>Newsletter Subscribers</h2>
       </div>
       
@@ -60,10 +61,10 @@ const ManageSubscribers = () => {
             ) : (
               subscribers.map((sub, index) => (
                 <tr key={sub._id}>
-                  <td>{index + 1}</td>
-                  <td style={{ fontWeight: 'bold' }}>{sub.email}</td>
-                  <td>{new Date(sub.createdAt).toLocaleString()}</td>
-                  <td>
+                  <td data-label="#">{index + 1}</td>
+                  <td data-label="Email Address" style={{ fontWeight: 'bold' }}>{sub.email}</td>
+                  <td data-label="Subscribed On">{new Date(sub.createdAt).toLocaleString()}</td>
+                  <td data-label="Action">
                     <button 
                       onClick={() => handleDelete(sub._id)}
                       className={styles.deleteBtn}
@@ -83,3 +84,5 @@ const ManageSubscribers = () => {
 };
 
 export default ManageSubscribers;
+
+

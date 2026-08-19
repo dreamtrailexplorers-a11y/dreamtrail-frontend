@@ -161,7 +161,7 @@ const ManageDestinations = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+      <div className={styles.adminResponsiveHeader}>
         <h2 className={styles.pageHeader} style={{ margin: 0, border: 'none', padding: 0 }}>Manage Destinations</h2>
         <button onClick={handleOpenModal} className={styles.btnPrimary}>
           + Add New Destination
@@ -523,3 +523,4 @@ const ManageDestinations = () => {
 };
 
 export default ManageDestinations;
+

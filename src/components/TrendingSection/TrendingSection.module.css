@@ -230,3 +230,20 @@
   opacity: 0 !important; /* Hide them if disabled to look cleaner */
   pointer-events: none;
 }
+
+@media (max-width: 768px) {
+  :global(.swiper-button-next) {
+    right: 5px !important;
+    width: 32px !important;
+    height: 32px !important;
+  }
+  :global(.swiper-button-prev) {
+    left: 5px !important;
+    width: 32px !important;
+    height: 32px !important;
+  }
+  :global(.swiper-button-next)::after,
+  :global(.swiper-button-prev)::after {
+    font-size: 12px !important;
+  }
+}

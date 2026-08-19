@@ -1,29 +1,27 @@
-import React, { useState } from 'react';
-import { Routes, Route, NavLink, Navigate, Link } from 'react-router-dom';
-import styles from './Admin.module.css';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, Navigate, Link, NavLink, useLocation } from 'react-router-dom';
+import AdminHome from './AdminHome';
 import ManageDestinations from './ManageDestinations';
+import DestinationDetail from './DestinationDetail';
+import FillDestinationDetail from './FillDestinationDetail';
 import ManagePackages from './ManagePackages';
+import ManageAllPackages from './ManageAllPackages';
 import ManageCreatorTrips from './ManageCreatorTrips';
 import ManageBlogs from './ManageBlogs';
+import ManageBookings from './ManageBookings/ManageBookings';
+import ManageEnquiries from './ManageEnquiries';
+import ManageSubscribers from './ManageSubscribers/ManageSubscribers';
 import ManageReviews from './ManageReviews';
 import ManageNavLinks from './ManageNavLinks';
-import ManageSiteSettings from './ManageSiteSettings';
 import ManageFooterLinks from './ManageFooterLinks';
+import ManageSiteSettings from './ManageSiteSettings';
 import ManageCustomPages from './ManageCustomPages/ManageCustomPages';
-import ManageEnquiries from './ManageEnquiries';
-import DestinationDetail from './DestinationDetail';
-import AddDestination from './AddDestination';
-import FillDestinationDetail from './FillDestinationDetail';
-import ManageSubscribers from './ManageSubscribers/ManageSubscribers';
-
-import AdminHome from './AdminHome';
-import ManageAllPackages from './ManageAllPackages';
-import ManageBookings from './ManageBookings/ManageBookings';
+import styles from './Admin.module.css';
 import ManageAttractions from './ManageAttractions/ManageAttractions';
 import AddAttraction from './ManageAttractions/AddAttraction/AddAttraction';
 import EditAttraction from './ManageAttractions/EditAttraction';
 
-import { FiCompass, FiLogOut } from 'react-icons/fi';
+import { FiCompass, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -32,6 +30,11 @@ const AdminDashboard = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -78,7 +81,7 @@ const AdminDashboard = () => {
                 value={password} 
                 onChange={e => setPassword(e.target.value)} 
                 required 
-                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                placeholder="••••••••"
                 style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', outline: 'none' }}
               />
             </div>
@@ -94,26 +97,31 @@ const AdminDashboard = () => {
   return (
     <div className={styles.adminContainer}>
       <aside className={styles.sidebar}>
-        {/* Admin Brand Logo - Redirects to admin dashboard */}
-        <Link to="/admin" className={styles.brandLogo} style={{ marginBottom: '40px', paddingLeft: '10px' }} title="Go to Admin Dashboard">
-          <img src="/logo.png" alt="DreamTrail Logo" style={{ height: '70px', width: 'auto' }} />
-        </Link>
-        <nav className={styles.navLinks}>
-          <NavLink to="/admin" end className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Dashboard</NavLink>
-          <NavLink to="/admin/destinations" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Destinations</NavLink>
-          <NavLink to="/admin/all-packages" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>All Packages</NavLink>
-          <NavLink to="/admin/blogs" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Blogs</NavLink>
-          <NavLink to="/admin/attractions" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Attractions</NavLink>
-          <NavLink to="/admin/bookings" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Bookings</NavLink>
-          <NavLink to="/admin/enquiries" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Enquiries (Leads)</NavLink>
-          <NavLink to="/admin/subscribers" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Subscribers</NavLink>
-          <NavLink to="/admin/reviews" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Reviews</NavLink>
-          <NavLink to="/admin/navlinks" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Nav Links</NavLink>
-          <NavLink to="/admin/footerlinks" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Footer Links</NavLink>
-          <NavLink to="/admin/custompages" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Custom Pages</NavLink>
-        <NavLink to="/admin/settings" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Site Settings</NavLink>
+        <div className={styles.sidebarHeader}>
+          <Link to="/admin" className={styles.brandLogo} title="Go to Admin Dashboard" onClick={closeMobileMenu}>
+            <img src="/logo.png" alt="DreamTrail Logo" className={styles.logoImg} />
+          </Link>
+          <button className={styles.hamburgerBtn} onClick={toggleMobileMenu}>
+            {isMobileMenuOpen ? <FiX size={26} /> : <FiMenu size={26} />}
+          </button>
+        </div>
+        
+        <nav className={`${styles.navLinks} ${isMobileMenuOpen ? styles.navLinksOpen : ''}`}>
+          <NavLink onClick={closeMobileMenu} to="/admin" end className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Dashboard</NavLink>
+          <NavLink onClick={closeMobileMenu} to="/admin/destinations" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Destinations</NavLink>
+          <NavLink onClick={closeMobileMenu} to="/admin/all-packages" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>All Packages</NavLink>
+          <NavLink onClick={closeMobileMenu} to="/admin/blogs" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Blogs</NavLink>
+          <NavLink onClick={closeMobileMenu} to="/admin/attractions" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Attractions</NavLink>
+          <NavLink onClick={closeMobileMenu} to="/admin/bookings" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Bookings</NavLink>
+          <NavLink onClick={closeMobileMenu} to="/admin/enquiries" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Enquiries</NavLink>
+          <NavLink onClick={closeMobileMenu} to="/admin/subscribers" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Subscribers</NavLink>
+          <NavLink onClick={closeMobileMenu} to="/admin/reviews" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Reviews</NavLink>
+          <NavLink onClick={closeMobileMenu} to="/admin/navlinks" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Nav Links</NavLink>
+          <NavLink onClick={closeMobileMenu} to="/admin/footerlinks" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Footer Links</NavLink>
+          <NavLink onClick={closeMobileMenu} to="/admin/custompages" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Custom Pages</NavLink>
+          <NavLink onClick={closeMobileMenu} to="/admin/settings" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Site Settings</NavLink>
         </nav>
-        <div style={{ marginTop: 'auto', paddingTop: '20px', borderTop: '1px solid #e2e8f0' }}>
+        <div className={`${styles.logoutWrapper} ${isMobileMenuOpen ? styles.logoutWrapperOpen : ''}`}>
           <button onClick={handleLogout} className={styles.navLink} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: '12px 16px', fontWeight: 'bold' }}>
             <FiLogOut size={18} /> Logout
           </button>

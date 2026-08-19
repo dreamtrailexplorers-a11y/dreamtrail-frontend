@@ -1,9 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import styles from './BuyNowModal.module.css';
-import { createPaymentOrder, verifyPayment } from '../../services/api';
+import { createPaymentOrder, verifyPayment, getSiteSettings } from '../../services/api';
 
 const loadRazorpay = () => {
   return new Promise((resolve) => {
@@ -19,12 +19,19 @@ const loadRazorpay = () => {
   });
 };
 
-const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, destination, selectedDepartureDate }) => {
+const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, destination, selectedDepartureDate, mode = 'both' }) => {
   const { user, token } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [persons, setPersons] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(null);
+  const [preBookingSettings, setPreBookingSettings] = useState(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      getSiteSettings().then(res => setPreBookingSettings(res.data?.preBookingSettings)).catch(console.error);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -34,25 +41,29 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
   const handleIncrement = () => setPersons(prev => prev + 1);
   const handleDecrement = () => setPersons(prev => (prev > 1 ? prev - 1 : 1));
 
-  const handlePay = async () => {
+  const handlePay = async (paymentType = 'full') => {
     if (!user) {
       navigate('/login', { state: { from: location } });
       return;
     }
 
-    setLoading(true);
+    setLoading(paymentType);
     try {
       const isLoaded = await loadRazorpay();
       if (!isLoaded) {
         alert('Failed to load Razorpay SDK. Please check your internet connection.');
-        setLoading(false);
+        setLoading(null);
         return;
       }
 
-      // 1. Create order on backend
+      const preBookAmountPerPerson = preBookingSettings?.amount || 5000;
+      const amountToPay = paymentType === 'pre-book' ? (preBookAmountPerPerson * persons) : totalAmount;
+
       const res = await createPaymentOrder(
         { 
-          amount: totalAmount, 
+          amount: amountToPay,
+          totalTripCost: totalAmount,
+          paymentType,
           tripTitle, 
           pricePerPerson: validPrice, 
           numberOfPersons: persons, 
@@ -63,7 +74,6 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
       );
       const { order, keyId, bookingId } = res.data;
 
-      // 2. Initialize Razorpay options
       const options = {
         key: keyId,
         amount: order.amount,
@@ -73,7 +83,6 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
         order_id: order.id,
         handler: async function (response) {
           try {
-            // 3. Verify Payment
             const verifyRes = await verifyPayment(
               {
                 razorpay_order_id: response.razorpay_order_id,
@@ -113,7 +122,7 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
       console.error('Payment Error:', err);
       alert(err.response?.data?.message || 'Error initializing payment.');
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
@@ -123,8 +132,13 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
         <button className={styles.closeBtn} onClick={onClose}>&times;</button>
         
         <div className={styles.modalHeader}>
-          <h2>Buy Now</h2>
-          <p>{tripTitle}</p>
+          <h2>{tripTitle}</h2>
+          <p>{duration} | {destination}</p>
+          {selectedDepartureDate && (
+            <p style={{ marginTop: '5px', fontSize: '0.85rem', color: '#10b981', fontWeight: '600' }}>
+              Departure: {selectedDepartureDate.start} to {selectedDepartureDate.end}
+            </p>
+          )}
         </div>
 
         <div className={styles.modalBody}>
@@ -143,17 +157,41 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
           </div>
 
           <div className={styles.totalRow}>
-            <span className={styles.totalLabel}>Total Amount</span>
+            <span className={styles.totalLabel}>Total Trip Cost</span>
             <span className={styles.totalValue}>₹ {totalAmount.toLocaleString('en-IN')}</span>
           </div>
 
-          <button 
-            className={styles.payBtn} 
-            onClick={handlePay}
-            disabled={loading || totalAmount <= 0}
-          >
-            {loading ? 'Processing...' : 'Pay Now'}
-          </button>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            {mode !== 'pre-book' && (
+              <button 
+                className={styles.payBtn} 
+                onClick={() => handlePay('full')} 
+                disabled={loading !== null || totalAmount <= 0}
+                style={{ backgroundColor: '#10b981' }}
+              >
+                {loading === 'full' ? 'Processing...' : `Pay Full ₹${totalAmount.toLocaleString('en-IN')}`}
+              </button>
+            )}
+            
+            {mode === 'both' && (
+              <div style={{ textAlign: 'center', color: '#64748b', fontSize: '0.9rem' }}>OR</div>
+            )}
+
+            {mode !== 'full' && (
+              <>
+                <button 
+                  className={styles.payBtn} 
+                  onClick={() => handlePay('pre-book')} 
+                  disabled={loading !== null || totalAmount <= 0}
+                >
+                  {loading === 'pre-book' ? 'Processing...' : `Pre-Book Now @ ₹${((preBookingSettings?.amount || 5000) * persons).toLocaleString('en-IN')}`}
+                </button>
+                <small style={{ textAlign: 'center', color: '#ef4444', fontSize: '0.8rem' }}>
+                  {preBookingSettings?.refundPolicyText || 'Pre-booking amount is strictly non-refundable.'}
+                </small>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>,

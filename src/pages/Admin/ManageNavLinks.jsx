@@ -95,7 +95,7 @@ const ManageNavLinks = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+      <div className={styles.adminResponsiveHeader}>
         <div>
           <h2 className={styles.pageHeader} style={{ marginBottom: '0' }}>Manage Navigation Links</h2>
           <p style={{ color: '#64748b', marginTop: '5px' }}>Control the top menu links of your website.</p>
@@ -184,3 +184,4 @@ const ManageNavLinks = () => {
 };
 
 export default ManageNavLinks;
+

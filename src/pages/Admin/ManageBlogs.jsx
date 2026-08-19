@@ -133,7 +133,7 @@ const ManageBlogs = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+      <div className={styles.adminResponsiveHeader}>
         <div>
           <h2 className={styles.pageHeader} style={{ marginBottom: '0' }}>Manage Blogs</h2>
           <p style={{ color: '#64748b', marginTop: '5px' }}>Create and manage your articles and guides.</p>
@@ -352,3 +352,4 @@ const ManageBlogs = () => {
 };
 
 export default ManageBlogs;
+
