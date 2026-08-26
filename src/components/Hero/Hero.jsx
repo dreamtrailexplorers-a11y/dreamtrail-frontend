@@ -55,8 +55,8 @@ const Hero = () => {
           <div className={styles.heroOverlay}></div>
 
           {/* Hero Main Content */}
-          <div className={styles.heroContent} style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10, width: '100%', display: 'flex', justifyContent: 'center' }}>
-            <h1 className={styles.heroHeading} style={{ whiteSpace: 'pre-line' }}>
+          <div className={styles.heroContent} style={{ position: 'absolute', top: '50%', left: '0', transform: 'translateY(-50%)', zIndex: 10, width: '100%', display: 'flex', justifyContent: 'flex-start', paddingLeft: '4rem' }}>
+            <h1 className={styles.heroHeading} style={{ whiteSpace: 'pre-line', fontSize: '3.5rem' }}>
               {slide.heading}
             </h1>
           </div>

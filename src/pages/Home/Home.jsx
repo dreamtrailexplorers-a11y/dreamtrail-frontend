@@ -41,11 +41,11 @@ const Home = () => {
       <Navbar />
 
       <main className={styles.mainContent}>
-        {/* 2. Category Icons Row */}
-        <CategoryMenu />
-
         {/* 3. Hero Banner */}
         <Hero />
+
+        {/* 2. Category Icons Row */}
+        <CategoryMenu />
 
         {/* About Snippet */}
         <AboutSnippet />
@@ -55,6 +55,9 @@ const Home = () => {
 
         {/* 4.5. Upcoming Trips Section */}
         <UpcomingTripsSection />
+
+        {/* 5. Promotional Banner (Ladakh Banner) */}
+        <Banner />
 
         {/* 7. International Destinations */}
         {internationalDestinations.length > 0 && (
@@ -71,9 +74,6 @@ const Home = () => {
             destinations={domesticDestinations}
           />
         )}
-
-        {/* 5. Promotional Banner */}
-        <Banner />
 
         {/* 6. Group Trips Banner */}
         <GroupTripBanner />

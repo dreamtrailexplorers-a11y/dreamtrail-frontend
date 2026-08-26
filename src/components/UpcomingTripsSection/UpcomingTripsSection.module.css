@@ -63,11 +63,11 @@
 }
 
 .sliderContainer :global(.swiper-button-prev) {
-  left: -5px !important; /* Move outside of the cards */
+  left: 15px !important; /* Move inside to prevent cutoff */
 }
 
 .sliderContainer :global(.swiper-button-next) {
-  right: -5px !important; /* Move outside of the cards */
+  right: 15px !important; /* Move inside to prevent cutoff */
 }
 
 .sliderContainer :global(.swiper-button-prev):hover,
