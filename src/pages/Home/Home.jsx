@@ -56,12 +56,6 @@ const Home = () => {
         {/* 4.5. Upcoming Trips Section */}
         <UpcomingTripsSection />
 
-        {/* 5. Promotional Banner */}
-        <Banner />
-
-        {/* 6. Group Trips Banner (Moved Up) */}
-        <GroupTripBanner />
-
         {/* 7. International Destinations */}
         {internationalDestinations.length > 0 && (
           <DestinationSlider
@@ -77,6 +71,12 @@ const Home = () => {
             destinations={domesticDestinations}
           />
         )}
+
+        {/* 5. Promotional Banner */}
+        <Banner />
+
+        {/* 6. Group Trips Banner */}
+        <GroupTripBanner />
 
         {/* 9. Blogs & Travel Tips */}
         <BlogSection />
