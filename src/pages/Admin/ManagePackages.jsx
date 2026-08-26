@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getTrips, getDestinations, createTrip, updateTrip, deleteTrip, uploadFile, initiateUpload, finalizeUpload } from '../../services/api';
+import { getTrips, getDestinations, createTrip, updateTrip, deleteTrip, uploadFile } from '../../services/api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { cleanImageUrl } from '../../utils/cleanUrl';
 import styles from './Admin.module.css';
@@ -677,42 +677,8 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     const file = e.target.files[0];
     if(!file) return;
     try {
-      // 1. Get the direct upload URL (Resumable Session)
-      const initiateRes = await initiateUpload(file.name, file.type);
-      const uploadUrl = initiateRes.data.uploadUrl;
-      
-      // 2. Upload file in chunks via Backend Proxy to bypass CORS and Vercel 4.5MB limit
-      const chunkSize = 3 * 1024 * 1024; // 3MB chunks (under Vercel's 4.5MB limit)
-      let fileId = null;
-      
-      for (let start = 0; start < file.size; start += chunkSize) {
-        const end = Math.min(start + chunkSize, file.size);
-        const chunk = file.slice(start, end);
-        
-        const chunkRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/upload/chunk`, {
-          method: 'POST',
-          headers: {
-            'X-Upload-Url': uploadUrl,
-            'Content-Range': `bytes ${start}-${end - 1}/${file.size}`,
-            'Content-Type': 'application/octet-stream'
-          },
-          body: chunk
-        });
-        
-        if (!chunkRes.ok) throw new Error("Chunk upload failed");
-        
-        const chunkData = await chunkRes.json();
-        if (chunkData.status === 'complete') {
-          fileId = chunkData.fileId;
-        }
-      }
-
-      if (!fileId) throw new Error("Upload did not complete successfully");
-
-      // 3. Finalize upload to make public and get URL
-      const finalizeRes = await finalizeUpload(fileId, file.type);
-      const fullUrl = finalizeRes.data.url;
-
+      const res = await uploadFile(file);
+      const fullUrl = res.data.url.startsWith('http') ? res.data.url : `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
       setFormData({ ...formData, pdfUrl: fullUrl });
     } catch(err) {
       console.error(err);
