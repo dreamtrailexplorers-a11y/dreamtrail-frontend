@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getSiteSettings, updateSiteSettings, uploadFile } from '../../services/api';
 import styles from './Admin.module.css';
 
@@ -1183,75 +1183,7 @@ const ManageSiteSettings = () => {
             </form>
           </>
         );
-      case 'Cancellation Policy Content':
-        return (
-          <>
-            <form onSubmit={(e) => handleSectionSubmit(e, ['cancellationBlocks'], 'Cancellation Policy Content')} className={styles.card}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Cancellation Policy Content</h3>
-                <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
-              </div>
-              
-              <div className={styles.formGrid}>
-                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
-                  {(formData.cancellationBlocks || []).map((block, idx) => (
-                    <div key={idx} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', position: 'relative', backgroundColor: '#fff' }}>
-                      <div style={{ position: 'absolute', top: '-10px', left: '15px', backgroundColor: '#3b82f6', color: 'white', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase' }}>
-                        {block.blockType}
-                      </div>
-                      <button 
-                        type="button" 
-                        onClick={() => handleRemovePolicyBlock('cancellationBlocks', idx)}
-                        style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
-                        title="Remove Block"
-                      >
-                        Ã—
-                      </button>
-                      
-                      {block.blockType === 'title' || block.blockType === 'subtitle' ? (
-                        <input 
-                          type="text" 
-                          value={block.content} 
-                          onChange={(e) => handleUpdatePolicyBlock('cancellationBlocks', idx, e.target.value)} 
-                          className={styles.inputField} 
-                          placeholder={`Enter ${block.blockType}...`}
-                          style={{ marginTop: '10px' }}
-                        />
-                      ) : (
-                        <textarea 
-                          value={block.content} 
-                          onChange={(e) => handleUpdatePolicyBlock('cancellationBlocks', idx, e.target.value)} 
-                          className={styles.textareaField} 
-                          rows={block.blockType === 'point' ? "2" : "4"}
-                          placeholder={`Enter ${block.blockType} content...`}
-                          style={{ marginTop: '10px' }}
-                        />
-                      )}
-                    </div>
-                  ))}
-                  
-                  {(!formData.cancellationBlocks || formData.cancellationBlocks.length === 0) && (
-                    <div style={{ textAlign: 'center', padding: '30px', color: '#64748b', backgroundColor: '#f1f5f9', borderRadius: '8px' }}>
-                      No blocks added yet. Use the buttons above to start building your page.
-                    </div>
-                  )}
-                </div>
-              </div>
-              
-              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#334155' }}>Add New Block</h4>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <button type="button" onClick={() => handleAddPolicyBlock('cancellationBlocks', 'title')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Title</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('cancellationBlocks', 'subtitle')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Subtitle</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('cancellationBlocks', 'point')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Point</button>
-                  <button type="button" onClick={() => handleAddPolicyBlock('cancellationBlocks', 'text')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Text</button>
-                </div>
-              </div>
-            </form>
-          </>
-        );
 
-      
       case 'Payment Details Content':
         return (
           <>
@@ -1538,13 +1470,6 @@ const ManageSiteSettings = () => {
             Edit
           </button>
         </div>
-          <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Cancellation Policy Content</h3>
-            <button type="button" onClick={() => setActiveModal('Cancellation Policy Content')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
-              Edit
-            </button>
-          </div>
-
         
         <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Payment Details Content</h3>

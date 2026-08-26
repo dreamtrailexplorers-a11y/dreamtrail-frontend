@@ -23,6 +23,7 @@ import AboutUs from '../pages/AboutUs/AboutUs';
 import MeetTheTeam from '../pages/MeetTheTeam/MeetTheTeam';
 import BlogsPage from '../pages/BlogsPage/BlogsPage';
 import ContactUs from '../pages/ContactUs/ContactUs';
+import CancellationPolicy from '../pages/CancellationPolicy/CancellationPolicy';
 
 const AppRoutes = () => {
   return (
@@ -55,7 +56,7 @@ const AppRoutes = () => {
       <Route path="/contact" element={<ContactUs />} />
       <Route path="/terms" element={<DynamicPage title="Terms & Conditions" blocksKey="termsBlocks" />} />
       <Route path="/privacy" element={<DynamicPage title="Privacy Policy" blocksKey="privacyPolicyBlocks" />} />
-      <Route path="/cancellation" element={<DynamicPage title="Cancellation and Refund Terms" blocksKey="cancellationBlocks" />} />
+      <Route path="/cancellation" element={<CancellationPolicy />} />
       <Route path="/payment" element={<DynamicPage title="Payment Details" blocksKey="paymentDetailsBlocks" />} />
       
       {/* Dynamic Custom Block Builder Pages */}

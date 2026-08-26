@@ -1,0 +1,124 @@
+.pageContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  font-family: 'Inter', sans-serif;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 60px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.headerArea {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.pageTitle {
+  font-size: 2.2rem;
+  color: #1f2937;
+  font-weight: 700;
+  margin: 0;
+}
+
+.contentArea {
+  background: white;
+  padding: 0;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 1.35rem;
+  color: #111827;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.tableList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.tableRow {
+  display: flex;
+  align-items: flex-start;
+  color: #9ca3af; /* Light gray text as per screenshot for left column */
+  font-size: 1rem;
+}
+
+.tableCol1 {
+  display: flex;
+  align-items: center;
+  flex: 0 0 450px; /* fixed width for the left column to align the right column */
+  gap: 12px;
+}
+
+.tableCol2 {
+  flex: 1;
+  color: #9ca3af; /* also gray */
+}
+
+/* Make text a bit darker for standard readability, screenshot looks like light grey though */
+@media (max-width: 768px) {
+  .tableRow {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .tableCol1 {
+    flex: 1 1 auto;
+  }
+  .tableCol2 {
+    padding-left: 28px;
+  }
+}
+
+.circleIcon {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 3px solid #f97316; /* Orange color */
+  flex-shrink: 0;
+}
+
+.paragraphText {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #9ca3af;
+  margin-bottom: 2rem;
+}
+
+.bulletList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.bulletItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: #9ca3af;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.bulletItem .circleIcon {
+  margin-top: 5px;
+}
+
+.redBoldText {
+  color: #ef4444; /* Red color */
+  font-weight: 700;
+  font-size: 1rem;
+  margin-top: 30px;
+}
