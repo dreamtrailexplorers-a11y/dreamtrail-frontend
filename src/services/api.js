@@ -73,46 +73,20 @@ export const deleteSubscriber = (id) => api.delete(`/subscribers/${id}`);
 
 export const uploadFile = async (file) => {
   try {
-    const initiateRes = await initiateUpload(file.name, file.type);
-    const uploadUrl = initiateRes.data.uploadUrl;
+    const formData = new FormData();
+    formData.append('file', file);
     
-    const chunkSize = 3 * 1024 * 1024; // 3MB chunks
-    let fileId = null;
-    
-    for (let start = 0; start < file.size; start += chunkSize) {
-      const end = Math.min(start + chunkSize, file.size);
-      const chunk = file.slice(start, end);
-      
-      const chunkRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/upload/chunk`, {
-        method: 'POST',
-        headers: {
-          'X-Upload-Url': uploadUrl,
-          'Content-Range': `bytes ${start}-${end - 1}/${file.size}`,
-          'Content-Type': 'application/octet-stream'
-        },
-        body: chunk
-      });
-      
-      if (!chunkRes.ok) throw new Error("Chunk upload failed");
-      
-      const chunkData = await chunkRes.json();
-      if (chunkData.status === 'complete') {
-        fileId = chunkData.fileId;
+    const response = await api.post('/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
       }
-    }
-
-    if (!fileId) throw new Error("Upload did not complete successfully");
-
-    const finalizeRes = await finalizeUpload(fileId, file.type);
+    });
     
-    return { data: { url: finalizeRes.data.url } };
+    return response;
   } catch (error) {
-    console.error("Chunked upload error:", error);
+    console.error("Upload error:", error);
     throw error;
   }
 };
-
-export const initiateUpload = (filename, mimetype) => api.post('/upload/initiate', { filename, mimetype });
-export const finalizeUpload = (fileId, mimetype) => api.post('/upload/finalize', { fileId, mimetype });
 
 export default api;
