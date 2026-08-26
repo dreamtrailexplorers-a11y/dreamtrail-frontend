@@ -69,8 +69,8 @@ const ContactUs = () => {
         <div className={styles.contentWrapper}>
           {/* Info Section */}
           <div className={styles.infoSection}>
-            <h2 className={styles.companyName}>Avian Experiences Pvt. Ltd.</h2>
-            
+            <h2 className={styles.companyName}>Dreamtrail Explorers</h2>
+
             <div className={styles.infoBlock}>
               <div className={styles.infoLabel}>Email:</div>
               <div className={styles.infoText}>
@@ -100,7 +100,7 @@ const ContactUs = () => {
                 Thank you! Your message has been sent successfully.
               </div>
             )}
-            
+
             <form onSubmit={handleSubmit}>
               <div className={styles.formGroup}>
                 <input
@@ -152,8 +152,8 @@ const ContactUs = () => {
                 </div>
               </div>
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className={styles.submitBtn}
                 disabled={isSubmitting}
               >

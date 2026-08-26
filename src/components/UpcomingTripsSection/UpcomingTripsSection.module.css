@@ -308,9 +308,15 @@
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  justify-content: space-between !important;
+  justify-content: flex-start !important;
+  gap: 20px !important;
+  flex-wrap: wrap !important;
   margin-bottom: 1.8rem !important;
   width: 100%;
+}
+
+.yearDropdownContainer {
+  margin-top: 0 !important;
 }
 
 .sectionTitle {

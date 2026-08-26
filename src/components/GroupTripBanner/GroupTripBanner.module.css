@@ -12,7 +12,7 @@
 .bannerCard {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 550px;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 12px 35px rgba(27, 85, 148, 0.2);
@@ -22,6 +22,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 20%; /* Optional: to ensure faces/main focus is visible */
 }
 
 .overlay {
@@ -31,33 +32,36 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0.6) 100%
+    to right,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.1) 100%
   );
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  text-align: center;
+  text-align: left;
   color: #ffffff;
-  padding: 2rem;
+  padding: 4rem;
 }
 
 .subtitle {
   font-family: var(--font-accent);
   font-style: italic;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: #90caf9;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.5rem;
 }
 
 .title {
   font-family: var(--font-heading);
-  font-size: 3rem;
+  font-size: 2.2rem;
   font-weight: 900;
   letter-spacing: -0.5px;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
+  max-width: 50%;
+  line-height: 1.2;
   text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
@@ -95,13 +99,25 @@
 
 @media (max-width: 768px) {
   .bannerCard {
-    height: 240px;
+    height: 400px;
+  }
+  .overlay {
+    padding: 2rem;
+    align-items: flex-start;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.9) 100%
+    );
+    justify-content: flex-end; /* Text at bottom on mobile */
   }
   .title {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    max-width: 100%;
+    margin-bottom: 1rem;
   }
   .subtitle {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
   .pillsRow {
     font-size: 0.8rem;

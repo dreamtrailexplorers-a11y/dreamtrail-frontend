@@ -677,21 +677,66 @@ const ManageSiteSettings = () => {
                 <button type="button" onClick={() => addAboutPoint('aboutPage', 'extraIntros')} className={styles.btnSecondary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>+ Add Card</button>
               </div>
             
-            {(formData.aboutPage?.extraIntros || []).map((intro, index) => (
-              <div key={index} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', background: '#f8fafc' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px' }}>
-                  <div className={styles.inputGroup}>
-                    <label className={styles.inputLabel}>Title</label>
-                    <input value={intro.title || ''} onChange={(e) => handleAboutPointsChange(index, 'title', e.target.value, 'aboutPage', 'extraIntros')} className={styles.inputField} />
+              {(formData.aboutPage?.extraIntros || []).map((intro, index) => (
+                <div key={index} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', background: '#f8fafc' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px' }}>
+                    <div className={styles.inputGroup}>
+                      <label className={styles.inputLabel}>Title</label>
+                      <input value={intro.title || ''} onChange={(e) => handleAboutPointsChange(index, 'title', e.target.value, 'aboutPage', 'extraIntros')} className={styles.inputField} />
+                    </div>
+                    <div className={styles.inputGroup}>
+                      <label className={styles.inputLabel}>Text</label>
+                      <textarea value={intro.text || ''} onChange={(e) => handleAboutPointsChange(index, 'text', e.target.value, 'aboutPage', 'extraIntros')} className={styles.textareaField} rows="3" />
+                    </div>
+                    
+                    {/* Points Sub-array for Discover More cards */}
+                    <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '10px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                        <label className={styles.inputLabel} style={{ margin: 0 }}>Points (Bullet Points)</label>
+                        <button type="button" onClick={() => {
+                          const currentExtraIntros = [...(formData.aboutPage?.extraIntros || [])];
+                          if (!currentExtraIntros[index].points) currentExtraIntros[index].points = [];
+                          currentExtraIntros[index].points.push({ title: '', text: '' });
+                          setFormData({ ...formData, aboutPage: { ...formData.aboutPage, extraIntros: currentExtraIntros } });
+                        }} className={styles.btnSecondary} style={{ padding: '4px 8px', fontSize: '0.75rem' }}>+ Add Point</button>
+                      </div>
+                      {(intro.points || []).map((pt, pIdx) => (
+                        <div key={pIdx} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'flex-start' }}>
+                          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                            <input 
+                              placeholder="Point Title" 
+                              value={pt.title || ''} 
+                              onChange={(e) => {
+                                const currentExtraIntros = [...(formData.aboutPage?.extraIntros || [])];
+                                currentExtraIntros[index].points[pIdx].title = e.target.value;
+                                setFormData({ ...formData, aboutPage: { ...formData.aboutPage, extraIntros: currentExtraIntros } });
+                              }} 
+                              className={styles.inputField} 
+                            />
+                            <textarea 
+                              placeholder="Point Text" 
+                              value={pt.text || ''} 
+                              onChange={(e) => {
+                                const currentExtraIntros = [...(formData.aboutPage?.extraIntros || [])];
+                                currentExtraIntros[index].points[pIdx].text = e.target.value;
+                                setFormData({ ...formData, aboutPage: { ...formData.aboutPage, extraIntros: currentExtraIntros } });
+                              }} 
+                              className={styles.textareaField} 
+                              rows="2"
+                            />
+                          </div>
+                          <button type="button" onClick={() => {
+                            const currentExtraIntros = [...(formData.aboutPage?.extraIntros || [])];
+                            currentExtraIntros[index].points.splice(pIdx, 1);
+                            setFormData({ ...formData, aboutPage: { ...formData.aboutPage, extraIntros: currentExtraIntros } });
+                          }} className={styles.btnDanger} style={{ padding: '8px 12px' }}>Remove</button>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <div className={styles.inputGroup}>
-                    <label className={styles.inputLabel}>Text</label>
-                    <textarea value={intro.text || ''} onChange={(e) => handleAboutPointsChange(index, 'text', e.target.value, 'aboutPage', 'extraIntros')} className={styles.textareaField} rows="3" />
-                  </div>
+                  <button type="button" onClick={() => removeAboutPoint(index, 'aboutPage', 'extraIntros')} className={styles.btnDanger} style={{ padding: '6px 12px', fontSize: '0.85rem', marginTop: '15px' }}>Remove Section</button>
                 </div>
-                <button type="button" onClick={() => removeAboutPoint(index, 'aboutPage', 'extraIntros')} className={styles.btnDanger} style={{ padding: '6px 12px', fontSize: '0.85rem', marginTop: '15px' }}>Remove Section</button>
-              </div>
-            ))}
+              ))}
           </div>
           <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
             <label className={styles.inputLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -821,43 +866,6 @@ const ManageSiteSettings = () => {
                 <button type="button" onClick={() => removeAboutPoint(index, 'aboutPage', 'communityPoints')} className={styles.btnDanger} style={{ padding: '8px 12px' }}>Remove</button>
               </div>
             ))}
-          </div>
-
-          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1', borderTop: '1px solid #eee', paddingTop: '15px' }}>
-            <label className={styles.inputLabel}>Why Choose Us Title</label>
-            <input name="whyChooseUsTitle" value={formData.aboutPage?.whyChooseUsTitle || ''} onChange={(e) => handleAboutNestedChange(e, 'aboutPage')} className={styles.inputField} placeholder="e.g. WHY CHOOSE US FOR MOTORCYCLE TOURS" />
-          </div>
-          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-              <label className={styles.inputLabel} style={{ margin: 0 }}>Why Choose Us Points</label>
-              <button type="button" onClick={() => addAboutPoint('aboutPage', 'whyChooseUsPoints')} className={styles.btnSecondary} style={{ padding: '4px 10px', fontSize: '0.8rem' }}>+ Add Point</button>
-            </div>
-            {(formData.aboutPage?.whyChooseUsPoints || []).map((point, index) => (
-                <div key={index} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #eee', borderRadius: '8px', background: '#fafafa' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '10px' }}>
-                    <div className={styles.inputGroup}>
-                      <label className={styles.inputLabel}>Point Title</label>
-                      <input 
-                        placeholder="e.g. Safety Comes First" 
-                        value={point.title || ''} 
-                        onChange={(e) => handleAboutPointsChange(index, 'title', e.target.value, 'aboutPage', 'whyChooseUsPoints')} 
-                        className={styles.inputField} 
-                      />
-                    </div>
-                    <div className={styles.inputGroup}>
-                      <label className={styles.inputLabel}>Point Text</label>
-                      <textarea 
-                        placeholder="Point Text" 
-                        value={point.text || ''} 
-                        onChange={(e) => handleAboutPointsChange(index, 'text', e.target.value, 'aboutPage', 'whyChooseUsPoints')} 
-                        className={styles.textareaField} 
-                        rows="3"
-                      />
-                    </div>
-                  </div>
-                  <button type="button" onClick={() => removeAboutPoint(index, 'aboutPage', 'whyChooseUsPoints')} className={styles.btnDanger} style={{ marginTop: '10px', padding: '6px 12px' }}>Remove Point</button>
-                </div>
-              ))}
           </div>
 
         </div>
@@ -1184,6 +1192,139 @@ const ManageSiteSettings = () => {
           </>
         );
 
+      case 'Cancellation Policy Content':
+        return (
+          <>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['cancellationSettings'], 'Cancellation Policy Content')} className={styles.card}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0 0 15px 0' }}>
+                <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Cancellation Policy Content</h3>
+                <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
+              </div>
+              
+              <div className={styles.formGrid}>
+                {/* Top Section */}
+                <h4 style={{gridColumn: '1 / -1', margin: '10px 0', borderBottom: '1px solid #eee', paddingBottom: '5px'}}>Top Table Section</h4>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <label className={styles.inputLabel}>Table Subtitle</label>
+                  <input 
+                    value={formData.cancellationSettings?.tableSubtitle || ''} 
+                    onChange={(e) => setFormData({...formData, cancellationSettings: {...(formData.cancellationSettings || {}), tableSubtitle: e.target.value}})} 
+                    className={styles.inputField} 
+                  />
+                </div>
+                
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                    <label className={styles.inputLabel} style={{ margin: 0 }}>Table Rows</label>
+                    <button type="button" onClick={() => {
+                      const newRows = [...(formData.cancellationSettings?.tableRows || []), { leftText: '', rightText: '' }];
+                      setFormData({...formData, cancellationSettings: {...(formData.cancellationSettings || {}), tableRows: newRows}});
+                    }} className={styles.btnSecondary} style={{ padding: '4px 10px', fontSize: '0.8rem' }}>+ Add Row</button>
+                  </div>
+                  {(formData.cancellationSettings?.tableRows || []).map((row, idx) => (
+                    <div key={idx} style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                      <input 
+                        placeholder="Left Column Text" 
+                        value={row.leftText || ''} 
+                        onChange={(e) => {
+                          const newRows = [...(formData.cancellationSettings?.tableRows || [])];
+                          newRows[idx].leftText = e.target.value;
+                          setFormData({...formData, cancellationSettings: {...(formData.cancellationSettings || {}), tableRows: newRows}});
+                        }} 
+                        className={styles.inputField} 
+                      />
+                      <input 
+                        placeholder="Right Column Text" 
+                        value={row.rightText || ''} 
+                        onChange={(e) => {
+                          const newRows = [...(formData.cancellationSettings?.tableRows || [])];
+                          newRows[idx].rightText = e.target.value;
+                          setFormData({...formData, cancellationSettings: {...(formData.cancellationSettings || {}), tableRows: newRows}});
+                        }} 
+                        className={styles.inputField} 
+                      />
+                      <button type="button" onClick={() => {
+                        const newRows = (formData.cancellationSettings?.tableRows || []).filter((_, i) => i !== idx);
+                        setFormData({...formData, cancellationSettings: {...(formData.cancellationSettings || {}), tableRows: newRows}});
+                      }} className={styles.btnDanger} style={{ padding: '8px 12px' }}>Remove</button>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Middle Section */}
+                <h4 style={{gridColumn: '1 / -1', margin: '20px 0 10px 0', borderBottom: '1px solid #eee', paddingBottom: '5px'}}>Middle Section</h4>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <label className={styles.inputLabel}>Middle Subtitle</label>
+                  <input 
+                    value={formData.cancellationSettings?.middleSubtitle || ''} 
+                    onChange={(e) => setFormData({...formData, cancellationSettings: {...(formData.cancellationSettings || {}), middleSubtitle: e.target.value}})} 
+                    className={styles.inputField} 
+                  />
+                </div>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <label className={styles.inputLabel}>Middle Paragraph Text</label>
+                  <textarea 
+                    value={formData.cancellationSettings?.middleText || ''} 
+                    onChange={(e) => setFormData({...formData, cancellationSettings: {...(formData.cancellationSettings || {}), middleText: e.target.value}})} 
+                    className={styles.textareaField} 
+                    rows="3"
+                  />
+                </div>
+
+                {/* Bottom Section */}
+                <h4 style={{gridColumn: '1 / -1', margin: '20px 0 10px 0', borderBottom: '1px solid #eee', paddingBottom: '5px'}}>Bottom Section</h4>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <label className={styles.inputLabel}>Bottom Subtitle</label>
+                  <input 
+                    value={formData.cancellationSettings?.bottomSubtitle || ''} 
+                    onChange={(e) => setFormData({...formData, cancellationSettings: {...(formData.cancellationSettings || {}), bottomSubtitle: e.target.value}})} 
+                    className={styles.inputField} 
+                  />
+                </div>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                    <label className={styles.inputLabel} style={{ margin: 0 }}>Bottom Bullet Points</label>
+                    <button type="button" onClick={() => {
+                      const newBullets = [...(formData.cancellationSettings?.bottomBullets || []), ''];
+                      setFormData({...formData, cancellationSettings: {...(formData.cancellationSettings || {}), bottomBullets: newBullets}});
+                    }} className={styles.btnSecondary} style={{ padding: '4px 10px', fontSize: '0.8rem' }}>+ Add Bullet</button>
+                  </div>
+                  {(formData.cancellationSettings?.bottomBullets || []).map((bullet, idx) => (
+                    <div key={idx} style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                      <textarea 
+                        value={bullet || ''} 
+                        onChange={(e) => {
+                          const newBullets = [...(formData.cancellationSettings?.bottomBullets || [])];
+                          newBullets[idx] = e.target.value;
+                          setFormData({...formData, cancellationSettings: {...(formData.cancellationSettings || {}), bottomBullets: newBullets}});
+                        }} 
+                        className={styles.textareaField} 
+                        rows="2"
+                      />
+                      <button type="button" onClick={() => {
+                        const newBullets = (formData.cancellationSettings?.bottomBullets || []).filter((_, i) => i !== idx);
+                        setFormData({...formData, cancellationSettings: {...(formData.cancellationSettings || {}), bottomBullets: newBullets}});
+                      }} className={styles.btnDanger} style={{ padding: '8px 12px' }}>Remove</button>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Footer Red Text */}
+                <h4 style={{gridColumn: '1 / -1', margin: '20px 0 10px 0', borderBottom: '1px solid #eee', paddingBottom: '5px'}}>Footer Red Warning</h4>
+                <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+                  <label className={styles.inputLabel}>Red Bold Text</label>
+                  <textarea 
+                    value={formData.cancellationSettings?.redNote || ''} 
+                    onChange={(e) => setFormData({...formData, cancellationSettings: {...(formData.cancellationSettings || {}), redNote: e.target.value}})} 
+                    className={styles.textareaField} 
+                    rows="2"
+                  />
+                </div>
+              </div>
+            </form>
+          </>
+        );
+
       case 'Payment Details Content':
         return (
           <>
@@ -1467,6 +1608,13 @@ const ManageSiteSettings = () => {
         <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Privacy Policy Content</h3>
           <button type="button" onClick={() => setActiveModal('Privacy Policy Content')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Cancellation Policy Content</h3>
+          <button type="button" onClick={() => setActiveModal('Cancellation Policy Content')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
             Edit
           </button>
         </div>

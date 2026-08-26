@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  FaWhatsapp, 
-  FaInstagram, 
-  FaFacebookF, 
+  FaWhatsapp,
+  FaInstagram,
+  FaFacebookF,
   FaLinkedinIn,
   FaYoutube
 } from 'react-icons/fa';
@@ -35,11 +35,11 @@ const Footer = () => {
   const handleTourLinkClick = (e, link) => {
     e.preventDefault();
     const searchLabel = link.label.toLowerCase();
-    const destTrips = trips.filter(t => 
+    const destTrips = trips.filter(t =>
       (t.destination && t.destination.toLowerCase().includes(searchLabel)) ||
       (t.title && t.title.toLowerCase().includes(searchLabel))
     );
-    
+
     if (destTrips.length === 1) {
       navigate(`/tours/${destTrips[0].slug || destTrips[0]._id}`);
     } else if (destTrips.length > 1) {
@@ -51,10 +51,10 @@ const Footer = () => {
 
   const renderTourLink = (link, idx) => {
     return (
-      <a 
-        key={idx} 
+      <a
+        key={idx}
         href={link.url}
-        onClick={(e) => handleTourLinkClick(e, link)} 
+        onClick={(e) => handleTourLinkClick(e, link)}
         className={styles.linkItem}
         style={{ cursor: 'pointer' }}
       >
@@ -68,7 +68,7 @@ const Footer = () => {
       <footer className={styles.footerWrapper}>
         {/* Pre-Footer Bar with Contact */}
         <div className={styles.preFooterBar}>
-          <a 
+          <a
             href={`https://wa.me/${settings?.whatsappNumber || '9099599331'}`}
             target="_blank"
             rel="noreferrer"
@@ -111,7 +111,7 @@ const Footer = () => {
               <img src="/footer-logo.png" alt="DreamTrail Logo" className={styles.responsiveLogo} />
             </div>
 
-            <a 
+            <a
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings?.address || 'DreamTrail Experiences Pvt. Ltd. 508, 3rd Eye Vision, IIM Road, Ahmedabad, Gujarat 380015')}`}
               target="_blank"
               rel="noreferrer"
@@ -120,7 +120,7 @@ const Footer = () => {
             >
               <FiMapPin size={22} color="#E67E22" style={{ flexShrink: 0, marginTop: '3px' }} />
               <span style={{ whiteSpace: 'pre-line' }}>
-                {settings?.address || 'DreamTrail Experiences Pvt. Ltd.\\n508, 3rd Eye Vision, IIM Road, Ahmedabad, Gujarat 380015'}
+                {settings?.address || 'DreamTrail Experiences \\n508, 3rd Eye Vision, IIM Road, Ahmedabad, Gujarat 380015'}
               </span>
             </a>
           </div>
@@ -128,7 +128,7 @@ const Footer = () => {
           {/* Motorcycle Tours Col */}
           <div className={styles.exploreCol}>
             <h3 className={styles.colHeading}>MOTORCYCLE TOURS</h3>
-            
+
             {(settings?.footerToursIndia?.length > 0) && (
               <>
                 <div className={styles.subHeadingCol}>INDIA</div>
@@ -179,7 +179,7 @@ const Footer = () => {
       </footer>
 
       {/* Floating WhatsApp Button */}
-      <a 
+      <a
         href={`https://wa.me/${settings?.whatsappNumber || '9099599331'}`}
         target="_blank"
         rel="noreferrer"

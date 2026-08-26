@@ -287,15 +287,22 @@ const AboutUs = () => {
                   >
                     {aboutPage.extraIntros.map((intro, idx) => (
                       <SwiperSlide key={idx} style={{ height: 'auto' }}>
-                        <div className={styles.deepDiveCard} onClick={() => setSelectedIntro(intro)}>
-                          {intro.title && <h3 className={styles.cardTitle}>{intro.title}</h3>}
-                          {intro.text && (
-                            <>
-                              <p className={`${styles.cardText} ${styles.truncatedText}`}>{intro.text}</p>
-                              <span className={styles.readMoreBtn}>Read More &rarr;</span>
-                            </>
-                          )}
-                        </div>
+                          <div className={styles.deepDiveCard} onClick={() => setSelectedIntro(intro)}>
+                            {intro.title && <h3 className={styles.cardTitle}>{intro.title}</h3>}
+                            {intro.text ? (
+                              <>
+                                <p className={`${styles.cardText} ${styles.truncatedText}`}>{intro.text}</p>
+                                <span className={styles.readMoreBtn}>Read More &rarr;</span>
+                              </>
+                            ) : intro.points && intro.points.length > 0 ? (
+                              <>
+                                <p className={`${styles.cardText} ${styles.truncatedText}`}>
+                                  {intro.points.map(pt => pt.title || pt.text).join(' • ')}
+                                </p>
+                                <span className={styles.readMoreBtn}>Read More &rarr;</span>
+                              </>
+                            ) : null}
+                          </div>
                       </SwiperSlide>
                     ))}
                   </Swiper>
@@ -310,11 +317,21 @@ const AboutUs = () => {
             <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
               <button className={styles.modalCloseBtn} onClick={() => setSelectedIntro(null)}>&times;</button>
               {selectedIntro.title && <h3 className={styles.modalTitle}>{selectedIntro.title}</h3>}
-              {selectedIntro.text && (
+              {(selectedIntro.text || (selectedIntro.points && selectedIntro.points.length > 0)) && (
                 <div className={styles.modalText}>
-                  {selectedIntro.text.split('\n').map((line, i) => (
+                  {selectedIntro.text && selectedIntro.text.split('\n').map((line, i) => (
                     <p key={i} style={{ marginBottom: '10px' }}>{line}</p>
                   ))}
+                  {selectedIntro.points && selectedIntro.points.length > 0 && (
+                    <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginTop: '15px' }}>
+                      {selectedIntro.points.map((pt, i) => (
+                        <li key={i} style={{ marginBottom: '15px', color: '#475569', lineHeight: '1.6' }}>
+                          {pt.title && <strong style={{ color: '#1e293b', display: 'block', marginBottom: '5px' }}>{pt.title}</strong>}
+                          {pt.text && <span>{pt.text}</span>}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               )}
             </div>
