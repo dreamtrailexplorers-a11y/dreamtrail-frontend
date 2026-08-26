@@ -73,18 +73,27 @@ export const deleteSubscriber = (id) => api.delete(`/subscribers/${id}`);
 
 export const uploadFile = async (file) => {
   try {
+    // 1. Get signature from our backend
+    const sigRes = await api.get('/upload/signature');
+    const { signature, timestamp, folder, cloudName, apiKey } = sigRes.data;
+
+    // 2. Upload directly to Cloudinary (Bypasses Vercel 4.5MB limit)
     const formData = new FormData();
     formData.append('file', file);
-    
-    const response = await api.post('/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-    
-    return response;
+    formData.append('api_key', apiKey);
+    formData.append('timestamp', timestamp);
+    formData.append('signature', signature);
+    formData.append('folder', folder);
+
+    const uploadRes = await axios.post(
+      `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`,
+      formData
+    );
+
+    // 3. Return the response in the same format our components expect (res.data.url)
+    return { data: { url: uploadRes.data.secure_url } };
   } catch (error) {
-    console.error("Upload error:", error);
+    console.error("Direct Cloudinary Upload error:", error);
     throw error;
   }
 };
