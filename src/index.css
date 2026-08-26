@@ -116,3 +116,12 @@ body [class*="swiper-button-prev"],
 :global(.swiper-button-prev) {
   left: 15px !important;
 }
+
+/* Hide disabled slider buttons globally */
+body .swiper-button-disabled,
+body [class*="swiper-button-disabled"],
+:global(.swiper-button-disabled) {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
