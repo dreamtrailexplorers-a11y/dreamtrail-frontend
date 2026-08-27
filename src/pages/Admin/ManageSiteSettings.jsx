@@ -1633,14 +1633,7 @@ const ManageSiteSettings = () => {
           </button>
         </div>
         
-        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Corporate Tours Page</h3>
-          <button type="button" onClick={() => window.location.href = '/admin/corporate-tours'} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
-            Edit
-          </button>
-        </div>
-        
-      </div>
+
 
       {activeModal && (
         <div 
