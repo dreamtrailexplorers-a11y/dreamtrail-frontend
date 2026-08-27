@@ -37,6 +37,41 @@
   font-weight: 500;
 }
 
+/* Hero Section */
+.heroSection {
+  position: relative;
+  width: 100%;
+  height: 65vh;
+  min-height: 500px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.heroBackgroundImage {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;
+}
+.heroOverlay {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%); z-index: 1;
+}
+.heroContent {
+  position: relative; z-index: 2; color: #fff; max-width: 900px; padding: 0 20px;
+}
+.heroTitle {
+  font-size: 3.5rem; font-weight: 800; margin-bottom: 10px;
+}
+.heroSubtitle {
+  font-size: 1.8rem; margin-bottom: 20px;
+}
+.heroDesc {
+  font-size: 1.1rem; line-height: 1.8;
+}
+
+
 /* Founder Section */
 .founderSectionContainer {
   width: 100%;
@@ -45,23 +80,30 @@
 }
 
 .founderContent {
-  max-width: 1300px;
+  max-width: 1500px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1.3fr;
-  gap: 60px;
-  align-items: center;
+}
+
+/* Clearfix for float */
+.founderContent::after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 .founderImageSide {
+  float: left;
+  width: 400px;
+  height: 550px;
+  margin-right: 60px;
+  margin-bottom: 40px;
   position: relative;
-  height: 100%;
 }
 
 .founderImageWrapper {
   position: relative;
   width: 100%;
-  height: 600px;
+  height: 100%;
   background: #ccc;
   overflow: hidden;
 }
@@ -119,7 +161,7 @@
 }
 
 .founderTextSide {
-  padding: 20px 0;
+  padding-top: 10px;
 }
 
 .founderTitle {
@@ -136,18 +178,28 @@
 
 .founderDesc {
   color: #495057;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   line-height: 1.8;
 }
 
 /* Paragraph styling */
 .paragraphText {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  line-height: 1.9;
+  color: #444;
 }
+
+.markdownHeading {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #111;
+  margin: 40px 0 20px;
+}
+
 
 /* Content Container */
 .contentContainer {
-  max-width: 1300px;
+  max-width: 1450px;
   margin: 0 auto;
   padding: 60px 20px;
 }
@@ -382,11 +434,11 @@
 }
 
 @media (max-width: 992px) {
-  .founderContent {
-    grid-template-columns: 1fr;
-  }
-  .founderImageWrapper {
+  .founderImageSide {
+    float: none;
+    width: 100%;
     height: 400px;
+    margin-right: 0;
   }
   .marshalCard {
     grid-template-columns: 1fr;
@@ -398,38 +450,3 @@
     order: 0;
   }
 }
-
-/* Hero Section */
-.heroSection {
-  position: relative;
-  width: 100%;
-  height: 65vh;
-  min-height: 500px;
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-.heroBackgroundImage {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;
-}
-.heroOverlay {
-  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%); z-index: 1;
-}
-.heroContent {
-  position: relative; z-index: 2; color: #fff; max-width: 900px; padding: 0 20px;
-}
-.heroTitle {
-  font-size: 3.5rem; font-weight: 800; margin-bottom: 10px;
-}
-.heroSubtitle {
-  font-size: 1.8rem; margin-bottom: 20px;
-}
-.heroDesc {
-  font-size: 1.1rem; line-height: 1.8;
-}
-

@@ -45,11 +45,42 @@ const MeetTheTeam = () => {
     visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
   };
 
+  // Robust Markdown Parser
   const renderText = (text) => {
     if (!text) return null;
     return text.split('\n').map((para, i) => {
       if (para.trim() === '') return <br key={i} />;
-      return <p key={i} className={styles.paragraphText}>{para}</p>;
+      
+      // Headings
+      let isHeading = false;
+      let headingText = para;
+      let headingLevel = 3;
+      
+      if (para.startsWith('### ')) {
+        isHeading = true; headingLevel = 3; headingText = para.replace('### ', '');
+      } else if (para.startsWith('#### ')) {
+        isHeading = true; headingLevel = 4; headingText = para.replace('#### ', '');
+      } else if (para.startsWith('## ')) {
+        isHeading = true; headingLevel = 2; headingText = para.replace('## ', '');
+      }
+      
+      // Bold text parser
+      const renderInline = (str) => {
+        const parts = str.split(/(\*\*.*?\*\*)/g);
+        return parts.map((part, index) => {
+          if (part.startsWith('**') && part.endsWith('**')) {
+            return <strong key={index}>{part.slice(2, -2)}</strong>;
+          }
+          return part;
+        });
+      };
+
+      if (isHeading) {
+        const HTag = `h${headingLevel}`;
+        return <HTag key={i} className={styles.markdownHeading}>{renderInline(headingText)}</HTag>;
+      }
+      
+      return <p key={i} className={styles.paragraphText}>{renderInline(para)}</p>;
     });
   };
 
@@ -82,10 +113,8 @@ const MeetTheTeam = () => {
         {founder && (
           <div className={styles.founderSectionContainer}>
             <div className={styles.founderContent}>
-              <motion.div 
-                className={styles.founderImageSide}
-                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}
-              >
+              
+              <div className={styles.founderImageSide}>
                 <div className={styles.founderImageWrapper}>
                   {founder.image && <img src={founder.image} alt={founder.name} className={styles.founderImage} referrerPolicy="no-referrer" />}
                   <div className={styles.founderOverlay}>
@@ -93,17 +122,15 @@ const MeetTheTeam = () => {
                     <p className={styles.founderRole}>{founder.role}</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
               
-              <motion.div 
-                className={styles.founderTextSide}
-                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}
-              >
+              <div className={styles.founderTextSide}>
                 <h1 className={styles.founderTitle}>Meet the Team<br/><span className={styles.redHighlight}>Dreamtrail Explorers</span></h1>
                 <div className={styles.founderDesc}>
                   {renderText(founder.description)}
                 </div>
-              </motion.div>
+              </div>
+
             </div>
           </div>
         )}
@@ -130,6 +157,7 @@ const MeetTheTeam = () => {
                 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}
               >
                 <h2 className={styles.sectionHeading}>Meet the <span className={styles.redCursive}>Ride Marshal</span></h2>
+                <p className={styles.sectionSubheading}>The experienced leaders guiding your journey.</p>
               </motion.div>
               
               <motion.div 
@@ -159,6 +187,7 @@ const MeetTheTeam = () => {
                             {marshal.name.split(' ')[0]} <span className={styles.redCursive}>{marshal.name.split(' ').slice(1).join(' ')}</span>
                           </h3>
                           <div className={styles.nameUnderline}></div>
+                          {marshal.role && <span className={styles.marshalRole}>{marshal.role}</span>}
                         </div>
                         {marshal.description && (
                           <div className={styles.marshalDesc}>
