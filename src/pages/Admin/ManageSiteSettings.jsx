@@ -527,7 +527,7 @@ const ManageSiteSettings = () => {
         <div className={styles.formGrid}>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Address</label>
-            <textarea name="address" value={formData.address || ''} onChange={handleChange} className={styles.textareaField} rows="2" />
+            <textarea name="address" value={formData.address || ''} onChange={handleChange} className={styles.textareaField} rows="6" />
           </div>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Phone</label>
@@ -1424,7 +1424,7 @@ const ManageSiteSettings = () => {
                 </div>
                 <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
                   <label className={styles.inputLabel}>Hero Text</label>
-                  <textarea name="heroText" value={formData.meetTheTeam?.heroText || ''} onChange={handleMeetTheTeamNestedChange} className={styles.textareaField} rows="2" />
+                  <textarea name="heroText" value={formData.meetTheTeam?.heroText || ''} onChange={handleMeetTheTeamNestedChange} className={styles.textareaField} rows="6" />
                 </div>
               </div>
 
@@ -1493,7 +1493,7 @@ const ManageSiteSettings = () => {
 
                         <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
                           <label className={styles.inputLabel}>Description</label>
-                          <textarea value={member.description || ''} onChange={(e) => handleTeamMemberChange(index, 'description', e.target.value)} className={styles.textareaField} rows="2" />
+                          <textarea value={member.description || ''} onChange={(e) => handleTeamMemberChange(index, 'description', e.target.value)} className={styles.textareaField} rows="6" />
                         </div>
                         
                       </div>

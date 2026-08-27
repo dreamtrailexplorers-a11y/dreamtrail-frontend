@@ -1,16 +1,15 @@
 .pageWrapper {
   font-family: 'Poppins', sans-serif;
   color: #1a1a1a;
-  background-color: #ffffff;
+  background-color: #f8f9fa; /* Matches light gray background from reference */
   min-height: 100vh;
 }
 
-.loadingContainer {
+.loadingContainer, .errorContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #fdfdfd;
 }
 
 .loader {
@@ -27,14 +26,377 @@
   100% { transform: rotate(360deg); }
 }
 
-.errorContainer {
+.redHighlight {
+  color: #e63946;
+}
+
+.redCursive {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-style: italic;
+  color: #e63946;
+  font-weight: 500;
+}
+
+/* Founder Section */
+.founderSectionContainer {
+  width: 100%;
+  background-color: #f0f2f5;
+  padding: 80px 20px 40px;
+}
+
+.founderContent {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.founderImageSide {
+  position: relative;
+  height: 100%;
+}
+
+.founderImageWrapper {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  background: #ccc;
+  overflow: hidden;
+}
+
+.founderImageWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 50px; height: 50px;
+  border-top: 4px solid #e63946;
+  border-left: 4px solid #e63946;
+  z-index: 2;
+}
+
+.founderImageWrapper::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 50px; height: 50px;
+  border-bottom: 4px solid #e63946;
+  border-right: 4px solid #e63946;
+  z-index: 2;
+}
+
+.founderImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.founderOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 80px 30px 30px;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+  color: #fff;
+  z-index: 1;
+}
+
+.founderName {
+  font-size: 2rem;
+  margin: 0 0 5px;
+  font-weight: 600;
+}
+
+.founderRole {
+  font-size: 0.9rem;
+  color: #e63946;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.founderTextSide {
+  padding: 20px 0;
+}
+
+.founderTitle {
+  font-size: 3.5rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: #212529;
+  margin-bottom: 40px;
+}
+
+.founderTitle .redHighlight {
+  font-weight: 600;
+}
+
+.founderDesc {
+  color: #495057;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+/* Paragraph styling */
+.paragraphText {
+  margin-bottom: 20px;
+}
+
+/* Content Container */
+.contentContainer {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+/* Quote Section */
+.quoteSection {
+  margin-bottom: 80px;
+  margin-top: 40px;
+}
+
+.quoteBox {
+  background: #ffffff;
+  padding: 50px;
+  border-left: 4px solid #e63946;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.quoteTitle {
+  color: #e63946;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.quoteIcon {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  font-size: 3rem;
+  color: rgba(230, 57, 70, 0.1);
+}
+
+.quoteText {
+  color: #495057;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+/* Section Shared */
+.sectionBlock {
+  margin-bottom: 100px;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.sectionHeading {
+  font-size: 3rem;
+  font-weight: 300;
+  color: #212529;
+  margin: 0 0 10px;
+}
+
+.sectionSubheading {
+  color: #6c757d;
+}
+
+/* Marshals List */
+.marshalsList {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.marshalCard {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.marshalCardReverse {
+  grid-template-columns: 1fr 1.1fr;
+}
+
+.marshalCardReverse .marshalImageWrapper {
+  order: 2;
+}
+.marshalCardReverse .marshalInfo {
+  order: 1;
+}
+
+.marshalImageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background: #eee;
+}
+
+.marshalImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.watermarkNumber {
+  position: absolute;
+  bottom: -20px;
+  right: 10px;
+  font-size: 12rem;
+  font-weight: 900;
+  color: rgba(230, 57, 70, 0.08);
+  line-height: 0.8;
+  pointer-events: none;
+}
+
+.marshalCardReverse .watermarkNumber {
+  left: 10px;
+  right: auto;
+}
+
+.marshalInfo {
+  padding: 0 20px;
+}
+
+.marshalName {
+  font-size: 2.2rem;
+  font-weight: 400;
+  margin: 0 0 5px;
+  color: #212529;
+}
+
+.nameUnderline {
+  width: 40px;
+  height: 2px;
+  background: #e63946;
+  margin: 15px 0 20px;
+}
+
+.marshalRole {
+  display: inline-block;
+  font-size: 0.9rem;
+  color: #adb5bd;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.marshalDesc {
+  color: #495057;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  margin-bottom: 30px;
+}
+
+.whatsappBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #25D366;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.3s;
+}
+
+.whatsappBtn:hover {
+  background: #20bd5a;
+}
+
+/* Back Office */
+.backOfficeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 40px;
+}
+
+.backOfficeCard {
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.backOfficeImageWrapper {
+  height: 300px;
+  background: #f8f9fa;
+}
+
+.backOfficeImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.backOfficeInfo {
+  padding: 25px;
+  text-align: center;
+  position: relative;
+}
+
+.backOfficeName {
+  font-size: 1.3rem;
+  margin: 0 0 5px;
+}
+
+.backOfficeRole {
+  color: #e63946;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+.backOfficeDesc {
+  color: #6c757d;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.whatsappBtnSmall {
+  position: absolute;
+  top: -25px;
+  right: 25px;
+  width: 50px;
+  height: 50px;
+  background: #25D366;
+  color: #fff;
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60vh;
-  color: #e63946;
-  font-size: 1.2rem;
-  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+}
+
+@media (max-width: 992px) {
+  .founderContent {
+    grid-template-columns: 1fr;
+  }
+  .founderImageWrapper {
+    height: 400px;
+  }
+  .marshalCard {
+    grid-template-columns: 1fr;
+  }
+  .marshalCardReverse .marshalImageWrapper {
+    order: 0;
+  }
+  .marshalCardReverse .marshalInfo {
+    order: 0;
+  }
 }
 
 /* Hero Section */
@@ -45,398 +407,29 @@
   min-height: 500px;
   background-size: cover;
   background-position: center;
-  background-attachment: fixed; /* Parallax effect */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
 }
-
 .heroBackgroundImage {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
+  top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;
 }
-
 .heroOverlay {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
-  z-index: 1;
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%); z-index: 1;
 }
-
 .heroContent {
-  position: relative;
-  z-index: 2;
-  max-width: 900px;
-  padding: 0 20px;
-  color: #ffffff;
+  position: relative; z-index: 2; color: #fff; max-width: 900px; padding: 0 20px;
 }
-
-.heroBadge {
-  display: inline-block;
-  background: #e63946;
-  color: #fff;
-  padding: 6px 16px;
-  border-radius: 30px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-}
-
 .heroTitle {
-  font-size: 3.5rem;
-  font-weight: 800;
-  margin: 0 0 10px 0;
-  letter-spacing: -1px;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  font-size: 3.5rem; font-weight: 800; margin-bottom: 10px;
 }
-
 .heroSubtitle {
-  font-size: 1.8rem;
-  font-weight: 500;
-  margin: 0 0 20px 0;
-  color: #f8f9fa;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  font-size: 1.8rem; margin-bottom: 20px;
 }
-
 .heroDesc {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  max-width: 700px;
-  margin: 0 auto;
-  opacity: 0.9;
+  font-size: 1.1rem; line-height: 1.8;
 }
 
-/* Content Container */
-.contentContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 20px;
-}
-
-/* Quote Section */
-.quoteSection {
-  max-width: 800px;
-  margin: -120px auto 100px;
-  background: #ffffff;
-  padding: 50px;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-  position: relative;
-  z-index: 2;
-  text-align: center;
-}
-
-.quoteIcon {
-  font-size: 2.5rem;
-  color: #e63946;
-  margin-bottom: 20px;
-  opacity: 0.2;
-}
-
-.quoteText {
-  font-size: 1.4rem;
-  line-height: 1.8;
-  color: #333;
-  font-style: italic;
-  font-weight: 500;
-  margin: 0;
-}
-
-/* Section Blocks */
-.sectionBlock {
-  margin-bottom: 120px;
-}
-
-.sectionHeader {
-  text-align: center;
-  margin-bottom: 60px;
-}
-
-.sectionHeading {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #1a1a1a;
-  margin: 0;
-}
-
-.headingUnderline {
-  width: 60px;
-  height: 4px;
-  background: #e63946;
-  margin: 20px auto;
-  border-radius: 2px;
-}
-
-.sectionSubheading {
-  font-size: 1.1rem;
-  color: #6c757d;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Marshals List */
-.marshalsList {
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
-}
-
-.marshalCard {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 50px;
-  align-items: center;
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  border: 1px solid #f1f3f5;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.marshalCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-}
-
-.marshalImageWrapper {
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-  aspect-ratio: 4/5;
-  background: #f8f9fa;
-}
-
-.marshalImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.7s ease;
-}
-
-.marshalCard:hover .marshalImage {
-  transform: scale(1.05);
-}
-
-.marshalImagePlaceholder {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  color: #adb5bd;
-  font-size: 1.2rem;
-}
-
-.watermarkNumber {
-  position: absolute;
-  bottom: -20px;
-  right: 10px;
-  font-size: 8rem;
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.4);
-  line-height: 1;
-  pointer-events: none;
-  text-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-}
-
-.marshalInfo {
-  padding-right: 20px;
-}
-
-.marshalHeader {
-  margin-bottom: 25px;
-}
-
-.marshalName {
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: #1a1a1a;
-  margin: 0 0 5px 0;
-}
-
-.marshalRole {
-  display: inline-block;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #e63946;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.marshalDesc {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  color: #495057;
-  margin-bottom: 30px;
-}
-
-.whatsappBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: #25D366;
-  color: #ffffff;
-  padding: 14px 28px;
-  border-radius: 30px;
-  font-weight: 600;
-  font-size: 1rem;
-  text-decoration: none;
-  box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
-  transition: all 0.3s ease;
-}
-
-.whatsappBtn:hover {
-  background: #20bd5a;
-  transform: translateY(-2px);
-  box-shadow: 0 15px 25px rgba(37, 211, 102, 0.3);
-  color: #ffffff;
-}
-
-/* Back Office Section */
-.backOfficeGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 40px;
-}
-
-.backOfficeCard {
-  background: #ffffff;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  border: 1px solid #f1f3f5;
-  transition: transform 0.3s ease;
-  position: relative;
-}
-
-.backOfficeCard:hover {
-  transform: translateY(-8px);
-}
-
-.backOfficeImageWrapper {
-  height: 280px;
-  background: #f8f9fa;
-  overflow: hidden;
-}
-
-.backOfficeImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.backOfficeCard:hover .backOfficeImage {
-  transform: scale(1.05);
-}
-
-.backOfficeImagePlaceholder {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  color: #adb5bd;
-}
-
-.backOfficeInfo {
-  padding: 30px 25px;
-  text-align: center;
-}
-
-.backOfficeName {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 5px 0;
-}
-
-.backOfficeRole {
-  font-size: 0.9rem;
-  color: #e63946;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 0 0 15px 0;
-}
-
-.backOfficeDesc {
-  font-size: 0.95rem;
-  color: #6c757d;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.whatsappBtnSmall {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: #25D366;
-  color: #ffffff;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
-  transition: all 0.3s ease;
-}
-
-.whatsappBtnSmall:hover {
-  transform: scale(1.1);
-  background: #20bd5a;
-}
-
-/* Responsive Design */
-@media (max-width: 992px) {
-  .heroTitle {
-    font-size: 2.8rem;
-  }
-  
-  .marshalCard {
-    grid-template-columns: 1fr;
-    gap: 30px;
-    padding: 30px;
-  }
-  
-  .marshalImageWrapper {
-    aspect-ratio: 16/10;
-  }
-  
-  .marshalInfo {
-    padding-right: 0;
-    text-align: center;
-  }
-}
-
-@media (max-width: 768px) {
-  .heroTitle {
-    font-size: 2.2rem;
-  }
-  
-  .heroSubtitle {
-    font-size: 1.4rem;
-  }
-  
-  .quoteSection {
-    padding: 30px 20px;
-    margin: -80px 15px 80px;
-  }
-  
-  .quoteText {
-    font-size: 1.1rem;
-  }
-  
-  .sectionHeading {
-    font-size: 2rem;
-  }
-}

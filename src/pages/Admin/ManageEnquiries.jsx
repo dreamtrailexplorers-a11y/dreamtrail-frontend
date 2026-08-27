@@ -56,8 +56,10 @@ const ManageEnquiries = () => {
   const filteredEnquiries = enquiries.filter(enq => {
     // 0. Tab Filter
     const isContact = enq.tripTitle === 'General Contact';
-    if (activeTab === 'packages' && isContact) return false;
+    const isCorporate = enq.tripTitle === 'Corporate Tour Enquiry';
+    if (activeTab === 'packages' && (isContact || isCorporate)) return false;
     if (activeTab === 'contact' && !isContact) return false;
+    if (activeTab === 'corporate' && !isCorporate) return false;
 
     // 1. Search Query
     const searchLower = searchQuery.toLowerCase();
@@ -195,6 +197,12 @@ const ManageEnquiries = () => {
         >
           Contact Us Messages
         </button>
+        <button 
+          onClick={() => setActiveTab('corporate')}
+          style={{ padding: '10px 20px', border: 'none', background: 'none', borderBottom: activeTab === 'corporate' ? '3px solid #3b82f6' : 'none', color: activeTab === 'corporate' ? '#3b82f6' : '#64748b', fontWeight: '600', cursor: 'pointer', fontSize: '1rem', marginBottom: '-2px' }}
+        >
+          Corporate Enquiries
+        </button>
       </div>
 
       {/* Filters Toolbar */}
@@ -263,7 +271,7 @@ const ManageEnquiries = () => {
       
       {filteredEnquiries.length === 0 ? (
         <p style={{ textAlign: 'center', padding: '40px', color: '#64748b', background: '#f8fafc', borderRadius: '8px' }}>
-          No {activeTab === 'packages' ? 'package enquiries' : 'contact us messages'} found.
+          No {activeTab === 'packages' ? 'package enquiries' : activeTab === 'corporate' ? 'corporate enquiries' : 'contact us messages'} found.
         </p>
       ) : (
         <div style={{ overflowX: 'auto' }}>
@@ -277,6 +285,9 @@ const ManageEnquiries = () => {
                 {activeTab === 'packages' && <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Package</th>}
                 {activeTab === 'packages' && <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Travel Date</th>}
                 {activeTab === 'packages' && <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Pax</th>}
+                {activeTab === 'corporate' && <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Company</th>}
+                {activeTab === 'corporate' && <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Trip Type & Dest</th>}
+                {activeTab === 'corporate' && <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Team Size & Budget</th>}
                 <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Message</th>
                 <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Actions</th>
               </tr>
@@ -291,7 +302,8 @@ const ManageEnquiries = () => {
                   {activeTab === 'packages' && (
                     <>
                       <td data-label="Destination">{enq.destination || '-'}</td>
-                      <td data-label="Package">`n                          {enq.tripTitle?.includes(' (') ? (
+                      <td data-label="Package">
+                          {enq.tripTitle?.includes(' (') ? (
                             <>
                               <div style={{fontWeight: 600, color: '#0f172a'}}>{enq.tripTitle.split(' (')[0]}</div>
                               <div style={{fontSize: '0.85em', color: '#64748b'}}>{enq.tripTitle.split(' (')[1].replace(')', '')}</div>
@@ -302,6 +314,20 @@ const ManageEnquiries = () => {
                         </td>
                       <td data-label="Travel Date">{enq.date || '-'}</td>
                       <td data-label="Pax">{enq.travellers || '-'}</td>
+                    </>
+                  )}
+
+                  {activeTab === 'corporate' && (
+                    <>
+                      <td data-label="Company">{enq.companyName || '-'}</td>
+                      <td data-label="Trip Type & Dest">
+                        <div>{enq.tripType || '-'}</div>
+                        <div style={{fontSize: '0.85em', color: '#64748b'}}>{enq.destination || '-'}</div>
+                      </td>
+                      <td data-label="Team Size & Budget">
+                        <div>{enq.teamSize || '-'}</div>
+                        <div style={{fontSize: '0.85em', color: '#64748b'}}>{enq.budget || '-'}</div>
+                      </td>
                     </>
                   )}
 
