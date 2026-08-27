@@ -15,6 +15,7 @@ import ManageReviews from './ManageReviews';
 import ManageNavLinks from './ManageNavLinks';
 import ManageFooterLinks from './ManageFooterLinks';
 import ManageSiteSettings from './ManageSiteSettings';
+import ManageCorporateTours from './ManageCorporateTours';
 import ManageCustomPages from './ManageCustomPages/ManageCustomPages';
 import styles from './Admin.module.css';
 import ManageAttractions from './ManageAttractions/ManageAttractions';
@@ -81,7 +82,7 @@ const AdminDashboard = () => {
                 value={password} 
                 onChange={e => setPassword(e.target.value)} 
                 required 
-                placeholder="••••••••"
+                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                 style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', outline: 'none' }}
               />
             </div>
@@ -119,7 +120,8 @@ const AdminDashboard = () => {
           <NavLink onClick={closeMobileMenu} to="/admin/navlinks" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Nav Links</NavLink>
           <NavLink onClick={closeMobileMenu} to="/admin/footerlinks" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Footer Links</NavLink>
           <NavLink onClick={closeMobileMenu} to="/admin/custompages" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Custom Pages</NavLink>
-          <NavLink onClick={closeMobileMenu} to="/admin/settings" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Site Settings</NavLink>
+          <NavLink onClick={closeMobileMenu} to="/admin/corporate-tours" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Corporate Tours Page</NavLink>
+            <NavLink onClick={closeMobileMenu} to="/admin/settings" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Site Settings</NavLink>
         </nav>
         <div className={`${styles.logoutWrapper} ${isMobileMenuOpen ? styles.logoutWrapperOpen : ''}`}>
           <button onClick={handleLogout} className={styles.navLink} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: '12px 16px', fontWeight: 'bold' }}>
@@ -146,7 +148,8 @@ const AdminDashboard = () => {
           <Route path="/navlinks" element={<ManageNavLinks />} />
           <Route path="/footerlinks" element={<ManageFooterLinks />} />
           <Route path="/custompages" element={<ManageCustomPages />} />
-          <Route path="/settings" element={<ManageSiteSettings />} />
+          <Route path="/corporate-tours" element={<ManageCorporateTours />} />
+            <Route path="/settings" element={<ManageSiteSettings />} />
           <Route path="/destination/:id" element={<DestinationDetail />} />
           <Route path="/fill-destination/:id" element={<FillDestinationDetail />} />
         </Routes>

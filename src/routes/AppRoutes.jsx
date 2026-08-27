@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from '../pages/Home/Home';
 import TripDetails from '../pages/TripDetails/TripDetails';
@@ -24,6 +24,7 @@ import MeetTheTeam from '../pages/MeetTheTeam/MeetTheTeam';
 import BlogsPage from '../pages/BlogsPage/BlogsPage';
 import ContactUs from '../pages/ContactUs/ContactUs';
 import CancellationPolicy from '../pages/CancellationPolicy/CancellationPolicy';
+import CorporateTours from '../pages/CorporateTours/CorporateTours';
 
 const AppRoutes = () => {
   return (
@@ -57,6 +58,7 @@ const AppRoutes = () => {
       <Route path="/terms" element={<DynamicPage title="Terms & Conditions" blocksKey="termsBlocks" />} />
       <Route path="/privacy" element={<DynamicPage title="Privacy Policy" blocksKey="privacyPolicyBlocks" />} />
       <Route path="/cancellation" element={<CancellationPolicy />} />
+      <Route path="/corporate-tours" element={<CorporateTours />} />
       <Route path="/payment" element={<DynamicPage title="Payment Details" blocksKey="paymentDetailsBlocks" />} />
       
       {/* Dynamic Custom Block Builder Pages */}
