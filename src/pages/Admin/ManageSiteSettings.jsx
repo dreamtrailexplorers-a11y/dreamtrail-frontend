@@ -335,7 +335,7 @@ const ManageSiteSettings = () => {
               </div>
               <div className={styles.formGrid}>
                 <div className={styles.inputGroup}>
-                  <label className={styles.inputLabel}>Pre-Booking Amount (₹)</label>
+                  <label className={styles.inputLabel}>Pre-Booking Amount (â‚¹)</label>
                   <input type="number" value={formData.preBookingSettings?.amount || 5000} onChange={(e) => setFormData({ ...formData, preBookingSettings: { ...formData.preBookingSettings, amount: Number(e.target.value) }})} className={styles.inputField} />
                 </div>
                 <div className={styles.inputGroup}>
@@ -942,7 +942,7 @@ const ManageSiteSettings = () => {
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
                       >
-                        Ã—
+                        Ãƒâ€”
                       </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
@@ -1010,7 +1010,7 @@ const ManageSiteSettings = () => {
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
                       >
-                        Ã—
+                        Ãƒâ€”
                       </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
@@ -1078,7 +1078,7 @@ const ManageSiteSettings = () => {
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
                       >
-                        Ã—
+                        Ãƒâ€”
                       </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
@@ -1146,7 +1146,7 @@ const ManageSiteSettings = () => {
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
                       >
-                        Ã—
+                        Ãƒâ€”
                       </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
@@ -1347,7 +1347,7 @@ const ManageSiteSettings = () => {
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
                       >
-                        Ã—
+                        Ãƒâ€”
                       </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
@@ -1625,9 +1625,17 @@ const ManageSiteSettings = () => {
             Edit
           </button>
         </div>
+        
         <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Meet The Team Page</h3>
           <button type="button" onClick={() => setActiveModal('Meet The Team Page')} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
+            Edit
+          </button>
+        </div>
+        
+        <div className={styles.card} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', paddingBottom: '10px' }}>Corporate Tours Page</h3>
+          <button type="button" onClick={() => window.location.href = '/admin/corporate-tours'} className={styles.btnPrimary} style={{ alignSelf: 'flex-start', padding: '6px 16px' }}>
             Edit
           </button>
         </div>
