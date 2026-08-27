@@ -628,16 +628,18 @@
   }
 
   .asymmetricCollage {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
   }
   
   .collageImg1, .collageImg2, .collageImg3, .collageImg4 { 
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
     width: 100% !important;
-    height: auto !important; 
+    height: 150px !important; 
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: 8px !important;
   }
   
   .storyContainerDark { flex-direction: column; padding: 40px 15px; }
