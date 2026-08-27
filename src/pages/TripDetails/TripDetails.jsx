@@ -166,7 +166,7 @@ const TripDetails = () => {
 
       <TripGallery images={galleryImages} />
       
-      <TripPageNav />
+      <TripPageNav trip={currentTrip} />
 
       <div className={styles.mainContainer}>
         <div className={styles.contentLayout}>
@@ -238,10 +238,12 @@ const TripDetails = () => {
             </div>
 
             {/* FAQs */}
-            <div id="faqs" className={styles.sectionMargin} style={{ scrollMarginTop: '90px', backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#1e293b', marginBottom: '20px' }}>FAQs</h3>
-              <CreatorFaqs faqs={faqs} />
-            </div>
+            {faqs && faqs.length > 0 && (
+              <div id="faqs" className={styles.sectionMargin} style={{ scrollMarginTop: '90px', backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#1e293b', marginBottom: '20px' }}>FAQs</h3>
+                <CreatorFaqs faqs={faqs} />
+              </div>
+            )}
           </div>
 
           {/* Right Column (Sticky Pricing Sidebar) */}
@@ -333,11 +335,13 @@ const TripDetails = () => {
         )}
           
         {/* Reviews Section */}
-        <div style={{ marginTop: '2rem', backgroundColor: '#fff', padding: '2rem', borderRadius: '16px' }}>
-          <section className={styles.cleanSection}>
-            <TripReviews reviews={tripReviews} />
-          </section>
-        </div>
+        {tripReviews && tripReviews.length > 0 && (
+          <div style={{ marginTop: '2rem', backgroundColor: '#fff', padding: '2rem', borderRadius: '16px' }}>
+            <section className={styles.cleanSection}>
+              <TripReviews reviews={tripReviews} />
+            </section>
+          </div>
+        )}
       </div>
 
       <Footer />

@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import styles from './TripPageNav.module.css';
 
-const TripPageNav = () => {
+const TripPageNav = ({ trip }) => {
   const [activeSection, setActiveSection] = useState('about');
   const [isVisible, setIsVisible] = useState(false);
 
   const navItems = [
     { id: 'about', label: 'About' },
     { id: 'packages', label: 'Packages' },
-    { id: 'dates', label: 'Dates' },
     { id: 'itinerary', label: 'Itinerary' },
     { id: 'inclusions', label: 'Inclusions' },
-    { id: 'attractions', label: 'Attractions' },
-    { id: 'faqs', label: 'FAQs' }
+    { id: 'dates', label: 'Dates' }
   ];
+
+  if (trip?.faqs && trip.faqs.length > 0) {
+    navItems.push({ id: 'faqs', label: 'FAQs' });
+  }
 
   useEffect(() => {
     const handleScroll = () => {
