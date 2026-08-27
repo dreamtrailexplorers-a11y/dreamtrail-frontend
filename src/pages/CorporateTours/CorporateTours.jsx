@@ -309,7 +309,7 @@ const CorporateTours = () => {
                   <select name="destination" value={formData.destination} onChange={handleInputChange} style={{ width: '100%', padding: '14px 16px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.95rem', background: '#fff', outline: 'none', appearance: 'auto' }}>
                     <option value="">Select destination</option>
                     {destinationsList.map((dest) => (
-                      <option key={dest._id} value={dest.title}>{dest.title}</option>
+                      <option key={dest._id} value={dest.name}>{dest.name}</option>
                     ))}
                     <option value="Other">Other</option>
                   </select>
