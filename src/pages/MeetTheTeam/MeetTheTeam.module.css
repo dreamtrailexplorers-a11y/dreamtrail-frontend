@@ -184,8 +184,8 @@
 
 /* Paragraph styling */
 .paragraphText {
-  margin-bottom: 25px;
-  line-height: 1.9;
+  margin-bottom: 15px;
+  line-height: 1.7;
   color: #444;
 }
 
@@ -193,7 +193,7 @@
   font-size: 1.6rem;
   font-weight: 600;
   color: #111;
-  margin: 40px 0 20px;
+  margin: 30px 0 15px;
 }
 
 

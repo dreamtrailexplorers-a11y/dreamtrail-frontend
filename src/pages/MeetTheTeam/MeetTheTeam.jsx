@@ -49,7 +49,7 @@ const MeetTheTeam = () => {
   const renderText = (text) => {
     if (!text) return null;
     return text.split('\n').map((para, i) => {
-      if (para.trim() === '') return <br key={i} />;
+      if (para.trim() === '') return null;
       
       // Headings
       let isHeading = false;
