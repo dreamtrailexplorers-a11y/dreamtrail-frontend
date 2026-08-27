@@ -3,6 +3,7 @@ import { getSiteSettings, submitEnquiry, getDestinations } from '../../services/
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Loader from '../../components/Loader/Loader';
+import { toast } from 'react-toastify';
 import { FiCheckCircle, FiShield, FiSliders, FiUsers, FiCoffee, FiCamera, FiFileText, FiPhoneCall, FiMessageCircle, FiMail, FiMapPin } from 'react-icons/fi';
 import styles from './CorporateTours.module.css';
 
@@ -63,10 +64,10 @@ const CorporateTours = () => {
         tripTitle: 'Corporate Tour Enquiry',
         status: 'New'
       });
-      alert('Enquiry submitted successfully! Our team will contact you soon.');
+      toast.success('Enquiry submitted successfully! Our team will contact you soon.');
       setFormData({ name: '', companyName: '', email: '', phone: '', teamSize: '', destination: '', tripType: '', message: '' });
     } catch (err) {
-      alert('Failed to submit enquiry. Please try again.');
+      toast.error('Failed to submit enquiry. Please try again.');
     } finally {
       setSubmitting(false);
     }

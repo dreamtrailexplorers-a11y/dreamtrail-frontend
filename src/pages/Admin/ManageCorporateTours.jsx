@@ -3,6 +3,7 @@ import { getSiteSettings, updateSiteSettings, uploadFile, getEnquiries, deleteEn
 import styles from './Admin.module.css';
 import Loader from '../../components/Loader/Loader';
 import { FiTrash2 } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 const ManageCorporateTours = () => {
   const [settingsData, setSettingsData] = useState(null);
@@ -70,9 +71,9 @@ const ManageCorporateTours = () => {
     try {
       const payload = { ...settingsData, corporateTours: data };
       await updateSiteSettings(payload);
-      alert('Corporate Tours settings saved successfully!');
+      toast.success('Corporate Tours settings saved successfully!');
     } catch (error) {
-      alert('Error saving settings');
+      toast.error('Error saving settings');
     }
   };
 
