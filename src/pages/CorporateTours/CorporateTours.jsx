@@ -90,133 +90,149 @@ const CorporateTours = () => {
       </section>
 
       {/* STATS SECTION */}
-      <section className={styles.statsSection}>
-        <div className={styles.container}>
-          <h2 className={styles.sectionTitle} style={{ whiteSpace: 'pre-line' }}>{data.statsTitle}</h2>
-          <p className={styles.sectionSubtitle}>{data.statsText}</p>
-          <div className={styles.statsGrid}>
-            {data.stats && data.stats.map((stat, idx) => (
-              <div key={idx} className={styles.statCard}>
-                <div className={styles.statNumber}>{stat.number}</div>
-                <div className={styles.statLabel}>{stat.label}</div>
-              </div>
-            ))}
+      {data.stats && data.stats.length > 0 && (
+        <section className={styles.statsSection}>
+          <div className={styles.container}>
+            <h2 className={styles.sectionTitle} style={{ whiteSpace: 'pre-line' }}>{data.statsTitle}</h2>
+            <p className={styles.sectionSubtitle}>{data.statsText}</p>
+            <div className={styles.statsGrid}>
+              {data.stats.map((stat, idx) => (
+                <div key={idx} className={styles.statCard}>
+                  <div className={styles.statNumber}>{stat.number}</div>
+                  <div className={styles.statLabel}>{stat.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* FEATURES SECTION */}
-      <section className={styles.container}>
-        <h2 className={styles.sectionTitle}>{data.featuresTitle}</h2>
-        <p className={styles.sectionSubtitle}>{data.featuresText}</p>
-        <div className={styles.featuresGrid}>
-          {data.features && data.features.map((feature, idx) => (
-            <div key={idx} className={styles.featureCard}>
-              <div className={styles.featureIcon}>
-                {IconMap[feature.icon] || <FiCheckCircle />}
+      {data.features && data.features.length > 0 && (
+        <section className={styles.container}>
+          <h2 className={styles.sectionTitle}>{data.featuresTitle}</h2>
+          <p className={styles.sectionSubtitle}>{data.featuresText}</p>
+          <div className={styles.featuresGrid}>
+            {data.features.map((feature, idx) => (
+              <div key={idx} className={styles.featureCard}>
+                <div className={styles.featureIcon}>
+                  {IconMap[feature.icon] || <FiCheckCircle />}
+                </div>
+                <h3 className={styles.featureTitle}>{feature.title}</h3>
+                <p className={styles.featureText}>{feature.text}</p>
               </div>
-              <h3 className={styles.featureTitle}>{feature.title}</h3>
-              <p className={styles.featureText}>{feature.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* OFFERINGS SECTION */}
-      <section className={styles.offeringsSection}>
-        <div className={styles.container}>
-          <h2 className={styles.sectionTitle}>{data.offeringsTitle}</h2>
-          <p className={styles.sectionSubtitle}>{data.offeringsText}</p>
-          <div className={styles.offeringsGrid}>
-            {data.offerings && data.offerings.map((offering, idx) => (
-              <div key={idx} className={styles.offeringCard}>
-                <div className={styles.offeringBg} style={{ backgroundImage: `url(${offering.image})` }}></div>
-                <div className={styles.offeringOverlay}></div>
-                <div className={styles.offeringContent}>
-                  <div className={styles.offeringTitle}>{offering.title}</div>
-                  <div className={styles.offeringText}>{offering.text}</div>
+      {data.offerings && data.offerings.length > 0 && (
+        <section className={styles.offeringsSection}>
+          <div className={styles.container}>
+            <h2 className={styles.sectionTitle}>{data.offeringsTitle}</h2>
+            <p className={styles.sectionSubtitle}>{data.offeringsText}</p>
+            <div className={styles.offeringsGrid}>
+              {data.offerings.map((offering, idx) => (
+                <div key={idx} className={styles.offeringCard}>
+                  <div className={styles.offeringBg} style={{ backgroundImage: `url(${offering.image})` }}></div>
+                  <div className={styles.offeringOverlay}></div>
+                  <div className={styles.offeringContent}>
+                    <div className={styles.offeringTitle}>{offering.title}</div>
+                    <div className={styles.offeringText}>{offering.text}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* GALLERY & VIDEO SECTION */}
-      <section className={styles.container}>
-        <h2 className={styles.sectionTitle}>{data.galleryTitle}</h2>
-        <p className={styles.sectionSubtitle}>{data.galleryText}</p>
-        <div className={styles.galleryGrid} style={{ marginBottom: '60px' }}>
-          {data.galleryImages && data.galleryImages.map((img, idx) => (
-            <img key={idx} src={img} alt="Gallery" className={styles.galleryImage} />
-          ))}
-        </div>
-        
-        {data.videoUrl && (
-          <div className={styles.videoContainer}>
-            <iframe 
-              src={data.videoUrl} 
-              title="YouTube video player" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-              allowFullScreen>
-            </iframe>
-          </div>
-        )}
-      </section>
+      {(data.galleryImages?.length > 0 || data.videoUrl) && (
+        <section className={styles.container}>
+          {data.galleryImages?.length > 0 && (
+            <>
+              <h2 className={styles.sectionTitle}>{data.galleryTitle}</h2>
+              <p className={styles.sectionSubtitle}>{data.galleryText}</p>
+              <div className={styles.galleryGrid} style={{ marginBottom: '60px' }}>
+                {data.galleryImages.map((img, idx) => (
+                  <img key={idx} src={img} alt="Gallery" className={styles.galleryImage} />
+                ))}
+              </div>
+            </>
+          )}
+          
+          {data.videoUrl && (
+            <div className={styles.videoContainer}>
+              <iframe 
+                src={data.videoUrl} 
+                title="YouTube video player" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen>
+              </iframe>
+            </div>
+          )}
+        </section>
+      )}
 
       {/* STEPS SECTION */}
-      <section className={styles.statsSection}>
-        <div className={styles.container}>
-          <h2 className={styles.sectionTitle}>{data.stepsTitle}</h2>
-          <p className={styles.sectionSubtitle}>{data.stepsText}</p>
-          
-          <div className={styles.stepsContainer}>
-            <div className={styles.stepLine}></div>
-            {data.steps && data.steps.map((step, idx) => (
-              <div key={idx} className={styles.stepCard}>
-                <div className={styles.stepNumber}>{idx + 1}</div>
-                <h4 className={styles.stepTitle}>{step.title}</h4>
-                <p className={styles.stepText}>{step.text}</p>
-              </div>
-            ))}
+      {data.steps && data.steps.length > 0 && (
+        <section className={styles.statsSection}>
+          <div className={styles.container}>
+            <h2 className={styles.sectionTitle}>{data.stepsTitle}</h2>
+            <p className={styles.sectionSubtitle}>{data.stepsText}</p>
+            
+            <div className={styles.stepsContainer}>
+              <div className={styles.stepLine}></div>
+              {data.steps.map((step, idx) => (
+                <div key={idx} className={styles.stepCard}>
+                  <div className={styles.stepNumber}>{idx + 1}</div>
+                  <h4 className={styles.stepTitle}>{step.title}</h4>
+                  <p className={styles.stepText}>{step.text}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* TESTIMONIALS SECTION */}
-      <section className={styles.container}>
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <span style={{ color: '#d32f2f', border: '1px solid #d32f2f', padding: '4px 16px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>TESTIMONIALS</span>
-          <h2 className={styles.sectionTitle} style={{ marginTop: '15px', fontSize: '2.5rem' }}>
-            {data.testimonialsTitle?.split('Say About Us')[0]}<span style={{ color: '#d32f2f' }}>Say About Us</span>
-          </h2>
-        </div>
-        
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px', marginTop: '40px' }}>
-          {data.testimonials && data.testimonials.map((testi, idx) => {
-            const initials = testi.name ? testi.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase() : 'U';
-            return (
-              <div key={idx} style={{ background: '#fff', padding: '35px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.06)', border: idx === 0 ? '1px solid #d32f2f' : '1px solid #f1f5f9', position: 'relative' }}>
-                <div style={{ color: '#d32f2f', marginBottom: '20px', fontSize: '1.1rem', letterSpacing: '3px' }}>★★★★★</div>
-                <p style={{ fontStyle: 'italic', color: '#475569', fontSize: '0.95rem', lineHeight: '1.7', marginBottom: '30px' }}>"{testi.text}"</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                  <div style={{ width: '45px', height: '45px', borderRadius: '50%', backgroundColor: '#d32f2f', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '1.1rem' }}>
-                    {initials}
-                  </div>
-                  <div>
-                    <div style={{ fontWeight: 700, color: '#0f172a' }}>{testi.name}</div>
-                    <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{testi.designation}</div>
+      {data.testimonials && data.testimonials.length > 0 && (
+        <section className={styles.container}>
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <span style={{ color: '#d32f2f', border: '1px solid #d32f2f', padding: '4px 16px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>TESTIMONIALS</span>
+            <h2 className={styles.sectionTitle} style={{ marginTop: '15px', fontSize: '2.5rem' }}>
+              {data.testimonialsTitle?.split('Say About Us')[0]}<span style={{ color: '#d32f2f' }}>Say About Us</span>
+            </h2>
+          </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px', marginTop: '40px' }}>
+            {data.testimonials.map((testi, idx) => {
+              const initials = testi.name ? testi.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase() : 'U';
+              return (
+                <div key={idx} style={{ background: '#fff', padding: '35px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.06)', border: idx === 0 ? '1px solid #d32f2f' : '1px solid #f1f5f9', position: 'relative' }}>
+                  <div style={{ color: '#d32f2f', marginBottom: '20px', fontSize: '1.1rem', letterSpacing: '3px' }}>★★★★★</div>
+                  <p style={{ fontStyle: 'italic', color: '#475569', fontSize: '0.95rem', lineHeight: '1.7', marginBottom: '30px' }}>"{testi.text}"</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <div style={{ width: '45px', height: '45px', borderRadius: '50%', backgroundColor: '#d32f2f', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '1.1rem' }}>
+                      {initials}
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#0f172a' }}>{testi.name}</div>
+                      <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{testi.designation}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginTop: '40px' }}>
-          <button style={{ width: '40px', height: '40px', borderRadius: '50%', border: '1px solid #e2e8f0', background: '#fff', color: '#64748b', cursor: 'pointer' }}>←</button>
-          <button style={{ width: '40px', height: '40px', borderRadius: '50%', border: '1px solid #e2e8f0', background: '#fff', color: '#64748b', cursor: 'pointer' }}>→</button>
-        </div>
-      </section>
+              );
+            })}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginTop: '40px' }}>
+            <button style={{ width: '40px', height: '40px', borderRadius: '50%', border: '1px solid #e2e8f0', background: '#fff', color: '#64748b', cursor: 'pointer' }}>←</button>
+            <button style={{ width: '40px', height: '40px', borderRadius: '50%', border: '1px solid #e2e8f0', background: '#fff', color: '#64748b', cursor: 'pointer' }}>→</button>
+          </div>
+        </section>
+      )}
 
       {/* FORM SECTION */}
       <section style={{ backgroundColor: '#fafafa', padding: '80px 0', marginTop: '60px' }}>
