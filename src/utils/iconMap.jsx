@@ -30,7 +30,8 @@ import {
   GiWaterfall,
   GiVillage,
   GiPineTree,
-  GiSailboat
+  GiSailboat,
+  GiAsianLantern
 } from 'react-icons/gi';
 
 import {
@@ -61,6 +62,7 @@ export const iconMap = {
   'MdOutlineTempleHindu': <MdOutlineTempleHindu />,
   'GiPagoda': <GiPagoda />,
   'GiTempleGate': <GiTempleGate />,
+  'GiAsianLantern': <GiAsianLantern />,
   'TbBuildingChurch': <TbBuildingChurch />,
   
   // Nature & Adventure
@@ -100,6 +102,7 @@ export const iconNamesMap = {
   'MdOutlineTempleHindu': 'Hindu Temple',
   'GiPagoda': 'Pagoda',
   'GiTempleGate': 'Temple Gate',
+  'GiAsianLantern': 'Asian Lantern',
   'TbBuildingChurch': 'Church',
   
   // Nature & Adventure
