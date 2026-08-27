@@ -10,6 +10,7 @@ const ManageCorporateTours = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [enquiries, setEnquiries] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -203,11 +204,20 @@ const ManageCorporateTours = () => {
     <div>
       <div className={styles.header}>
         <h2 className={styles.title}>Manage Corporate Tours Page</h2>
-        <button onClick={handleSave} className={styles.btnPrimary}>Save Changes</button>
+        <button onClick={() => setIsEditModalOpen(true)} className={styles.btnPrimary}>Edit Corporate Details</button>
       </div>
       
-      <div className={styles.formContainer}>
-        {/* HERO */}
+      {isEditModalOpen && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 1000, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
+          <div style={{ background: '#f8fafc', borderRadius: '12px', width: '100%', maxWidth: '900px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', boxShadow: '0 10px 30px rgba(0,0,0,0.2)', overflow: 'hidden' }}>
+            <div style={{ padding: '20px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#fff' }}>
+              <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#0f172a' }}>Edit Corporate Tours Page</h3>
+              <button onClick={() => setIsEditModalOpen(false)} style={{ background: 'none', border: 'none', fontSize: '1.8rem', cursor: 'pointer', color: '#64748b', lineHeight: 1 }}>&times;</button>
+            </div>
+            
+            <div style={{ padding: '20px', overflowY: 'auto', flex: 1 }}>
+              <div className={styles.formContainer}>
+                {/* HERO */}
         <div className={styles.card}>
           <h3 className={styles.cardTitle}>Hero Section</h3>
           <div className={styles.formGroup}>
@@ -349,8 +359,17 @@ const ManageCorporateTours = () => {
           </div>
           <ArrayEditor title="Form Bullet Points (Not used in current design)" field="formPoints" template={{ text: '' }} />
         </div>
+              </div>
+            </div>
+            <div style={{ padding: '20px', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'flex-end', gap: '15px', backgroundColor: '#fff' }}>
+              <button onClick={() => setIsEditModalOpen(false)} style={{ padding: '10px 20px', border: '1px solid #cbd5e1', background: '#fff', borderRadius: '6px', cursor: 'pointer', fontWeight: 600, color: '#475569' }}>Cancel</button>
+              <button onClick={(e) => { handleSave(e); setIsEditModalOpen(false); }} className={styles.btnPrimary}>Save Changes</button>
+            </div>
+          </div>
+        </div>
+      )}
 
-        {/* ENQUIRIES TABLE */}
+      {/* ENQUIRIES TABLE */}
         <div className={styles.card} style={{ marginTop: '40px' }}>
           <h3 className={styles.cardTitle}>Corporate Enquiries</h3>
           {enquiries.length === 0 ? (
@@ -398,7 +417,6 @@ const ManageCorporateTours = () => {
             </div>
           )}
         </div>
-      </div>
     </div>
   );
 };
