@@ -277,6 +277,29 @@ const ManageCorporateTours = () => {
           <ArrayEditor title="Steps" field="steps" template={{ title: '', text: '' }} />
         </div>
 
+        {/* TESTIMONIALS */}
+        <div className={styles.card}>
+          <h3 className={styles.cardTitle}>Testimonials Section</h3>
+          <div className={styles.formGroup}>
+            <label>Title</label>
+            <input value={data.testimonialsTitle} onChange={(e) => handleChange('testimonialsTitle', e.target.value)} className={styles.inputField} />
+          </div>
+          <ArrayEditor title="Testimonial Items" field="testimonials" template={{ text: '', name: '', designation: '' }} />
+        </div>
+
+        {/* FORM */}
+        <div className={styles.card}>
+          <h3 className={styles.cardTitle}>Contact Form Section</h3>
+          <div className={styles.formGroup}>
+            <label>Title</label>
+            <input value={data.formTitle} onChange={(e) => handleChange('formTitle', e.target.value)} className={styles.inputField} />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Text</label>
+            <textarea value={data.formText} onChange={(e) => handleChange('formText', e.target.value)} className={styles.inputField} rows={3} />
+          </div>
+          <ArrayEditor title="Form Bullet Points" field="formPoints" template={{ text: '' }} />
+        </div>
       </div>
     </div>
   );

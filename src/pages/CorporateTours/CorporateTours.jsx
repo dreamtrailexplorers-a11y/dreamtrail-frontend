@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getSiteSettings } from '../../services/api';
+import { getSiteSettings, submitEnquiry } from '../../services/api';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Loader from '../../components/Loader/Loader';
@@ -18,6 +18,15 @@ const IconMap = {
 const CorporateTours = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    teamSize: '',
+    budget: '',
+    message: ''
+  });
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -31,6 +40,28 @@ const CorporateTours = () => {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await submitEnquiry({
+        ...formData,
+        tripTitle: 'Corporate Tour Enquiry',
+        status: 'New'
+      });
+      alert('Enquiry submitted successfully! Our team will contact you soon.');
+      setFormData({ name: '', phone: '', email: '', teamSize: '', budget: '', message: '' });
+    } catch (err) {
+      alert('Failed to submit enquiry. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -140,6 +171,73 @@ const CorporateTours = () => {
                 <p className={styles.stepText}>{step.text}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS SECTION */}
+      <section className={styles.container}>
+        <h2 className={styles.sectionTitle}>{data.testimonialsTitle}</h2>
+        <div className={styles.testimonialsGrid} style={{ marginTop: '40px' }}>
+          {data.testimonials && data.testimonials.map((testi, idx) => (
+            <div key={idx} className={styles.testiCard}>
+              <div className={styles.testiText}>"{testi.text}"</div>
+              <div className={styles.testiAuthor}>{testi.name}</div>
+              <div className={styles.testiRole}>{testi.designation}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FORM SECTION */}
+      <section className={styles.formSection}>
+        <div className={styles.container}>
+          <div className={styles.formLayout}>
+            <div className={styles.formLeft}>
+              <h2 className={styles.sectionTitle} style={{ textAlign: 'left' }}>{data.formTitle}</h2>
+              <p className={styles.sectionSubtitle} style={{ textAlign: 'left', margin: '0 0 20px 0' }}>{data.formText}</p>
+              <ul className={styles.bulletList}>
+                {data.formPoints && data.formPoints.map((point, idx) => (
+                  <li key={idx} className={styles.bulletItem}>
+                    <FiCheckCircle className={styles.bulletIcon} size={24} />
+                    {point.text}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className={styles.formRight}>
+              <form onSubmit={handleSubmit} className={styles.formGrid}>
+                <div className={styles.formGroupFull}>
+                  <label>Full Name *</label>
+                  <input type="text" name="name" value={formData.name} onChange={handleInputChange} required className={styles.inputField} placeholder="John Doe" />
+                </div>
+                <div>
+                  <label>Phone Number *</label>
+                  <input type="text" name="phone" value={formData.phone} onChange={handleInputChange} required className={styles.inputField} placeholder="+91 XXXXX XXXXX" />
+                </div>
+                <div>
+                  <label>Email Address</label>
+                  <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={styles.inputField} placeholder="john@company.com" />
+                </div>
+                <div>
+                  <label>Team Size</label>
+                  <input type="text" name="teamSize" value={formData.teamSize} onChange={handleInputChange} className={styles.inputField} placeholder="e.g. 20-30 people" />
+                </div>
+                <div>
+                  <label>Budget</label>
+                  <input type="text" name="budget" value={formData.budget} onChange={handleInputChange} className={styles.inputField} placeholder="e.g. INR 2 Lakhs" />
+                </div>
+                <div className={styles.formGroupFull}>
+                  <label>Additional Requirements</label>
+                  <textarea name="message" value={formData.message} onChange={handleInputChange} className={styles.inputField} rows="4" placeholder="Tell us more about your ideal trip..."></textarea>
+                </div>
+                <div className={styles.formGroupFull}>
+                  <button type="submit" disabled={submitting} className={styles.submitBtn}>
+                    {submitting ? 'Submitting...' : 'Request a Proposal'}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </section>
