@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaQuoteLeft, FaWhatsapp } from 'react-icons/fa';
-import Navbar from '../../components/Layout/Navbar/Navbar';
-import Footer from '../../components/Layout/Footer/Footer';
+import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
 import styles from './MeetTheTeam.module.css';
 import { getSiteSettings } from '../../services/api';
 
