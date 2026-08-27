@@ -762,6 +762,30 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     window.scrollTo(0, 0);
   };
 
+  const handleDuplicate = async (trip) => {
+    const confirmDupe = window.confirm(`Are you sure you want to duplicate "${trip.title}"?`);
+    if(!confirmDupe) return;
+    
+    const duplicateData = { ...trip };
+    delete duplicateData._id;
+    delete duplicateData.id;
+    delete duplicateData.createdAt;
+    delete duplicateData.updatedAt;
+    delete duplicateData.__v;
+    
+    duplicateData.title = `${trip.title} (Copy)`;
+    duplicateData.slug = generateSlug(duplicateData.title);
+    
+    try {
+      await createTrip(duplicateData);
+      alert('Package duplicated successfully! You can now edit the copy.');
+      fetchTrips();
+    } catch(err) {
+      alert('Failed to duplicate package. Make sure the title is unique.');
+      console.error(err);
+    }
+  };
+
   const renderTripCard = (trip) => (
     <div key={trip._id} style={{
       backgroundColor: '#fff',
@@ -786,7 +810,8 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
         </div>
       </div>
       <div style={{ display: 'flex', gap: '8px' }}>
-        <button onClick={() => { handleEdit(trip); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ flex: 1, padding: '8px', backgroundColor: '#eff6ff', color: '#3b82f6', border: '1px solid #bfdbfe', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', transition: 'background-color 0.2s' }} onMouseEnter={e => e.target.style.backgroundColor='#dbeafe'} onMouseLeave={e => e.target.style.backgroundColor='#eff6ff'}>Edit / Details</button>
+        <button onClick={() => { handleEdit(trip); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ flex: 1, padding: '8px', backgroundColor: '#eff6ff', color: '#3b82f6', border: '1px solid #bfdbfe', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', transition: 'background-color 0.2s' }} onMouseEnter={e => e.target.style.backgroundColor='#dbeafe'} onMouseLeave={e => e.target.style.backgroundColor='#eff6ff'}>Edit</button>
+        <button onClick={() => handleDuplicate(trip)} style={{ padding: '8px 12px', backgroundColor: '#fcf6f0', color: '#e85d22', border: '1px solid #f9ccb4', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', transition: 'background-color 0.2s' }} onMouseEnter={e => e.target.style.backgroundColor='#ffe4d6'} onMouseLeave={e => e.target.style.backgroundColor='#fcf6f0'}>Duplicate</button>
         <button onClick={() => handleDelete(trip._id)} style={{ padding: '8px 12px', backgroundColor: '#fee2e2', color: '#ef4444', border: '1px solid #fca5a5', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', transition: 'background-color 0.2s' }} onMouseEnter={e => e.target.style.backgroundColor='#fecaca'} onMouseLeave={e => e.target.style.backgroundColor='#fee2e2'}>Delete</button>
       </div>
     </div>
