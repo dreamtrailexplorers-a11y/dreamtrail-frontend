@@ -331,12 +331,6 @@ const CorporateTours = () => {
                   <textarea name="message" value={formData.message} onChange={handleInputChange} rows="3" style={{ width: '100%', padding: '14px 16px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.95rem', outline: 'none' }}></textarea>
                 </div>
                 
-                <div style={{ gridColumn: '1 / -1', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '15px', background: '#f8fafc', width: 'fit-content' }}>
-                  <input type="checkbox" required id="robot" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
-                  <label htmlFor="robot" style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: 500, cursor: 'pointer' }}>I'm not a robot</label>
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/512px-RecaptchaLogo.svg.png" style={{ height: '25px', marginLeft: '30px' }} alt="recaptcha" />
-                </div>
-                
                 <div style={{ gridColumn: '1 / -1' }}>
                   <button type="submit" disabled={submitting} style={{ width: '100%', padding: '16px', background: '#d32f2f', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '1.05rem', cursor: 'pointer', marginTop: '15px', transition: 'background 0.3s' }}>
                     {submitting ? 'Submitting...' : 'Send Enquiry'}
