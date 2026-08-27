@@ -125,30 +125,25 @@ const TripDetails = () => {
   }
 
   if (packageOptions && packageOptions.length > 0) {
-      const opt = selectedOptionIndex !== null ? packageOptions[selectedOptionIndex] : null;
-      if (opt) {
-        let optBasePrice = Number(opt.price) || baseDisc;
-        let optBaseOrigPrice = Number(opt.originalPrice) || baseOrig;
-        
-        if (optBasePrice === 0 && optBaseOrigPrice > 0) {
-          optBasePrice = optBaseOrigPrice;
-          optBaseOrigPrice = 0;
-        }
-
-        if (variant && variant.name) {
-          selectedSidebarTitle = `${opt.title} Package with ${variant.name}`;
-        } else {
-          selectedSidebarTitle = `${opt.title} Package`;
-        }
-        
-        displayDiscPrice = optBasePrice + variantAddon;
-        displayOrigPrice = optBaseOrigPrice > 0 ? optBaseOrigPrice + variantAddon : null;
+    const opt = selectedOptionIndex !== null ? packageOptions[selectedOptionIndex] : null;
+    
+    if (opt) {
+      let optPrice = Number(opt.price) || 0;
+      let optOrigPrice = Number(opt.originalPrice) || baseOrig || baseDisc; // baseDisc because if no discount, orig was moved to disc
+      
+      // Follow the exact same logic as TripPackageOptions
+      if (optPrice === 0 || optPrice >= optOrigPrice) {
+        displayDiscPrice = optOrigPrice + variantAddon;
+        displayOrigPrice = null;
       } else {
-        displayDiscPrice = baseDisc + variantAddon;
-        displayOrigPrice = baseOrig > 0 ? (baseOrig + variantAddon) : null;
-        if (variant && variant.name) {
-          selectedSidebarTitle = `${currentTrip.title} with ${variant.name}`;
-        }
+        displayDiscPrice = optPrice + variantAddon;
+        displayOrigPrice = optOrigPrice + variantAddon;
+      }
+
+      if (variant && variant.name) {
+        selectedSidebarTitle = `${opt.title} Package with ${variant.name}`;
+      } else {
+        selectedSidebarTitle = `${opt.title} Package`;
       }
     } else {
       displayDiscPrice = baseDisc + variantAddon;
@@ -157,6 +152,13 @@ const TripDetails = () => {
         selectedSidebarTitle = `${currentTrip.title} with ${variant.name}`;
       }
     }
+  } else {
+    displayDiscPrice = baseDisc + variantAddon;
+    displayOrigPrice = baseOrig > 0 ? (baseOrig + variantAddon) : null;
+    if (variant && variant.name) {
+      selectedSidebarTitle = `${currentTrip.title} with ${variant.name}`;
+    }
+  }
   
     return (
     <div className={styles.pageWrapper}>
