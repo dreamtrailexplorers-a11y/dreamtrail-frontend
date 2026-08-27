@@ -156,7 +156,7 @@ const MeetTheTeam = () => {
                 className={styles.sectionHeader}
                 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}
               >
-                <h2 className={styles.sectionHeading}>Meet the <span className={styles.redCursive}>Ride Marshal</span></h2>
+                <h2 className={styles.sectionHeading}>Meet the <span className={styles.redCursive}>Tour Managers</span></h2>
                 <p className={styles.sectionSubheading}>The experienced leaders guiding your journey.</p>
               </motion.div>
               
