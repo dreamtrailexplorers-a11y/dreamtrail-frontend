@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getSiteSettings, submitEnquiry } from '../../services/api';
+import { getSiteSettings, submitEnquiry, getDestinations } from '../../services/api';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Loader from '../../components/Loader/Loader';
@@ -29,6 +29,7 @@ const CorporateTours = () => {
     message: ''
   });
   const [submitting, setSubmitting] = useState(false);
+  const [destinationsList, setDestinationsList] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -36,8 +37,12 @@ const CorporateTours = () => {
 
   const fetchData = async () => {
     try {
-      const res = await getSiteSettings();
-      setData(res.data.corporateTours);
+      const [settingsRes, destRes] = await Promise.all([
+        getSiteSettings(),
+        getDestinations()
+      ]);
+      setData(settingsRes.data.corporateTours);
+      setDestinationsList(destRes.data || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -302,10 +307,9 @@ const CorporateTours = () => {
                   <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: '#475569', marginBottom: '8px', letterSpacing: '1px' }}>Preferred Destination</label>
                   <select name="destination" value={formData.destination} onChange={handleInputChange} style={{ width: '100%', padding: '14px 16px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.95rem', background: '#fff', outline: 'none', appearance: 'auto' }}>
                     <option value="">Select destination</option>
-                    <option value="Ladakh">Ladakh</option>
-                    <option value="Spiti">Spiti</option>
-                    <option value="Bhutan">Bhutan</option>
-                    <option value="Nepal">Nepal</option>
+                    {destinationsList.map((dest) => (
+                      <option key={dest._id} value={dest.title}>{dest.title}</option>
+                    ))}
                     <option value="Other">Other</option>
                   </select>
                 </div>
