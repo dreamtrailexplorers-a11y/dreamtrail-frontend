@@ -605,8 +605,16 @@
 
 @media (max-width: 768px) {
   .heroTitle { font-size: 1.8rem; }
-  .statsBar { flex-direction: column; gap: 30px; margin-top: -30px; }
-  .statDivider { width: 40px; height: 1px; }
+  .statsBar { 
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    gap: 15px; 
+    margin-top: -30px; 
+    padding: 20px 10px;
+  }
+  .statNumber { font-size: 1.8rem; }
+  .statLabel { font-size: 0.75rem; }
+  .statDivider { width: 1px; height: 30px; }
   
   .introSection {
     padding: 0 15px;
