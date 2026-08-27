@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { getSiteSettings, updateSiteSettings, uploadFile } from '../../services/api';
+import { getSiteSettings, updateSiteSettings, uploadFile, getEnquiries, deleteEnquiry } from '../../services/api';
 import styles from './Admin.module.css';
 import Loader from '../../components/Loader/Loader';
+import { FiTrash2 } from 'react-icons/fi';
 
 const ManageCorporateTours = () => {
   const [settingsData, setSettingsData] = useState(null);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [enquiries, setEnquiries] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -14,9 +16,18 @@ const ManageCorporateTours = () => {
 
   const fetchData = async () => {
     try {
-      const res = await getSiteSettings();
-      setSettingsData(res.data);
-      const ct = res.data.corporateTours || {};
+      const [settingsRes, enqRes] = await Promise.all([
+        getSiteSettings(),
+        getEnquiries()
+      ]);
+      const resData = settingsRes.data || {};
+      setSettingsData(resData);
+      
+      const allEnq = enqRes.data || [];
+      const corporateEnq = allEnq.filter(e => e.tripTitle === 'Corporate Tour Enquiry');
+      setEnquiries(corporateEnq);
+      
+      const ct = resData.corporateTours || {};
       setData({
         heroTitle: ct.heroTitle || '',
         heroSubtitle: ct.heroSubtitle || '',
@@ -63,6 +74,23 @@ const ManageCorporateTours = () => {
     } catch (error) {
       alert('Error saving settings');
     }
+  };
+
+  const handleDeleteEnquiry = async (id) => {
+    if (window.confirm('Are you sure you want to delete this enquiry?')) {
+      try {
+        await deleteEnquiry(id);
+        setEnquiries(enquiries.filter(e => e._id !== id));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getFullYear()).slice(-2)}`;
   };
 
   const handleChange = (field, value) => {
@@ -319,6 +347,55 @@ const ManageCorporateTours = () => {
             <input value={data.contactLocation} onChange={(e) => handleChange('contactLocation', e.target.value)} className={styles.inputField} />
           </div>
           <ArrayEditor title="Form Bullet Points (Not used in current design)" field="formPoints" template={{ text: '' }} />
+        </div>
+
+        {/* ENQUIRIES TABLE */}
+        <div className={styles.card} style={{ marginTop: '40px' }}>
+          <h3 className={styles.cardTitle}>Corporate Enquiries</h3>
+          {enquiries.length === 0 ? (
+            <p style={{ textAlign: 'center', padding: '20px', color: '#64748b' }}>No corporate enquiries found.</p>
+          ) : (
+            <div style={{ overflowX: 'auto' }}>
+              <table className={styles.table}>
+                <thead>
+                  <tr style={{ background: '#f1f5f9', textAlign: 'left' }}>
+                    <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Date</th>
+                    <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Name</th>
+                    <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Phone</th>
+                    <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Company</th>
+                    <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Trip Type & Dest</th>
+                    <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Team Size & Budget</th>
+                    <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Message</th>
+                    <th style={{ padding: '12px', borderBottom: '2px solid #cbd5e1' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {enquiries.map((enq) => (
+                    <tr key={enq._id} style={{ borderBottom: '1px solid #e2e8f0' }}>
+                      <td data-label="Date">{formatDate(enq.createdAt)}</td>
+                      <td data-label="Name" style={{fontWeight:"600"}}>{enq.name}<br/><small>{enq.email}</small></td>
+                      <td data-label="Phone">{enq.phone}</td>
+                      <td data-label="Company">{enq.companyName || '-'}</td>
+                      <td data-label="Trip Type & Dest">
+                        <div>{enq.tripType || '-'}</div>
+                        <div style={{fontSize: '0.85em', color: '#64748b'}}>{enq.destination || '-'}</div>
+                      </td>
+                      <td data-label="Team Size & Budget">
+                        <div>{enq.teamSize || '-'}</div>
+                        <div style={{fontSize: '0.85em', color: '#64748b'}}>{enq.budget || '-'}</div>
+                      </td>
+                      <td data-label="Message">{enq.message}</td>
+                      <td data-label="Actions">
+                        <button onClick={() => handleDeleteEnquiry(enq._id)} className={styles.btnDanger} style={{ padding: '6px' }}>
+                          <FiTrash2 />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
     </div>
