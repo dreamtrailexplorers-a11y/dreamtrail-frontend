@@ -28,10 +28,12 @@
   cursor: pointer;
   transition: all 0.35s ease;
   background-color: #1e293b;
+  transform: translateZ(0);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .cardContainer:hover {
-  transform: translateY(-8px);
+  transform: translateY(-8px) translateZ(0);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
 }
 
