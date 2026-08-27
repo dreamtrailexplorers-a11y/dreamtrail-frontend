@@ -635,7 +635,7 @@
   
   .collageImg1, .collageImg2, .collageImg3, .collageImg4 { 
     width: 100% !important;
-    height: 220px !important; 
+    height: auto !important; 
     object-fit: cover;
     border-radius: 12px;
   }
