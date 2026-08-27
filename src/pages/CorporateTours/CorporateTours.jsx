@@ -3,7 +3,7 @@ import { getSiteSettings, submitEnquiry } from '../../services/api';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Loader from '../../components/Loader/Loader';
-import { FiCheckCircle, FiShield, FiSliders, FiUsers, FiCoffee, FiCamera, FiFileText } from 'react-icons/fi';
+import { FiCheckCircle, FiShield, FiSliders, FiUsers, FiCoffee, FiCamera, FiFileText, FiPhoneCall, FiMessageCircle, FiMail, FiMapPin } from 'react-icons/fi';
 import styles from './CorporateTours.module.css';
 
 const IconMap = {
@@ -20,10 +20,12 @@ const CorporateTours = () => {
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
-    phone: '',
+    companyName: '',
     email: '',
+    phone: '',
     teamSize: '',
-    budget: '',
+    destination: '',
+    tripType: '',
     message: ''
   });
   const [submitting, setSubmitting] = useState(false);
@@ -57,7 +59,7 @@ const CorporateTours = () => {
         status: 'New'
       });
       alert('Enquiry submitted successfully! Our team will contact you soon.');
-      setFormData({ name: '', phone: '', email: '', teamSize: '', budget: '', message: '' });
+      setFormData({ name: '', companyName: '', email: '', phone: '', teamSize: '', destination: '', tripType: '', message: '' });
     } catch (err) {
       alert('Failed to submit enquiry. Please try again.');
     } finally {
@@ -177,63 +179,162 @@ const CorporateTours = () => {
 
       {/* TESTIMONIALS SECTION */}
       <section className={styles.container}>
-        <h2 className={styles.sectionTitle}>{data.testimonialsTitle}</h2>
-        <div className={styles.testimonialsGrid} style={{ marginTop: '40px' }}>
-          {data.testimonials && data.testimonials.map((testi, idx) => (
-            <div key={idx} className={styles.testiCard}>
-              <div className={styles.testiText}>"{testi.text}"</div>
-              <div className={styles.testiAuthor}>{testi.name}</div>
-              <div className={styles.testiRole}>{testi.designation}</div>
-            </div>
-          ))}
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <span style={{ color: '#d32f2f', border: '1px solid #d32f2f', padding: '4px 16px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>TESTIMONIALS</span>
+          <h2 className={styles.sectionTitle} style={{ marginTop: '15px', fontSize: '2.5rem' }}>
+            {data.testimonialsTitle?.split('Say About Us')[0]}<span style={{ color: '#d32f2f' }}>Say About Us</span>
+          </h2>
+        </div>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px', marginTop: '40px' }}>
+          {data.testimonials && data.testimonials.map((testi, idx) => {
+            const initials = testi.name ? testi.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase() : 'U';
+            return (
+              <div key={idx} style={{ background: '#fff', padding: '35px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.06)', border: idx === 0 ? '1px solid #d32f2f' : '1px solid #f1f5f9', position: 'relative' }}>
+                <div style={{ color: '#d32f2f', marginBottom: '20px', fontSize: '1.1rem', letterSpacing: '3px' }}>★★★★★</div>
+                <p style={{ fontStyle: 'italic', color: '#475569', fontSize: '0.95rem', lineHeight: '1.7', marginBottom: '30px' }}>"{testi.text}"</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                  <div style={{ width: '45px', height: '45px', borderRadius: '50%', backgroundColor: '#d32f2f', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '1.1rem' }}>
+                    {initials}
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 700, color: '#0f172a' }}>{testi.name}</div>
+                    <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{testi.designation}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginTop: '40px' }}>
+          <button style={{ width: '40px', height: '40px', borderRadius: '50%', border: '1px solid #e2e8f0', background: '#fff', color: '#64748b', cursor: 'pointer' }}>←</button>
+          <button style={{ width: '40px', height: '40px', borderRadius: '50%', border: '1px solid #e2e8f0', background: '#fff', color: '#64748b', cursor: 'pointer' }}>→</button>
         </div>
       </section>
 
       {/* FORM SECTION */}
-      <section className={styles.formSection}>
+      <section style={{ backgroundColor: '#fafafa', padding: '80px 0', marginTop: '60px' }}>
         <div className={styles.container}>
-          <div className={styles.formLayout}>
-            <div className={styles.formLeft}>
-              <h2 className={styles.sectionTitle} style={{ textAlign: 'left' }}>{data.formTitle}</h2>
-              <p className={styles.sectionSubtitle} style={{ textAlign: 'left', margin: '0 0 20px 0' }}>{data.formText}</p>
-              <ul className={styles.bulletList}>
-                {data.formPoints && data.formPoints.map((point, idx) => (
-                  <li key={idx} className={styles.bulletItem}>
-                    <FiCheckCircle className={styles.bulletIcon} size={24} />
-                    {point.text}
-                  </li>
-                ))}
-              </ul>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'flex-start' }}>
+            {/* Left Info */}
+            <div>
+              <span style={{ color: '#d32f2f', border: '1px solid #d32f2f', padding: '4px 16px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>GET IN TOUCH</span>
+              <h2 style={{ textAlign: 'left', marginTop: '20px', fontSize: '3rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.2 }}>
+                Let's Plan Your <span style={{ color: '#d32f2f' }}>Team's<br/>Adventure</span>
+              </h2>
+              <p style={{ textAlign: 'left', margin: '25px 0', color: '#475569', fontSize: '1.05rem', lineHeight: 1.6 }}>
+                Fill in the form and our corporate travel specialist will reach out within 24 hours with a customised proposal. No obligations, no templates — just a plan built for your team.
+              </p>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '25px', marginTop: '40px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                  <div style={{ width: '45px', height: '45px', borderRadius: '10px', backgroundColor: '#fee2e2', color: '#d32f2f', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.2rem', flexShrink: 0 }}><FiPhoneCall /></div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '3px' }}>Call Us</div>
+                    <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '1.05rem', whiteSpace: 'pre-line' }}>{data.contactPhone || '+91 98980 36338\n+91 98985 54465'}</div>
+                  </div>
+                </div>
+                
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                  <div style={{ width: '45px', height: '45px', borderRadius: '10px', backgroundColor: '#fee2e2', color: '#d32f2f', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.2rem', flexShrink: 0 }}><FiMessageCircle /></div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '3px' }}>WhatsApp</div>
+                    <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '1.05rem' }}>{data.contactWhatsapp || '+91 98985 54465'}</div>
+                  </div>
+                </div>
+                
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                  <div style={{ width: '45px', height: '45px', borderRadius: '10px', backgroundColor: '#fee2e2', color: '#d32f2f', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.2rem', flexShrink: 0 }}><FiMail /></div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '3px' }}>Email</div>
+                    <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '1.05rem' }}>{data.contactEmail || 'info@dreamridersmototouring.com'}</div>
+                  </div>
+                </div>
+                
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+                  <div style={{ width: '45px', height: '45px', borderRadius: '10px', backgroundColor: '#fee2e2', color: '#d32f2f', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.2rem', flexShrink: 0 }}><FiMapPin /></div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '3px' }}>Location</div>
+                    <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '1.05rem' }}>{data.contactLocation || 'Ahmedabad, Gujarat, India'}</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className={styles.formRight}>
-              <form onSubmit={handleSubmit} className={styles.formGrid}>
-                <div className={styles.formGroupFull}>
-                  <label>Full Name *</label>
-                  <input type="text" name="name" value={formData.name} onChange={handleInputChange} required className={styles.inputField} placeholder="John Doe" />
-                </div>
+            
+            {/* Right Form */}
+            <div style={{ background: '#fff', padding: '45px', borderRadius: '20px', boxShadow: '0 15px 50px rgba(0,0,0,0.06)' }}>
+              <h3 style={{ fontSize: '1.6rem', fontWeight: 800, margin: '0 0 10px 0', color: '#0f172a' }}>Request a Corporate Proposal</h3>
+              <p style={{ color: '#64748b', fontSize: '0.95rem', marginBottom: '35px' }}>We'll send you a personalised itinerary within 24–48 hours.</p>
+              
+              <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                 <div>
-                  <label>Phone Number *</label>
-                  <input type="text" name="phone" value={formData.phone} onChange={handleInputChange} required className={styles.inputField} placeholder="+91 XXXXX XXXXX" />
+                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: '#475569', marginBottom: '8px', letterSpacing: '1px' }}>Your Name *</label>
+                  <input type="text" name="name" value={formData.name} onChange={handleInputChange} required style={{ width: '100%', padding: '14px 16px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.95rem', outline: 'none' }} />
                 </div>
+                
                 <div>
-                  <label>Email Address</label>
-                  <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={styles.inputField} placeholder="john@company.com" />
+                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: '#475569', marginBottom: '8px', letterSpacing: '1px' }}>Company Name *</label>
+                  <input type="text" name="companyName" value={formData.companyName} onChange={handleInputChange} required style={{ width: '100%', padding: '14px 16px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.95rem', outline: 'none' }} />
                 </div>
+                
                 <div>
-                  <label>Team Size</label>
-                  <input type="text" name="teamSize" value={formData.teamSize} onChange={handleInputChange} className={styles.inputField} placeholder="e.g. 20-30 people" />
+                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: '#475569', marginBottom: '8px', letterSpacing: '1px' }}>Email Address *</label>
+                  <input type="email" name="email" value={formData.email} onChange={handleInputChange} required style={{ width: '100%', padding: '14px 16px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.95rem', outline: 'none' }} />
                 </div>
+                
                 <div>
-                  <label>Budget</label>
-                  <input type="text" name="budget" value={formData.budget} onChange={handleInputChange} className={styles.inputField} placeholder="e.g. INR 2 Lakhs" />
+                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: '#475569', marginBottom: '8px', letterSpacing: '1px' }}>Phone Number *</label>
+                  <input type="text" name="phone" value={formData.phone} onChange={handleInputChange} required style={{ width: '100%', padding: '14px 16px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.95rem', outline: 'none' }} />
                 </div>
-                <div className={styles.formGroupFull}>
-                  <label>Additional Requirements</label>
-                  <textarea name="message" value={formData.message} onChange={handleInputChange} className={styles.inputField} rows="4" placeholder="Tell us more about your ideal trip..."></textarea>
+                
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: '#475569', marginBottom: '8px', letterSpacing: '1px' }}>Team Size *</label>
+                  <select name="teamSize" value={formData.teamSize} onChange={handleInputChange} required style={{ width: '100%', padding: '14px 16px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.95rem', background: '#fff', outline: 'none', appearance: 'auto' }}>
+                    <option value="">Select size</option>
+                    <option value="1-10">1-10 people</option>
+                    <option value="11-20">11-20 people</option>
+                    <option value="21-50">21-50 people</option>
+                    <option value="50+">50+ people</option>
+                  </select>
                 </div>
-                <div className={styles.formGroupFull}>
-                  <button type="submit" disabled={submitting} className={styles.submitBtn}>
-                    {submitting ? 'Submitting...' : 'Request a Proposal'}
+                
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: '#475569', marginBottom: '8px', letterSpacing: '1px' }}>Preferred Destination</label>
+                  <select name="destination" value={formData.destination} onChange={handleInputChange} style={{ width: '100%', padding: '14px 16px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.95rem', background: '#fff', outline: 'none', appearance: 'auto' }}>
+                    <option value="">Select destination</option>
+                    <option value="Ladakh">Ladakh</option>
+                    <option value="Spiti">Spiti</option>
+                    <option value="Bhutan">Bhutan</option>
+                    <option value="Nepal">Nepal</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: '#475569', marginBottom: '8px', letterSpacing: '1px' }}>Trip Type</label>
+                  <select name="tripType" value={formData.tripType} onChange={handleInputChange} style={{ width: '100%', padding: '14px 16px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.95rem', background: '#fff', outline: 'none', appearance: 'auto' }}>
+                    <option value="">Select type</option>
+                    <option value="Signature Adventure">Signature Adventure</option>
+                    <option value="Incentive">Incentive</option>
+                    <option value="MICE">MICE</option>
+                    <option value="Team Outing">Team Outing</option>
+                  </select>
+                </div>
+                
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: '#475569', marginBottom: '8px', letterSpacing: '1px' }}>Message</label>
+                  <textarea name="message" value={formData.message} onChange={handleInputChange} rows="3" style={{ width: '100%', padding: '14px 16px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.95rem', outline: 'none' }}></textarea>
+                </div>
+                
+                <div style={{ gridColumn: '1 / -1', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '15px', background: '#f8fafc', width: 'fit-content' }}>
+                  <input type="checkbox" required id="robot" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
+                  <label htmlFor="robot" style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: 500, cursor: 'pointer' }}>I'm not a robot</label>
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/512px-RecaptchaLogo.svg.png" style={{ height: '25px', marginLeft: '30px' }} alt="recaptcha" />
+                </div>
+                
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <button type="submit" disabled={submitting} style={{ width: '100%', padding: '16px', background: '#d32f2f', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '1.05rem', cursor: 'pointer', marginTop: '15px', transition: 'background 0.3s' }}>
+                    {submitting ? 'Submitting...' : 'Send Enquiry'}
                   </button>
                 </div>
               </form>

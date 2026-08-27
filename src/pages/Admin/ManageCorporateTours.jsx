@@ -41,6 +41,10 @@ const ManageCorporateTours = () => {
         testimonials: ct.testimonials || [],
         formTitle: ct.formTitle || '',
         formText: ct.formText || '',
+        contactPhone: ct.contactPhone || '+91 98980 36338\n+91 98985 54465',
+        contactWhatsapp: ct.contactWhatsapp || '+91 98985 54465',
+        contactEmail: ct.contactEmail || 'info@dreamridersmototouring.com',
+        contactLocation: ct.contactLocation || 'Ahmedabad, Gujarat, India',
         formPoints: ct.formPoints || []
       });
     } catch (err) {
@@ -298,7 +302,23 @@ const ManageCorporateTours = () => {
             <label>Text</label>
             <textarea value={data.formText} onChange={(e) => handleChange('formText', e.target.value)} className={styles.inputField} rows={3} />
           </div>
-          <ArrayEditor title="Form Bullet Points" field="formPoints" template={{ text: '' }} />
+          <div className={styles.formGroup}>
+            <label>Contact Phone (Supports multiple lines)</label>
+            <textarea value={data.contactPhone} onChange={(e) => handleChange('contactPhone', e.target.value)} className={styles.inputField} rows={2} />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Contact WhatsApp</label>
+            <input value={data.contactWhatsapp} onChange={(e) => handleChange('contactWhatsapp', e.target.value)} className={styles.inputField} />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Contact Email</label>
+            <input value={data.contactEmail} onChange={(e) => handleChange('contactEmail', e.target.value)} className={styles.inputField} />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Contact Location</label>
+            <input value={data.contactLocation} onChange={(e) => handleChange('contactLocation', e.target.value)} className={styles.inputField} />
+          </div>
+          <ArrayEditor title="Form Bullet Points (Not used in current design)" field="formPoints" template={{ text: '' }} />
         </div>
       </div>
     </div>
