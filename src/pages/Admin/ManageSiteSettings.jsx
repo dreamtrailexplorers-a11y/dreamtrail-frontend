@@ -1633,7 +1633,7 @@ const ManageSiteSettings = () => {
           </button>
         </div>
         
-
+      </div>
 
       {activeModal && (
         <div 
