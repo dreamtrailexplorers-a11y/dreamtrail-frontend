@@ -732,6 +732,17 @@ const ManagePackages = ({ destNameProp, hideBasicForm, refreshKey }) => {
     if (payload.galleryImages) {
       payload.galleryImages = payload.galleryImages.filter(img => img && img.trim() !== '');
     }
+
+    if (payload.departureDates && payload.departureDates.length > 0) {
+      payload.departureDates = [...payload.departureDates].sort((a, b) => {
+        const dateA = new Date(a.start);
+        const dateB = new Date(b.start);
+        if (isNaN(dateA) && !isNaN(dateB)) return 1;
+        if (!isNaN(dateA) && isNaN(dateB)) return -1;
+        if (isNaN(dateA) && isNaN(dateB)) return 0;
+        return dateA - dateB;
+      });
+    }
     
     try {
       if (editingId) {

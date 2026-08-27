@@ -87,7 +87,14 @@ const TripDetails = () => {
   const attractions = currentTrip.attractions || [];
   const inclusions = currentTrip.inclusions || [];
   const exclusions = currentTrip.exclusions || [];
-  const departureDates = currentTrip.departureDates || [];
+  const departureDates = [...(currentTrip.departureDates || [])].sort((a, b) => {
+    const dateA = new Date(a.start);
+    const dateB = new Date(b.start);
+    if (isNaN(dateA) && !isNaN(dateB)) return 1;
+    if (!isNaN(dateA) && isNaN(dateB)) return -1;
+    if (isNaN(dateA) && isNaN(dateB)) return 0;
+    return dateA - dateB;
+  });
   const faqs = currentTrip.faqs || [];
   const tripReviews = reviews.length > 0 ? reviews : [];
 
