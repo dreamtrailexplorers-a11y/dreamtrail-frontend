@@ -32,11 +32,11 @@ const TripHeader = ({ trip }) => {
         <span className={styles.metaChip}>
           <FiUsers size={16} /> {trip.category || 'Group Trip'}
         </span>
-        <div style={{ display: 'flex', gap: '10px', marginLeft: 'auto' }}>
-          <a href={trip.pdfUrl || '#'} target={trip.pdfUrl ? "_blank" : "_self"} rel="noreferrer" className={styles.shareBtn} style={{ textDecoration: 'none', color: '#cc0000', borderColor: '#cc0000', backgroundColor: '#fff', marginLeft: 0 }} onClick={(e) => { if(!trip.pdfUrl) { e.preventDefault(); alert('No PDF uploaded for this package yet.'); } }}>
+        <div className={styles.actionButtons}>
+          <a href={trip.pdfUrl || '#'} target={trip.pdfUrl ? "_blank" : "_self"} rel="noreferrer" className={styles.shareBtn} style={{ textDecoration: 'none', color: '#cc0000', borderColor: '#cc0000', backgroundColor: '#fff' }} onClick={(e) => { if(!trip.pdfUrl) { e.preventDefault(); alert('No PDF uploaded for this package yet.'); } }}>
             <FiDownload size={16} /> Get PDF
           </a>
-          <button className={styles.shareBtn} style={{ marginLeft: 0 }} onClick={() => setIsShareModalOpen(true)}>
+          <button className={styles.shareBtn} onClick={() => setIsShareModalOpen(true)}>
             <FiShare2 size={16} /> Share
           </button>
         </div>
