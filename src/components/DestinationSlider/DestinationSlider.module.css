@@ -17,6 +17,11 @@
   position: relative;
 }
 
+.sliderWrapper :global(.swiper) {
+  padding-top: 15px !important;
+  padding-bottom: 25px !important;
+}
+
 /* DestinationCard Styles */
 .cardContainer {
   position: relative;

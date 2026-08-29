@@ -125,3 +125,11 @@ body [class*="swiper-button-disabled"],
   visibility: hidden !important;
   pointer-events: none !important;
 }
+
+/* Global fix for Swiper cards cutting off on hover */
+.swiper {
+  padding-top: 15px !important;
+  padding-bottom: 25px !important;
+  margin-top: -15px !important;
+  margin-bottom: -25px !important;
+}

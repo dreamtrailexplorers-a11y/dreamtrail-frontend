@@ -99,7 +99,7 @@
 
 @media (max-width: 768px) {
   .bannerCard {
-    height: 400px;
+    height: 220px;
   }
   .overlay {
     padding: 2rem;
