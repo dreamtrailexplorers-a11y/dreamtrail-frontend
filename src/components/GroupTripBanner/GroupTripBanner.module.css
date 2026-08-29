@@ -126,5 +126,4 @@
 }
 
 .bannerSwiper { border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 12px 35px rgba(27, 85, 148, 0.2); }
-.bannerSwiper .swiper-button-next, .bannerSwiper .swiper-button-prev { color: white; background: rgba(0,0,0,0.3); padding: 30px 20px; border-radius: 8px; }
 .bannerSwiper .swiper-pagination-bullet-active { background: white; }

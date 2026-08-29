@@ -49,36 +49,6 @@
 }
 
 /* Custom Swiper Arrows for this section */
-.sliderContainer :global(.swiper-button-prev),
-.sliderContainer :global(.swiper-button-next) {
-  width: 45px !important;
-  height: 45px !important;
-  background-color: white !important;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
-  color: var(--primary-color) !important;
-  transition: all 0.3s ease !important;
-  top: calc(50% - 10px) !important; /* Move up by 10px to account for asymmetric top/bottom padding */
-  margin-top: -22.5px !important; /* Half of height to perfectly center */
-}
-
-.sliderContainer :global(.swiper-button-prev) {
-  left: 15px !important; /* Move inside to prevent cutoff */
-}
-
-.sliderContainer :global(.swiper-button-next) {
-  right: 15px !important; /* Move inside to prevent cutoff */
-}
-
-.sliderContainer :global(.swiper-button-prev):hover,
-.sliderContainer :global(.swiper-button-next):hover {
-  background-color: var(--primary-color) !important;
-  color: white !important;
-  transform: scale(1.1) !important;
-  box-shadow: 0 8px 20px rgba(230, 126, 34, 0.3) !important;
-  border-color: transparent;
-}
-
 /* Redesigned Card */
 .monthCard {
   width: 100%;
