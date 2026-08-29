@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Navigation, Autoplay } from 'swiper/modules';
 import { FiChevronRight, FiX } from 'react-icons/fi';
 import { FaStar } from 'react-icons/fa';
 import 'swiper/css';
@@ -50,10 +50,11 @@ const ReviewSection = () => {
 
         <div className={styles.sliderContainer}>
           <Swiper
-            modules={[Navigation]}
+            modules={[Navigation, Autoplay]}
             spaceBetween={20}
             slidesPerView={1}
             navigation
+            autoplay={{ delay: 3500, disableOnInteraction: false }}
             breakpoints={{
               640: { slidesPerView: 2 },
               900: { slidesPerView: 3 },

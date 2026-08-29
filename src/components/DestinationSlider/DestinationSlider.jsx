@@ -1,6 +1,6 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import DestinationCard from './DestinationCard';
@@ -12,10 +12,11 @@ const DestinationSlider = ({ title, destinations }) => {
       <h2 className={styles.sectionTitle}>{title}</h2>
       <div className={styles.sliderWrapper}>
         <Swiper
-          modules={[Navigation]}
+          modules={[Navigation, Autoplay]}
           spaceBetween={18}
           slidesPerView={1.5}
           navigation
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
           breakpoints={{
             480: { slidesPerView: 2 },
             768: { slidesPerView: 3 },

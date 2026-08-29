@@ -72,6 +72,7 @@ const UpcomingTripsSection = () => {
           spaceBetween={20}
           slidesPerView={2}
           navigation
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
           initialSlide={0}
           breakpoints={{
             480: { slidesPerView: 3 },
