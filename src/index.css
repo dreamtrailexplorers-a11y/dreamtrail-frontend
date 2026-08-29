@@ -68,12 +68,13 @@ ul, ol {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   color: #1a1a1a !important;
   transition: all 0.2s ease;
+  --swiper-navigation-size: 10px !important;
 }
 
 .swiper-button-next:after,
 .swiper-button-prev:after {
-  font-size: 12px !important;
-  font-weight: 900 !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
 }
 
 .swiper-button-next:hover,
@@ -92,16 +93,18 @@ ul, ol {
     right: 5px !important;
     width: 32px !important;
     height: 32px !important;
+    --swiper-navigation-size: 8px !important;
   }
   body .swiper-button-prev {
     left: 5px !important;
     width: 32px !important;
     height: 32px !important;
+    --swiper-navigation-size: 8px !important;
   }
   body .swiper-button-next:after,
   body .swiper-button-prev:after {
-    font-size: 10px !important;
-    font-weight: 900 !important;
+    font-size: 8px !important;
+    font-weight: 800 !important;
   }
 }
 

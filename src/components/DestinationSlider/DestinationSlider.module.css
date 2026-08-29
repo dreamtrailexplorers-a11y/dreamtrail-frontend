@@ -215,18 +215,7 @@
 }
 
 @media (max-width: 768px) {
-  .sliderWrapper :global(.swiper-button-next) {
-    right: 5px !important;
-    width: 32px !important;
-    height: 32px !important;
-  }
-  .sliderWrapper :global(.swiper-button-prev) {
-    left: 5px !important;
-    width: 32px !important;
-    height: 32px !important;
-  }
-  .sliderWrapper :global(.swiper-button-next)::after,
-  .sliderWrapper :global(.swiper-button-prev)::after {
-    font-size: 12px !important;
+  .destinationSection {
+    padding: 2rem 0;
   }
 }

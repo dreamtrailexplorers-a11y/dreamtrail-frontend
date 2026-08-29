@@ -376,7 +376,6 @@
 /* Custom Swiper Navigation Buttons */
 .sliderContainer :global(.swiper-button-next),
 .sliderContainer :global(.swiper-button-prev) {
-  --swiper-navigation-size: 14px !important; /* This resizes the default Swiper icon */
   background-color: #ffffff !important;
   width: 36px !important;
   height: 36px !important;
@@ -388,12 +387,6 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-}
-
-.sliderContainer :global(.swiper-button-next)::after,
-.sliderContainer :global(.swiper-button-prev)::after {
-  font-size: 14px !important;
-  font-weight: bold !important;
 }
 
 .sliderContainer :global(.swiper-button-next) svg,
