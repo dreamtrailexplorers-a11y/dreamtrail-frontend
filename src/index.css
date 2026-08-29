@@ -72,12 +72,20 @@ ul, ol {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  --swiper-navigation-size: 14px !important; /* Force internal Swiper variable */
 }
 
 .swiper-button-next:after,
 .swiper-button-prev:after {
   font-size: 14px !important;
   font-weight: bold !important;
+  transform: scale(0.6); /* Force scale down as fallback */
+}
+
+.swiper-button-next svg,
+.swiper-button-prev svg {
+  width: 14px !important;
+  height: 14px !important;
 }
 
 .swiper-button-next:hover,
@@ -98,16 +106,24 @@ ul, ol {
     right: 5px !important;
     width: 32px !important;
     height: 32px !important;
+    --swiper-navigation-size: 10px !important;
   }
   body .swiper-button-prev {
     left: 5px !important;
     width: 32px !important;
     height: 32px !important;
+    --swiper-navigation-size: 10px !important;
   }
   body .swiper-button-next:after,
   body .swiper-button-prev:after {
-    font-size: 12px !important;
+    font-size: 10px !important;
     font-weight: bold !important;
+    transform: scale(0.6);
+  }
+  body .swiper-button-next svg,
+  body .swiper-button-prev svg {
+    width: 10px !important;
+    height: 10px !important;
   }
 }
 
