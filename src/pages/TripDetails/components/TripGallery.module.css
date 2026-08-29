@@ -55,10 +55,11 @@
     height: auto;
   }
   .sideGrid {
-    display: none; 
+    display: grid; 
+    height: 200px;
   }
   .mainImageWrapper {
-    height: 300px;
+    height: 250px;
   }
 }
 
