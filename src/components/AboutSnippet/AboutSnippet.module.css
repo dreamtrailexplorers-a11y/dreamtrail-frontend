@@ -100,6 +100,7 @@
   gap: 20px;
   position: relative;
   padding-bottom: 25px;
+  margin-left: calc(var(--step, 0) * 30px);
 }
 
 .pointItem:not(:last-child)::after {
@@ -124,6 +125,12 @@
   font-weight: 600;
   color: var(--text-primary);
   line-height: 1.4;
+}
+
+@media (max-width: 1024px) {
+  .pointItem {
+    margin-left: 0;
+  }
 }
 
 @media (max-width: 768px) {
