@@ -51,7 +51,7 @@ const TrendingCard = ({ trip, basePath = '/tours' }) => {
       </div>
 
       <div className={styles.cardBody} style={{ padding: '1.2rem', display: 'flex', flexDirection: 'column', height: '100%' }}>
-        <div style={{ flex: 1 }}>
+        <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
             {trip.destination && (
               <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#ea580c', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
