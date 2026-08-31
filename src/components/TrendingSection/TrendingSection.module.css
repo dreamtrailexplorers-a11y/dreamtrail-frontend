@@ -31,7 +31,7 @@
   border: none;
   box-shadow: none; /* Shadow removed from main container */
   transition: all 0.3s ease;
-  height: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   overflow: visible; /* Must be visible so the wide image and box shadow can render properly */
@@ -44,7 +44,8 @@
 .imageWrapper {
   position: relative;
   width: 100%;
-  height: 240px; /* Increased height for package photo */
+  aspect-ratio: 4/3;
+  height: auto;
   border-radius: 16px; /* Rounded corners */
   overflow: hidden;
   box-shadow: 0 8px 20px rgba(0,0,0,0.12); /* Shadow cast onto text div */
@@ -222,7 +223,7 @@
   border: none;
   box-shadow: none; /* Shadow removed from main container */
   transition: all 0.3s ease;
-  height: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   overflow: visible; /* Must be visible so the wide image and box shadow can render properly */
@@ -235,7 +236,8 @@
 .imageWrapper {
   position: relative;
   width: 100%;
-  height: 240px; /* Increased height for package photo */
+  aspect-ratio: 4/3;
+  height: auto;
   border-radius: 16px; /* Rounded corners */
   overflow: hidden;
   box-shadow: 0 8px 20px rgba(0,0,0,0.12); /* Shadow cast onto text div */
