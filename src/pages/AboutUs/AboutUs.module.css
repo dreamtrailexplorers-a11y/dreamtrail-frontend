@@ -181,7 +181,7 @@
 .collageImg4 {
   grid-column: 1 / 3;
   width: 100%;
-  height: 150px;
+  height: 220px;
   object-fit: cover;
   border-radius: 12px;
   margin-top: 15px;
