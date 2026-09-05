@@ -237,7 +237,7 @@ const CorporateTours = () => {
       {/* FORM SECTION */}
       <section style={{ backgroundColor: '#fafafa', padding: '80px 0', marginTop: '60px' }}>
         <div className={styles.container}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'flex-start' }}>
+          <div className={styles.contactLayout}>
             {/* Left Info */}
             <div>
               <span style={{ color: '#d32f2f', border: '1px solid #d32f2f', padding: '4px 16px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>GET IN TOUCH</span>
@@ -288,7 +288,7 @@ const CorporateTours = () => {
               <h3 style={{ fontSize: '1.6rem', fontWeight: 800, margin: '0 0 10px 0', color: '#0f172a' }}>Request a Corporate Proposal</h3>
               <p style={{ color: '#64748b', fontSize: '0.95rem', marginBottom: '35px' }}>We'll send you a personalised itinerary within 24–48 hours.</p>
               
-              <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+              <form onSubmit={handleSubmit} className={styles.contactFormGrid}>
                 <div>
                   <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: '#475569', marginBottom: '8px', letterSpacing: '1px' }}>Your Name *</label>
                   <input type="text" name="name" value={formData.name} onChange={handleInputChange} required style={{ width: '100%', padding: '14px 16px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.95rem', outline: 'none' }} />
