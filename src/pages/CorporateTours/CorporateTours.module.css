@@ -145,12 +145,12 @@
 }
 .offeringsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
 }
 .offeringCard {
   position: relative;
-  height: 250px;
+  min-height: 250px;
   border-radius: 12px;
   overflow: hidden;
   display: flex;
