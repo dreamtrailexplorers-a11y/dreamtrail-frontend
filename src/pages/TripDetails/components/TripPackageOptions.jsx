@@ -49,19 +49,19 @@ const TripPackageOptions = ({ trip, options = [], selectedOptionIndices = [], on
             setIsMultiSelect(!isMultiSelect);
           }}
           style={{
-            background: isMultiSelect ? '#fff' : '#fff',
+            background: isMultiSelect ? '#fff' : '#e60000',
             border: '1px solid #e60000',
-            color: '#e60000',
+            color: isMultiSelect ? '#e60000' : '#fff',
             fontWeight: '600',
             fontSize: '0.85rem',
             cursor: 'pointer',
             padding: '6px 14px',
             borderRadius: '6px',
             transition: 'all 0.2s ease',
-            boxShadow: '0 2px 5px rgba(230, 0, 0, 0.05)'
+            boxShadow: '0 2px 5px rgba(230, 0, 0, 0.15)'
           }}
-          onMouseOver={(e) => { e.currentTarget.style.background = '#fef2f2'; }}
-          onMouseOut={(e) => { e.currentTarget.style.background = '#fff'; }}
+          onMouseOver={(e) => { e.currentTarget.style.background = isMultiSelect ? '#fef2f2' : '#cc0000'; }}
+          onMouseOut={(e) => { e.currentTarget.style.background = isMultiSelect ? '#fff' : '#e60000'; }}
         >
           {isMultiSelect ? 'Single Selection Mode' : '+ Choose Multiple Options'}
         </button>

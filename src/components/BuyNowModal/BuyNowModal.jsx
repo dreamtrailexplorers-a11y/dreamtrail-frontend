@@ -188,75 +188,77 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
         <div className={styles.modalBody}>
           
           {isMultiPackage ? (
-            <div style={{ marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              {activePackages.map((pkg, idx) => (
-                <div key={idx} style={{ paddingBottom: '15px', borderBottom: idx < activePackages.length - 1 ? '1px dashed #cbd5e1' : 'none' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                    <div style={{ fontWeight: '600', color: '#1e293b' }}>{pkg.title}</div>
-                    {activePackages.length > 1 && (
-                      <button 
-                        onClick={() => {
-                          const newPkgs = [...activePackages];
-                          newPkgs.splice(idx, 1);
-                          setActivePackages(newPkgs);
-                          
-                          const newQs = { ...quantities };
-                          delete newQs[idx];
-                          // Re-index quantities
-                          const reindexedQs = {};
-                          newPkgs.forEach((_, i) => {
-                            reindexedQs[i] = i >= idx ? newQs[i + 1] : newQs[i];
-                          });
-                          setQuantities(reindexedQs);
-                        }}
-                        style={{ background: 'none', border: 'none', color: '#ef4444', fontSize: '1.2rem', cursor: 'pointer', padding: '0 5px' }}
-                        title="Remove package"
-                      >&times;</button>
-                    )}
-                  </div>
-                  
-                  <div className={styles.priceRow} style={{ marginBottom: '10px' }}>
-                    <span className={styles.priceLabel}>Price per person</span>
-                    <span className={styles.priceValue}>₹ {(Number(pkg.price) || 0).toLocaleString('en-IN')}</span>
-                  </div>
+            <div style={{ marginBottom: '20px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxHeight: '350px', overflowY: 'auto', paddingRight: '8px' }}>
+                {activePackages.map((pkg, idx) => (
+                  <div key={idx} style={{ paddingBottom: '15px', borderBottom: idx < activePackages.length - 1 ? '1px dashed #cbd5e1' : 'none' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                      <div style={{ fontWeight: '600', color: '#1e293b' }}>{pkg.title}</div>
+                      {activePackages.length > 1 && (
+                        <button 
+                          onClick={() => {
+                            const newPkgs = [...activePackages];
+                            newPkgs.splice(idx, 1);
+                            setActivePackages(newPkgs);
+                            
+                            const newQs = { ...quantities };
+                            delete newQs[idx];
+                            // Re-index quantities
+                            const reindexedQs = {};
+                            newPkgs.forEach((_, i) => {
+                              reindexedQs[i] = i >= idx ? newQs[i + 1] : newQs[i];
+                            });
+                            setQuantities(reindexedQs);
+                          }}
+                          style={{ background: 'none', border: 'none', color: '#ef4444', fontSize: '1.2rem', cursor: 'pointer', padding: '0 5px', lineHeight: 1 }}
+                          title="Remove package"
+                        >&times;</button>
+                      )}
+                    </div>
+                    
+                    <div className={styles.priceRow} style={{ marginBottom: '10px' }}>
+                      <span className={styles.priceLabel}>Price per person</span>
+                      <span className={styles.priceValue}>₹ {(Number(pkg.price) || 0).toLocaleString('en-IN')}</span>
+                    </div>
 
-                  <div className={styles.personSelector}>
-                    <span className={styles.selectorLabel}>Number of Persons</span>
-                    <div className={styles.counter}>
-                      <button className={styles.counterBtn} onClick={() => handleDecrement(idx)}>-</button>
-                      <span className={styles.counterValue}>{quantities[idx] || 1}</span>
-                      <button className={styles.counterBtn} onClick={() => handleIncrement(idx)}>+</button>
+                    <div className={styles.personSelector}>
+                      <span className={styles.selectorLabel}>Number of Persons</span>
+                      <div className={styles.counter}>
+                        <button className={styles.counterBtn} onClick={() => handleDecrement(idx)}>-</button>
+                        <span className={styles.counterValue}>{quantities[idx] || 1}</span>
+                        <button className={styles.counterBtn} onClick={() => handleIncrement(idx)}>+</button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-              
-              {/* Add Package Dropdown */}
-              {allPackages && allPackages.length > 0 && (
-                <div style={{ marginTop: '10px', paddingTop: '15px', borderTop: '2px dashed #e2e8f0' }}>
-                  <label style={{ display: 'block', fontSize: '0.85rem', color: '#64748b', fontWeight: '600', marginBottom: '8px' }}>
-                    + Add Another Package Option
-                  </label>
-                  <select 
-                    value=""
-                    onChange={(e) => {
-                      if (!e.target.value) return;
-                      const pkgIdx = parseInt(e.target.value);
-                      const selectedPkg = allPackages[pkgIdx];
-                      if (selectedPkg) {
-                        setActivePackages(prev => [...prev, { title: selectedPkg.title, price: selectedPkg.price }]);
-                        setQuantities(prev => ({ ...prev, [activePackages.length]: 1 }));
-                      }
-                    }}
-                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1', backgroundColor: '#f8fafc', fontSize: '0.9rem', outline: 'none' }}
-                  >
-                    <option value="">Select a package to add...</option>
-                    {allPackages.map((pkg, i) => (
-                      <option key={i} value={i}>{pkg.title} - ₹{Number(pkg.price).toLocaleString('en-IN')}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
+                ))}
+                
+                {/* Add Package Dropdown */}
+                {allPackages && allPackages.length > 0 && (
+                  <div style={{ marginTop: '5px', paddingTop: '15px', borderTop: '2px dashed #e2e8f0', paddingBottom: '5px' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', color: '#64748b', fontWeight: '600', marginBottom: '8px' }}>
+                      + Add Another Package Option
+                    </label>
+                    <select 
+                      value=""
+                      onChange={(e) => {
+                        if (!e.target.value) return;
+                        const pkgIdx = parseInt(e.target.value);
+                        const selectedPkg = allPackages[pkgIdx];
+                        if (selectedPkg) {
+                          setActivePackages(prev => [...prev, { title: selectedPkg.title, price: selectedPkg.price }]);
+                          setQuantities(prev => ({ ...prev, [activePackages.length]: 1 }));
+                        }
+                      }}
+                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1', backgroundColor: '#f8fafc', fontSize: '0.9rem', outline: 'none' }}
+                    >
+                      <option value="">Select a package to add...</option>
+                      {allPackages.map((pkg, i) => (
+                        <option key={i} value={i}>{pkg.title} - ₹{Number(pkg.price).toLocaleString('en-IN')}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </div>
             </div>
           ) : (
             <>
