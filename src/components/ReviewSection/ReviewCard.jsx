@@ -3,17 +3,20 @@ import { FaStar } from 'react-icons/fa';
 import styles from './ReviewSection.module.css';
 
 const ReviewCard = ({ review, onOpenModal }) => {
+  const avatarColors = ['#94a3b8', '#64748b', '#475569', '#334155'];
+  // We don't have an index here, but we can generate a pseudo-random one based on name length
+  const charCode = review.author ? review.author.charCodeAt(0) : 0;
+  const bgColor = avatarColors[charCode % avatarColors.length];
+
   return (
     <div className={styles.cardContainer}>
-      <div 
-        className={styles.reviewHero} 
-        style={{ backgroundImage: `url(${(review.tripImages && review.tripImages.length > 0) ? review.tripImages[0] : (review.tripImage || "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=600&q=80")})` }}
-      >
-      </div>
-
       <div className={styles.cardContent}>
-        <div className={styles.reviewHeaderOverlay}>
-          <div className={styles.avatarCircle}>
+        
+        <div className={styles.cardHeader}>
+          <div 
+            className={styles.avatarCircle}
+            style={{ backgroundColor: bgColor }}
+          >
             {review.avatar ? (
               <img
                 src={review.avatar}
@@ -25,22 +28,31 @@ const ReviewCard = ({ review, onOpenModal }) => {
               review.author ? review.author.charAt(0).toUpperCase() : 'U'
             )}
           </div>
-          <div className={styles.headerTextOverlay}>
-            <span className={styles.userName}>{review.author}</span>
-            <span className={styles.userLocation}>{review.destination ? `Visited ${review.destination}` : 'Joined Group Trip'}</span>
+          <div className={styles.headerInfo}>
+            <div className={styles.nameRow}>
+              <span className={styles.userName}>{review.author}</span>
+              <span className={styles.privateTag}>private</span>
+            </div>
+            <div className={styles.bookedRow}>
+              <span className={styles.bookedText}>Booked: </span>
+              <span className={styles.userLocation}>{review.tripSlug || review.destination || 'Group Tour'} ↗</span>
+            </div>
           </div>
         </div>
 
-        <div className={styles.ratingStars}>
-          {[1, 2, 3, 4, 5].map((star) => (
-            <FaStar
-              key={star}
-              className={styles.goldStar}
-              style={{
-                color: star <= review.rating ? '#f5a623' : '#cbd5e1',
-              }}
-            />
-          ))}
+        <div className={styles.ratingRow}>
+          <div className={styles.ratingStars}>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <FaStar
+                key={star}
+                className={styles.goldStar}
+                style={{
+                  color: star <= review.rating ? '#f5a623' : '#e2e8f0',
+                }}
+              />
+            ))}
+          </div>
+          <span className={styles.reviewDate}>{review.createdAt ? new Date(review.createdAt).toLocaleDateString() : '1 year ago'}</span>
         </div>
 
         <p className={styles.reviewText}>
