@@ -170,6 +170,12 @@ const TripDetails = () => {
     };
   });
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const isPast = selectedDepartureDate && !isNaN(new Date(selectedDepartureDate.start)) && new Date(selectedDepartureDate.start) < today;
+  const isSoldOut = selectedDepartureDate?.status === 'Sold Out';
+  const isUnavailable = isPast || isSoldOut;
+
   if (selectedPackages.length > 0) {
     // For sidebar display, show the first package selected, or "Multiple Packages" if > 1
     if (selectedPackages.length === 1) {
@@ -240,23 +246,23 @@ const TripDetails = () => {
                 <p style={{ color: '#475569', margin: 0, fontSize: '0.95rem' }}>Pre Book @ 5000/-</p>
               </div>
               <button 
-                onClick={() => setIsBuyModalOpen(true)}
+                onClick={() => { if (!isUnavailable) setIsBuyModalOpen(true); }}
                 style={{ 
-                  backgroundColor: '#e60000', 
+                  backgroundColor: isUnavailable ? '#cbd5e1' : '#e60000', 
                   color: '#ffffff', 
                   border: 'none', 
                   padding: '0.85rem 2rem', 
                   borderRadius: '8px', 
                   fontSize: '0.95rem', 
                   fontWeight: '800', 
-                  cursor: 'pointer',
+                  cursor: isUnavailable ? 'not-allowed' : 'pointer',
                   transition: 'all 0.2s ease',
-                  boxShadow: '0 4px 14px rgba(230, 0, 0, 0.2)'
+                  boxShadow: isUnavailable ? 'none' : '0 4px 14px rgba(230, 0, 0, 0.2)'
                 }}
-                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#cc0000'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#e60000'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                onMouseOver={(e) => { if(!isUnavailable) { e.currentTarget.style.backgroundColor = '#cc0000'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+                onMouseOut={(e) => { if(!isUnavailable) { e.currentTarget.style.backgroundColor = '#e60000'; e.currentTarget.style.transform = 'translateY(0)'; } }}
               >
-                BOOK NOW
+                {isSoldOut ? 'SOLD OUT' : isPast ? 'UNAVAILABLE' : 'BOOK NOW'}
               </button>
             </div>
 
@@ -284,6 +290,9 @@ const TripDetails = () => {
               onOpenEnquiry={handleOpenEnquiry} 
               selectedDepartureDate={selectedDepartureDate}
               selectedPackages={selectedPackages}
+              isUnavailable={isUnavailable}
+              isSoldOut={isSoldOut}
+              isPast={isPast}
             />
           </div>
 

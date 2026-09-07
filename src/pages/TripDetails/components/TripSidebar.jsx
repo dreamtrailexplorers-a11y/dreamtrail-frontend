@@ -3,7 +3,7 @@ import { FiCheck, FiPhone, FiMessageSquare, FiDownload, FiChevronDown, FiChevron
 import styles from './TripSidebar.module.css';
 import BuyNowModal from '../../../components/BuyNowModal/BuyNowModal';
 
-const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry, selectedDepartureDate, destinationInfo, selectedPackages }) => {
+const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry, selectedDepartureDate, destinationInfo, selectedPackages, isUnavailable, isSoldOut, isPast }) => {
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
   const [expandedWhyUs, setExpandedWhyUs] = useState(null);
   
@@ -67,25 +67,25 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
             Send Enquiry
           </button>
           <button 
-            onClick={() => setIsBuyModalOpen(true)}
+            onClick={() => { if(!isUnavailable) setIsBuyModalOpen(true); }}
             className={styles.sidebarBuyBtn}
             style={{ 
               flex: 1, 
-              backgroundColor: '#ffffff', 
-              color: '#e60000', 
-              border: '1px solid #e60000', 
+              backgroundColor: isUnavailable ? '#f1f5f9' : '#ffffff', 
+              color: isUnavailable ? '#94a3b8' : '#e60000', 
+              border: `1px solid ${isUnavailable ? '#cbd5e1' : '#e60000'}`, 
               padding: '0.85rem', 
               borderRadius: '8px', 
               fontSize: '0.95rem', 
               fontWeight: '800', 
-              cursor: 'pointer',
+              cursor: isUnavailable ? 'not-allowed' : 'pointer',
               transition: 'all 0.2s ease',
-              boxShadow: '0 4px 14px rgba(230, 0, 0, 0.1)'
+              boxShadow: isUnavailable ? 'none' : '0 4px 14px rgba(230, 0, 0, 0.1)'
             }}
-            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#fff0f0'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.transform = 'translateY(0)'; }}
+            onMouseOver={(e) => { if(!isUnavailable) { e.currentTarget.style.backgroundColor = '#fff0f0'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+            onMouseOut={(e) => { if(!isUnavailable) { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.transform = 'translateY(0)'; } }}
           >
-            Buy Now
+            {isSoldOut ? 'Sold Out' : isPast ? 'Unavailable' : 'Buy Now'}
           </button>
         </div>
       </div>
