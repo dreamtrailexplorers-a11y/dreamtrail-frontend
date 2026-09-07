@@ -519,16 +519,13 @@ const ManageSiteSettings = () => {
       case 'Contact Info':
         return (
           <>
-            <form onSubmit={(e) => handleSectionSubmit(e, ['address', 'phone', 'email', 'whatsappNumber'], 'Contact Info')} className={styles.card}>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['address', 'phone', 'email', 'whatsappNumber', 'mapLink'], 'Contact Info')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Contact Info</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
         </div>
         <div className={styles.formGrid}>
-          <div className={styles.inputGroup}>
-            <label className={styles.inputLabel}>Address</label>
-            <textarea name="address" value={formData.address || ''} onChange={handleChange} className={styles.textareaField} rows="6" />
-          </div>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}><label className={styles.inputLabel}>Address</label><textarea name="address" value={formData.address || ''} onChange={handleChange} className={styles.textareaField} rows="4" /></div><div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}><label className={styles.inputLabel}>Google Maps Link</label><input name="mapLink" value={formData.mapLink || ''} onChange={handleChange} className={styles.inputField} placeholder="e.g. https://maps.app.goo.gl/..." /></div>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Phone</label>
             <input name="phone" value={formData.phone || ''} onChange={handleChange} className={styles.inputField} />
@@ -1667,3 +1664,4 @@ const ManageSiteSettings = () => {
 };
 
 export default ManageSiteSettings;
+

@@ -112,7 +112,7 @@ const Footer = () => {
             </div>
 
             <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings?.address || 'DreamTrail Experiences Pvt. Ltd. 508, 3rd Eye Vision, IIM Road, Ahmedabad, Gujarat 380015')}`}
+              href={settings?.mapLink || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings?.address || 'DreamTrail Experiences Pvt. Ltd. 508, 3rd Eye Vision, IIM Road, Ahmedabad, Gujarat 380015')}`}
               target="_blank"
               rel="noreferrer"
               className={styles.addressBox}
@@ -192,5 +192,6 @@ const Footer = () => {
 };
 
 export default Footer;
+
 
 

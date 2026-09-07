@@ -85,15 +85,14 @@
 }
 
 .heroHeading {
-  font-family: var(--font-heading, serif);
-  font-size: 4.5rem;
-  font-weight: 800;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 700;
   line-height: 1.2;
-  letter-spacing: 4px;
-  text-transform: uppercase;
+  letter-spacing: 0px;
   margin-bottom: 0;
   white-space: pre-line;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
 }
 
 .searchCard {

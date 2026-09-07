@@ -25,22 +25,10 @@ const DestinationCard = ({ destination }) => {
   };
 
   const handleCardClick = () => {
-    navigate(`/destinations/${destination.slug || destination.name.toLowerCase().replace(/\\s+/g, '-')}`);
+    navigate(`/destinations/${destination.slug || destination.name.toLowerCase().replace(/\s+/g, '-')}`);
   };
 
   const getStyleClass = () => {
-    if (nameUpper.includes('SIKKIM')) return styles.sikkimTitle;
-    if (nameUpper.includes('UTTARAKHAND')) return styles.uttarakhandTitle;
-    if (nameUpper.includes('HIMACHAL')) return styles.himachalTitle;
-    if (nameUpper.includes('LADAKH')) return styles.ladakhTitle;
-    if (nameUpper.includes('GOA')) return styles.goaTitle;
-    if (nameUpper.includes('KASHMIR')) return styles.kashmirTitle;
-    if (nameUpper.includes('MALDIVES')) return styles.maldivesTitle;
-    if (nameUpper.includes('SINGAPORE')) return styles.singaporeTitle;
-    if (nameUpper.includes('THAILAND')) return styles.thailandTitle;
-    if (nameUpper.includes('MALAYSIA')) return styles.malaysiaTitle;
-    if (nameUpper.includes('BALI')) return styles.baliTitle;
-    if (nameUpper.includes('VIETNAM')) return styles.vietnamTitle;
     return styles.defaultTitle;
   };
 
