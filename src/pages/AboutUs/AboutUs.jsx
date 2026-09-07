@@ -54,8 +54,8 @@ const AboutUs = () => {
     let cleanText = text.replace(/([^\n])(##+ )/g, '$1\n\n$2');
     let paragraphs = cleanText.split(/\n+/).map(p => p.trim()).filter(Boolean);
     
-    if (limit && !expandedStory && paragraphs.length > 2) {
-      paragraphs = paragraphs.slice(0, 2);
+    if (limit && !expandedStory && paragraphs.length > 3) {
+      paragraphs = paragraphs.slice(0, 3);
     }
     
     return paragraphs.map((para, i) => {
@@ -192,11 +192,11 @@ const AboutUs = () => {
               <h2 className={styles.storyTitleDark}>{aboutPage.storyTitle || 'Our Story'}</h2>
               <div className={styles.storyContentDark}>
                 {(() => {
-                  const finalStoryText = (aboutPage.storyText || '') + '\n\nOur story carries the legacy of Mr. Vishnu Mehta, a pioneer of motorcycling in India, whose journeys across India, Nepal, Bhutan, and the United States have covered more than 3 million kilometres, earning him 5 Guinness World Records and 5 Limca Book of National Records.';
+                  const finalStoryText = aboutPage.storyText || '';
                   return (
                     <>
                       {renderFormattedText(finalStoryText, styles.storyTextDark, true)}
-                      {(finalStoryText.split(/\n+/).filter(Boolean).length > 2) && (
+                      {(finalStoryText.split(/\n+/).filter(Boolean).length > 3) && (
                         <button 
                           className={styles.readMoreStoryBtn} 
                           onClick={() => setSelectedIntro({ title: aboutPage.storyTitle || 'Our Story', text: finalStoryText })}

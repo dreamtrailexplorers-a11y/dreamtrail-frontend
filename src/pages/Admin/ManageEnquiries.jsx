@@ -161,12 +161,19 @@ const ManageEnquiries = () => {
     hiddenElement.click();
   };
 
+  // Raw Counts for Tabs
+  const packagesCount = enquiries.filter(enq => enq.tripTitle !== 'General Contact' && enq.tripTitle !== 'Corporate Tour Enquiry').length;
+  const contactCount = enquiries.filter(enq => enq.tripTitle === 'General Contact').length;
+  const corporateCount = enquiries.filter(enq => enq.tripTitle === 'Corporate Tour Enquiry').length;
+
   if (loading) return <div>Loading enquiries...</div>;
 
   return (
     <div className={styles.adminPage}>
       <div className={styles.adminResponsiveHeader}>
-        <h2 className={styles.pageTitle} style={{ margin: 0 }}>Manage Enquiries (Leads)</h2>
+        <h2 className={styles.pageTitle} style={{ margin: 0 }}>
+          Manage Enquiries (Leads) <span style={{ fontSize: '0.9em', color: '#64748b', fontWeight: 'normal' }}>({filteredEnquiries.length})</span>
+        </h2>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button 
             onClick={handleDownloadExcel} 
@@ -189,19 +196,19 @@ const ManageEnquiries = () => {
           onClick={() => setActiveTab('packages')}
           style={{ padding: '10px 20px', border: 'none', background: 'none', borderBottom: activeTab === 'packages' ? '3px solid #3b82f6' : 'none', color: activeTab === 'packages' ? '#3b82f6' : '#64748b', fontWeight: '600', cursor: 'pointer', fontSize: '1rem', marginBottom: '-2px' }}
         >
-          Package Enquiries
+          Package Enquiries <span style={{ background: activeTab === 'packages' ? '#eff6ff' : '#f1f5f9', padding: '2px 8px', borderRadius: '12px', fontSize: '0.8rem', marginLeft: '5px' }}>{packagesCount}</span>
         </button>
         <button 
           onClick={() => setActiveTab('contact')}
           style={{ padding: '10px 20px', border: 'none', background: 'none', borderBottom: activeTab === 'contact' ? '3px solid #3b82f6' : 'none', color: activeTab === 'contact' ? '#3b82f6' : '#64748b', fontWeight: '600', cursor: 'pointer', fontSize: '1rem', marginBottom: '-2px' }}
         >
-          Contact Us Messages
+          Contact Us Messages <span style={{ background: activeTab === 'contact' ? '#eff6ff' : '#f1f5f9', padding: '2px 8px', borderRadius: '12px', fontSize: '0.8rem', marginLeft: '5px' }}>{contactCount}</span>
         </button>
         <button 
           onClick={() => setActiveTab('corporate')}
           style={{ padding: '10px 20px', border: 'none', background: 'none', borderBottom: activeTab === 'corporate' ? '3px solid #3b82f6' : 'none', color: activeTab === 'corporate' ? '#3b82f6' : '#64748b', fontWeight: '600', cursor: 'pointer', fontSize: '1rem', marginBottom: '-2px' }}
         >
-          Corporate Enquiries
+          Corporate Enquiries <span style={{ background: activeTab === 'corporate' ? '#eff6ff' : '#f1f5f9', padding: '2px 8px', borderRadius: '12px', fontSize: '0.8rem', marginLeft: '5px' }}>{corporateCount}</span>
         </button>
       </div>
 
