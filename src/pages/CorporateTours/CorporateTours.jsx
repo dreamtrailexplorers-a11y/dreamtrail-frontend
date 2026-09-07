@@ -30,6 +30,7 @@ const CorporateTours = () => {
     message: ''
   });
   const [submitting, setSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
   const [destinationsList, setDestinationsList] = useState([]);
 
   useEffect(() => {
@@ -58,6 +59,7 @@ const CorporateTours = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    setSubmitSuccess(false);
     try {
       await submitEnquiry({
         ...formData,
@@ -65,7 +67,9 @@ const CorporateTours = () => {
         status: 'New'
       });
       toast.success('Enquiry submitted successfully! Our team will contact you soon.');
+      setSubmitSuccess(true);
       setFormData({ name: '', companyName: '', email: '', phone: '', teamSize: '', destination: '', tripType: '', message: '' });
+      setTimeout(() => setSubmitSuccess(false), 8000);
     } catch (err) {
       toast.error('Failed to submit enquiry. Please try again.');
     } finally {
@@ -348,7 +352,13 @@ const CorporateTours = () => {
                 </div>
                 
                 <div style={{ gridColumn: '1 / -1' }}>
-                  <button type="submit" disabled={submitting} style={{ width: '100%', padding: '16px', background: '#d32f2f', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '1.05rem', cursor: 'pointer', marginTop: '15px', transition: 'background 0.3s' }}>
+                  {submitSuccess && (
+                    <div style={{ padding: '15px', backgroundColor: '#dcfce7', color: '#166534', border: '1px solid #bbf7d0', borderRadius: '8px', marginBottom: '15px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <FiCheckCircle size={20} />
+                      Thank you! Your enquiry has been sent successfully. Our team will contact you shortly.
+                    </div>
+                  )}
+                  <button type="submit" disabled={submitting} style={{ width: '100%', padding: '16px', background: '#d32f2f', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '1.05rem', cursor: 'pointer', marginTop: '5px', transition: 'background 0.3s' }}>
                     {submitting ? 'Submitting...' : 'Send Enquiry'}
                   </button>
                 </div>

@@ -114,21 +114,37 @@
   color: #94a3b8;
 }
 
+.reviewTextContainer {
+  margin: 0 0 15px 0;
+}
+
 .reviewText {
   font-size: 0.85rem;
   color: #334155;
   line-height: 1.6;
-  margin: 0 0 15px 0;
+  margin: 0;
+  max-height: 140px;
+  overflow-y: auto;
+  padding-right: 8px; /* space for scrollbar */
 }
 
-.readMore {
-  color: #0f172a;
-  font-weight: 600;
-  cursor: pointer;
+/* Custom Scrollbar for Reviews */
+.reviewText::-webkit-scrollbar {
+  width: 4px;
 }
 
-.readMore:hover {
-  text-decoration: underline;
+.reviewText::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.reviewText::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.reviewText::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 /* Image Grid System */

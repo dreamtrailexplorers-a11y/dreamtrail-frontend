@@ -47,9 +47,9 @@
 }
 
 .loadMoreBtn {
-  background: white;
-  border: 1px solid #cbd5e1;
-  color: #64748b;
+  background: #e11d48;
+  border: 1px solid #e11d48;
+  color: white;
   padding: 8px 24px;
   border-radius: 6px;
   font-weight: 500;
@@ -59,7 +59,7 @@
 }
 
 .loadMoreBtn:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
-  color: #475569;
+  background: #be123c;
+  border-color: #be123c;
+  color: white;
 }

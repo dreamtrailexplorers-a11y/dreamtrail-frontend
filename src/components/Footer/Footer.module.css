@@ -146,10 +146,12 @@
 
 .addressBox {
   display: flex;
+  align-items: flex-start;
   gap: 0.8rem;
   font-size: 0.88rem;
   line-height: 1.6;
   color: #cbd5e1;
+  max-width: 320px;
 }
 
 .colHeading {
@@ -321,7 +323,7 @@
 
 @media (max-width: 768px) {
   .responsiveLogo {
-    height: 70px; /* Much smaller on mobile */
+    height: 70px;
   }
   
   .mainFooter {

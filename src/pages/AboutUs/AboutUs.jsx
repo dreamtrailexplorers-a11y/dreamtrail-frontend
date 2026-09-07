@@ -191,15 +191,22 @@ const AboutUs = () => {
             <div className={styles.storyTextBlockDark}>
               <h2 className={styles.storyTitleDark}>{aboutPage.storyTitle || 'Our Story'}</h2>
               <div className={styles.storyContentDark}>
-                {renderFormattedText(aboutPage.storyText, styles.storyTextDark, true)}
-                {hasLongStory && (
-                  <button 
-                    className={styles.readMoreStoryBtn} 
-                    onClick={() => setSelectedIntro({ title: aboutPage.storyTitle || 'Our Story', text: aboutPage.storyText })}
-                  >
-                    Read Full Story
-                  </button>
-                )}
+                {(() => {
+                  const finalStoryText = (aboutPage.storyText || '') + '\n\nOur story carries the legacy of Mr. Vishnu Mehta, a pioneer of motorcycling in India, whose journeys across India, Nepal, Bhutan, and the United States have covered more than 3 million kilometres, earning him 5 Guinness World Records and 5 Limca Book of National Records.';
+                  return (
+                    <>
+                      {renderFormattedText(finalStoryText, styles.storyTextDark, true)}
+                      {(finalStoryText.split(/\n+/).filter(Boolean).length > 2) && (
+                        <button 
+                          className={styles.readMoreStoryBtn} 
+                          onClick={() => setSelectedIntro({ title: aboutPage.storyTitle || 'Our Story', text: finalStoryText })}
+                        >
+                          Read Full Story
+                        </button>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </div>

@@ -127,16 +127,7 @@ const TourPackages = () => {
                     </div>
                   )}
 
-                  {groupTrips.length > 0 && (
-                    <div style={{marginBottom: '3rem'}}>
-                      <h3 className={styles.categorySubTitle}>Group Tours</h3>
-                      <div className={styles.tripsGrid}>
-                        {groupTrips.map(trip => (
-                          <TrendingCard key={trip._id} trip={trip} />
-                        ))}
-                      </div>
-                    </div>
-                  )}
+
 
                   {otherTrips.length > 0 && (
                     <div style={{marginBottom: '3rem'}}>

@@ -370,9 +370,9 @@
 }
 
 .loadMoreBtn {
-  background: transparent;
-  border: 1px solid #cbd5e1;
-  color: #475569;
+  background: #e11d48;
+  border: 1px solid #e11d48;
+  color: white;
   padding: 8px 24px;
   border-radius: 999px;
   font-size: 0.9rem;
@@ -382,8 +382,9 @@
 }
 
 .loadMoreBtn:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
+  background: #be123c;
+  border-color: #be123c;
+  color: white;
 }
 
 

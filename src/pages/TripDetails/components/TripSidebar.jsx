@@ -3,7 +3,7 @@ import { FiCheck, FiPhone, FiMessageSquare, FiDownload, FiChevronDown, FiChevron
 import styles from './TripSidebar.module.css';
 import BuyNowModal from '../../../components/BuyNowModal/BuyNowModal';
 
-const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry, selectedDepartureDate, destinationInfo }) => {
+const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry, selectedDepartureDate, destinationInfo, selectedPackages }) => {
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
   const [expandedWhyUs, setExpandedWhyUs] = useState(null);
   
@@ -44,15 +44,15 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
         </div>
 
         <div style={{ borderTop: '1px solid #e2e8f0', margin: '15px 0', paddingTop: '15px', textAlign: 'center' }}>
-          <p style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: '700', marginBottom: '4px' }}>
+          <p style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: '700', margin: '0 0 4px 0' }}>
             {trip.title}
           </p>
           {selectedOptionTitle && selectedOptionTitle !== trip.title && (
-            <p style={{ fontSize: '0.85rem', color: '#475569', fontWeight: '500', marginBottom: '4px' }}>
+            <p style={{ fontSize: '0.85rem', color: '#475569', fontWeight: '500', margin: '0 0 4px 0' }}>
               {selectedOptionTitle}
             </p>
           )}
-          <p style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '600', marginBottom: '15px' }}>
+          <p style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '600', margin: '0 0 15px 0' }}>
             {trip.duration || '5 Days 4 Nights'}
           </p>
         </div>
@@ -161,6 +161,7 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
         duration={trip.duration}
         destination={trip.destination?.name || trip.destination || ''}
         selectedDepartureDate={selectedDepartureDate}
+        selectedPackages={selectedPackages}
       />
     </div>
   );

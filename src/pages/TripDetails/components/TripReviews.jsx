@@ -51,10 +51,11 @@ const TripReviews = ({ reviews }) => {
                 <span className={styles.reviewDate}>{rev.createdAt ? new Date(rev.createdAt).toLocaleDateString() : '1 year ago'}</span>
               </div>
 
-              <p className={styles.reviewText}>
-                {rev.review}
-                {rev.review?.length > 100 && <span className={styles.readMore}>... Read More</span>}
-              </p>
+              <div className={styles.reviewTextContainer}>
+                <p className={styles.reviewText}>
+                  {rev.review}
+                </p>
+              </div>
 
               {images.length > 0 && (
                 <div className={`${styles.imageGrid} ${styles[`imagesCount${images.length > 4 ? 4 : images.length}`]}`}>

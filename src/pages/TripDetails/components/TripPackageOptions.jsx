@@ -2,10 +2,9 @@ import React from 'react';
 import { FiCheck } from 'react-icons/fi';
 import styles from './TripStayCategory.module.css';
 
-const TripPackageOptions = ({ trip, options = [], selectedOptionIndex, onSelectOption, selectedSubOptionIndex, onSelectSubOption }) => {
+const TripPackageOptions = ({ trip, options = [], selectedOptionIndices = [], onSelectOption, selectedSubOptionIndex, onSelectSubOption }) => {
   if (!options || options.length === 0) return null;
 
-  const currentOption = options[selectedOptionIndex] || options[0];
   const variants = trip?.variants || [];
   const validVariants = variants.filter(v => v.name && v.name.trim() !== '');
 
@@ -17,13 +16,21 @@ const TripPackageOptions = ({ trip, options = [], selectedOptionIndex, onSelectO
     }
   }
 
+  const handleToggle = (index) => {
+    if (selectedOptionIndices.includes(index)) {
+      onSelectOption(selectedOptionIndices.filter(i => i !== index));
+    } else {
+      onSelectOption([...selectedOptionIndices, index]);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <h3 className={styles.sectionTitle}>Package Options</h3>
       
       <div className={styles.categoriesList}>
         {options.map((opt, index) => {
-          const isActive = selectedOptionIndex === index;
+          const isActive = selectedOptionIndices.includes(index);
           
           let displayPrice = Number(opt.price) || 0;
           let baseOrigPrice = Number(opt.originalPrice) || Number(trip?.originalPrice) || 0;
@@ -44,10 +51,7 @@ const TripPackageOptions = ({ trip, options = [], selectedOptionIndex, onSelectO
             <div 
               key={index} 
               className={`${styles.categoryRow} ${isActive ? styles.activeRow : ''}`}
-              onClick={() => {
-                onSelectOption(isActive ? null : index);
-                onSelectSubOption(null); // Reset sub-option when changing main option
-              }}
+              onClick={() => handleToggle(index)}
             >
               <div className={styles.rowLeft}>
                 {opt.image && (
@@ -69,8 +73,8 @@ const TripPackageOptions = ({ trip, options = [], selectedOptionIndex, onSelectO
                   {finalOrigPrice && <span className={styles.rowOrigPrice}>₹ {finalOrigPrice}</span>}
                   <span className={styles.rowDiscPrice}>₹ {finalPrice}</span>
                 </div>
-                <div className={styles.rowRadio}>
-                  {isActive && <div className={styles.radioInner} />}
+                <div style={{ width: '22px', height: '22px', borderRadius: '4px', border: isActive ? '2px solid var(--primary-color)' : '2px solid #cbd5e1', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: isActive ? 'var(--primary-color)' : 'transparent', transition: 'all 0.2s' }}>
+                  {isActive && <FiCheck color="#fff" size={14} strokeWidth={3} />}
                 </div>
               </div>
             </div>

@@ -30,7 +30,7 @@ const TripDetails = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
+  const [selectedOptionIndices, setSelectedOptionIndices] = useState([0]);
   const [selectedSubOptionIndex, setSelectedSubOptionIndex] = useState(null);
   const [selectedDepartureDate, setSelectedDepartureDate] = useState(null);
 
@@ -124,39 +124,40 @@ const TripDetails = () => {
     variantAddon = Number(variant.price) || 0;
   }
 
+  // Calculate selected packages
+  const selectedPackages = [];
   if (packageOptions && packageOptions.length > 0) {
-    const opt = selectedOptionIndex !== null ? packageOptions[selectedOptionIndex] : null;
-    
-    if (opt) {
-      let optPrice = Number(opt.price) || 0;
-      let optOrigPrice = Number(opt.originalPrice) || baseOrig || baseDisc; // baseDisc because if no discount, orig was moved to disc
-      
-      // Follow the exact same logic as TripPackageOptions
-      if (optPrice === 0 || optPrice >= optOrigPrice) {
-        displayDiscPrice = optOrigPrice + variantAddon;
-        displayOrigPrice = null;
-      } else {
-        displayDiscPrice = optPrice + variantAddon;
-        displayOrigPrice = optOrigPrice + variantAddon;
+    selectedOptionIndices.forEach(idx => {
+      if (packageOptions[idx]) {
+        let optPrice = Number(packageOptions[idx].price) || 0;
+        let optOrigPrice = Number(packageOptions[idx].originalPrice) || baseOrig || baseDisc;
+        let finalPrice = (optPrice === 0 || optPrice >= optOrigPrice) ? optOrigPrice : optPrice;
+        
+        selectedPackages.push({
+          title: packageOptions[idx].title + (variant && variant.name ? ` with ${variant.name}` : ''),
+          price: finalPrice + variantAddon,
+          originalPrice: (optPrice !== 0 && optPrice < optOrigPrice) ? optOrigPrice + variantAddon : null
+        });
       }
-
-      if (variant && variant.name) {
-        selectedSidebarTitle = `${opt.title} Package with ${variant.name}`;
-      } else {
-        selectedSidebarTitle = `${opt.title} Package`;
-      }
-    } else {
-      displayDiscPrice = baseDisc + variantAddon;
-      displayOrigPrice = baseOrig > 0 ? (baseOrig + variantAddon) : null;
-      if (variant && variant.name) {
-        selectedSidebarTitle = `${currentTrip.title} with ${variant.name}`;
-      }
-    }
+    });
   } else {
-    displayDiscPrice = baseDisc + variantAddon;
-    displayOrigPrice = baseOrig > 0 ? (baseOrig + variantAddon) : null;
-    if (variant && variant.name) {
-      selectedSidebarTitle = `${currentTrip.title} with ${variant.name}`;
+    selectedPackages.push({
+      title: currentTrip.title + (variant && variant.name ? ` with ${variant.name}` : ''),
+      price: baseDisc + variantAddon,
+      originalPrice: baseOrig > 0 ? (baseOrig + variantAddon) : null
+    });
+  }
+
+  if (selectedPackages.length > 0) {
+    // For sidebar display, show the first package selected, or "Multiple Packages" if > 1
+    if (selectedPackages.length === 1) {
+      displayDiscPrice = selectedPackages[0].price;
+      displayOrigPrice = selectedPackages[0].originalPrice;
+      selectedSidebarTitle = selectedPackages[0].title;
+    } else {
+      displayDiscPrice = selectedPackages.reduce((sum, pkg) => sum + pkg.price, 0);
+      displayOrigPrice = selectedPackages.reduce((sum, pkg) => sum + (pkg.originalPrice || pkg.price), 0);
+      selectedSidebarTitle = "Multiple Packages Selected";
     }
   }
   
@@ -183,8 +184,8 @@ const TripDetails = () => {
               <TripPackageOptions 
                 trip={currentTrip}
                 options={packageOptions} 
-                selectedOptionIndex={selectedOptionIndex} 
-                onSelectOption={setSelectedOptionIndex} 
+                selectedOptionIndices={selectedOptionIndices} 
+                onSelectOption={setSelectedOptionIndices} 
                 selectedSubOptionIndex={selectedSubOptionIndex} 
                 onSelectSubOption={setSelectedSubOptionIndex} 
               />
@@ -260,6 +261,7 @@ const TripDetails = () => {
               whatsappNumber={settings?.whatsappNumber}
               onOpenEnquiry={handleOpenEnquiry} 
               selectedDepartureDate={selectedDepartureDate}
+              selectedPackages={selectedPackages}
             />
           </div>
 
@@ -364,6 +366,7 @@ const TripDetails = () => {
           duration={currentTrip.duration}
           destination={currentDestination ? currentDestination.name : ''}
           selectedDepartureDate={selectedDepartureDate}
+          selectedPackages={selectedPackages}
         />
       )}
 
