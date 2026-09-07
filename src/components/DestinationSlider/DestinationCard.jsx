@@ -70,10 +70,6 @@ const DestinationCard = ({ destination }) => {
           <h3 className={`${styles.destinationHeader} ${getStyleClass()}`}>
             {destination.name}
           </h3>
-
-          {nameUpper.includes('LADAKH') && (
-            <span className={styles.subText}>Road Trip</span>
-          )}
         </div>
       </div>
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getSiteSettings, submitEnquiry, getDestinations } from '../../services/api';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
+import DestinationCard from '../../components/DestinationSlider/DestinationCard';
 import Loader from '../../components/Loader/Loader';
 import { toast } from 'react-toastify';
 import { FiCheckCircle, FiShield, FiSliders, FiUsers, FiCoffee, FiCamera, FiFileText, FiPhoneCall, FiMessageCircle, FiMail, FiMapPin } from 'react-icons/fi';
@@ -142,8 +143,8 @@ const CorporateTours = () => {
                   <div className={styles.offeringBg} style={{ backgroundImage: `url(${offering.image})` }}></div>
                   <div className={styles.offeringOverlay}></div>
                   <div className={styles.offeringContent}>
-                    <div className={styles.offeringTitle}>{offering.title}</div>
-                    <div className={styles.offeringText}>{offering.text}</div>
+                      <div className={styles.offeringTitle}>{offering.title}</div>
+                      <div className={styles.offeringText}>{offering.text}</div>
                   </div>
                 </div>
               ))}
@@ -152,16 +153,16 @@ const CorporateTours = () => {
         </section>
       )}
 
-      {/* GALLERY & VIDEO SECTION */}
-      {(data.galleryImages?.length > 0 || data.videoUrl) && (
+      {/* DESTINATIONS & VIDEO SECTION */}
+      {(destinationsList.length > 0 || data.videoUrl) && (
         <section className={styles.container}>
-          {data.galleryImages?.length > 0 && (
+          {destinationsList.length > 0 && (
             <>
-              <h2 className={styles.sectionTitle}>{data.galleryTitle}</h2>
+              <h2 className={styles.sectionTitle}>{data.galleryTitle || 'Where Will Your Team Ride?'}</h2>
               <p className={styles.sectionSubtitle}>{data.galleryText}</p>
               <div className={styles.galleryGrid} style={{ marginBottom: '60px' }}>
-                {data.galleryImages.map((img, idx) => (
-                  <img key={idx} src={img} alt="Gallery" className={styles.galleryImage} />
+                {destinationsList.map((dest) => (
+                  <DestinationCard key={dest._id} destination={dest} />
                 ))}
               </div>
             </>
@@ -180,7 +181,7 @@ const CorporateTours = () => {
         </section>
       )}
 
-      {/* STEPS SECTION */}
+      {/* STEPS SECTION */}}
       {data.steps && data.steps.length > 0 && (
         <section className={styles.statsSection}>
           <div className={styles.container}>
@@ -374,3 +375,4 @@ const CorporateTours = () => {
 };
 
 export default CorporateTours;
+
