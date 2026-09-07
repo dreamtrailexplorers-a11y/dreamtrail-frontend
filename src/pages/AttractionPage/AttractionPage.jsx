@@ -5,12 +5,13 @@ import TrendingCard from '../../components/TrendingSection/TrendingCard';
 import CreatorFaqs from '../CreatorTripDetails/components/CreatorFaqs';
 import Footer from '../../components/Footer/Footer';
 import styles from './AttractionPage.module.css';
-import { getAttractionBySlug, getTrips } from '../../services/api';
+import { getAttractionBySlug, getTrips, getAttractions } from '../../services/api';
 
 const AttractionPage = () => {
   const { slug } = useParams();
   const [attraction, setAttraction] = useState(null);
   const [trips, setTrips] = useState([]);
+  const [similarAttractions, setSimilarAttractions] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,8 +22,16 @@ const AttractionPage = () => {
         const { data: attrData } = await getAttractionBySlug(slug);
         setAttraction(attrData);
         
-        const { data: tripsData } = await getTrips();
+        const [{ data: tripsData }, { data: allAttrs }] = await Promise.all([
+          getTrips(),
+          getAttractions()
+        ]);
         setTrips(tripsData);
+        
+        if (allAttrs && attrData) {
+          const similar = allAttrs.filter(a => a.destination === attrData.destination && a._id !== attrData._id);
+          setSimilarAttractions(similar);
+        }
       } catch (e) {
         console.error(e);
       } finally {
@@ -135,6 +144,30 @@ const AttractionPage = () => {
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>FAQs</h2>
             <CreatorFaqs faqs={faqs} />
+          </section>
+        )}
+
+        {/* Similar Attractions */}
+        {similarAttractions.length > 0 && (
+          <section className={styles.section}>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>Similar <span style={{color: '#e60000'}}>Attractions</span></h2>
+              <div className={styles.navButtons}>
+                 <button className={styles.navBtn} onClick={() => {document.getElementById('simSlider').scrollBy({left:-200, behavior:'smooth'})}}>❮</button>
+                 <button className={styles.navBtn} onClick={() => {document.getElementById('simSlider').scrollBy({left:200, behavior:'smooth'})}}>❯</button>
+              </div>
+            </div>
+            <div id="simSlider" className={styles.similarGrid}>
+              {similarAttractions.map(attr => {
+                const linkTo = attr.slug?.startsWith('/') ? attr.slug : `/attractions/${attr.slug}`;
+                return (
+                  <Link key={attr._id} to={linkTo} className={styles.similarCard} onClick={() => window.scrollTo(0, 0)}>
+                    <img src={attr.image?.startsWith('http') ? attr.image : `${import.meta.env.VITE_BACKEND_URL}${attr.image}`} alt={attr.title} className={styles.similarImg} />
+                    <h4 className={styles.similarTitle}>{attr.title}</h4>
+                  </Link>
+                );
+              })}
+            </div>
           </section>
         )}
 

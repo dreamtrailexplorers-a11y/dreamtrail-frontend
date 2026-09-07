@@ -12,11 +12,11 @@ const TripPageNav = ({ trip, hasAttractions }) => {
     { id: 'inclusions', label: 'Inclusions' }
   ];
 
+  navItems.push({ id: 'dates', label: 'Dates' });
+
   if (hasAttractions || (trip?.attractions && trip.attractions.length > 0)) {
     navItems.push({ id: 'attractions', label: 'Attractions' });
   }
-
-  navItems.push({ id: 'dates', label: 'Dates' });
 
   if (trip?.faqs && trip.faqs.length > 0) {
     navItems.push({ id: 'faqs', label: 'FAQs' });
