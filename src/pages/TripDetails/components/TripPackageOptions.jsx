@@ -38,7 +38,34 @@ const TripPackageOptions = ({ trip, options = [], selectedOptionIndices = [], on
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.sectionTitle}>Package Options</h3>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+        <h3 className={styles.sectionTitle} style={{ marginBottom: 0 }}>Package Options</h3>
+        <button 
+          onClick={() => {
+            if (isMultiSelect && selectedOptionIndices.length > 1) {
+              // If turning off and multiple selected, just keep the first one
+              onSelectOption([selectedOptionIndices[0]]);
+            }
+            setIsMultiSelect(!isMultiSelect);
+          }}
+          style={{
+            background: isMultiSelect ? '#fff' : '#fff',
+            border: '1px solid #e60000',
+            color: '#e60000',
+            fontWeight: '600',
+            fontSize: '0.85rem',
+            cursor: 'pointer',
+            padding: '6px 14px',
+            borderRadius: '6px',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 2px 5px rgba(230, 0, 0, 0.05)'
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.background = '#fef2f2'; }}
+          onMouseOut={(e) => { e.currentTarget.style.background = '#fff'; }}
+        >
+          {isMultiSelect ? 'Single Selection Mode' : '+ Choose Multiple Options'}
+        </button>
+      </div>
       
       <div className={styles.categoriesList}>
         {options.map((opt, index) => {
@@ -92,29 +119,6 @@ const TripPackageOptions = ({ trip, options = [], selectedOptionIndices = [], on
             </div>
           );
         })}
-      </div>
-
-      <div style={{ marginTop: '15px', display: 'flex', justifyContent: 'flex-start' }}>
-        <button 
-          onClick={() => {
-            if (isMultiSelect && selectedOptionIndices.length > 1) {
-              // If turning off and multiple selected, just keep the first one
-              onSelectOption([selectedOptionIndices[0]]);
-            }
-            setIsMultiSelect(!isMultiSelect);
-          }}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: '#e60000',
-            fontWeight: '600',
-            fontSize: '0.9rem',
-            cursor: 'pointer',
-            padding: 0
-          }}
-        >
-          {isMultiSelect ? '- Single Selection Mode' : '+ Choose Multiple Options'}
-        </button>
       </div>
 
       {(() => {

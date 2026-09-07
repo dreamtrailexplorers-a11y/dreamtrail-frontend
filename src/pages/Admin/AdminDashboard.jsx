@@ -115,7 +115,7 @@ const AdminDashboard = () => {
           <NavLink onClick={closeMobileMenu} to="/admin/attractions" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Attractions</NavLink>
           <NavLink onClick={closeMobileMenu} to="/admin/bookings" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Bookings</NavLink>
           <NavLink onClick={closeMobileMenu} to="/admin/enquiries" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Enquiries</NavLink>
-          <NavLink onClick={closeMobileMenu} to="/admin/subscribers" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Subscribers</NavLink>
+          {/* <NavLink onClick={closeMobileMenu} to="/admin/subscribers" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Subscribers</NavLink> */}
           <NavLink onClick={closeMobileMenu} to="/admin/reviews" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Reviews</NavLink>
           <NavLink onClick={closeMobileMenu} to="/admin/navlinks" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Nav Links</NavLink>
           <NavLink onClick={closeMobileMenu} to="/admin/footerlinks" className={({isActive}) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}>Footer Links</NavLink>
@@ -143,7 +143,7 @@ const AdminDashboard = () => {
           <Route path="/edit-attraction/:id" element={<EditAttraction />} />
           <Route path="/bookings" element={<ManageBookings />} />
           <Route path="/enquiries" element={<ManageEnquiries />} />
-          <Route path="/subscribers" element={<ManageSubscribers />} />
+          {/* <Route path="/subscribers" element={<ManageSubscribers />} /> */}
           <Route path="/reviews" element={<ManageReviews />} />
           <Route path="/navlinks" element={<ManageNavLinks />} />
           <Route path="/footerlinks" element={<ManageFooterLinks />} />
