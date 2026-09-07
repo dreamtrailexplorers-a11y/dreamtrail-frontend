@@ -244,73 +244,7 @@ const TripDetails = () => {
                 setSelectedDepartureDate={setSelectedDepartureDate}
               />
             </div>
-
-            {/* Attractions Section */}
-            {(linkedAttractions.length > 0 || attractions.length > 0) && (
-              <div id="attractions" className={styles.sectionMargin} style={{ scrollMarginTop: '90px', backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', marginBottom: '30px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#1e293b', margin: 0 }}>Attractions & Activities</h3>
-                  {showAllAttractions && (
-                    <button 
-                      onClick={() => setShowAllAttractions(false)}
-                      style={{ padding: '6px 16px', backgroundColor: '#fff', border: '1px solid #cbd5e1', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem', color: '#475569', fontWeight: '500' }}
-                    >
-                      Collapse All
-                    </button>
-                  )}
-                </div>
-                <div className={styles.attractionsGrid}>
-                  {(() => {
-                    const allAttractionsList = [
-                      ...linkedAttractions.map(a => ({...a, type: 'linked'})),
-                      ...attractions.map(a => ({...a, type: 'inline'}))
-                    ];
-                    const displayedAttractions = showAllAttractions ? allAttractionsList : allAttractionsList.slice(0, 4);
-
-                    return displayedAttractions.map((attr, idx) => {
-                      if (attr.type === 'linked') {
-                        const linkTo = attr.slug?.startsWith('/') ? attr.slug : `/attractions/${attr.slug}`;
-                        return (
-                          <div key={`linked-${idx}`} className={styles.attractionCard}>
-                            <a href={linkTo} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                              <img src={attr.image?.startsWith('http') ? attr.image : `${import.meta.env.VITE_BACKEND_URL}${attr.image}`} alt={attr.title} className={styles.attractionImg} />
-                              <h4 className={styles.attractionTitle} style={{ marginTop: '0.75rem' }}>{attr.title}</h4>
-                              <p className={styles.attractionSubtitle}>{attr.overview?.substring(0, 50)}...</p>
-                            </a>
-                          </div>
-                        );
-                      } else {
-                        return (
-                          <div key={`inline-${idx}`} className={styles.attractionCard}>
-                            <img src={attr.image} alt={attr.title} className={styles.attractionImg} />
-                            <h4 className={styles.attractionTitle} style={{ marginTop: '0.75rem' }}>{attr.title}</h4>
-                            <p className={styles.attractionSubtitle}>{attr.subtitle}</p>
-                          </div>
-                        );
-                      }
-                    });
-                  })()}
-                </div>
-                {/* Load More Button */}
-                {(() => {
-                    const allLength = linkedAttractions.length + attractions.length;
-                    if (allLength > 4 && !showAllAttractions) {
-                      return (
-                        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                          <button 
-                            onClick={() => setShowAllAttractions(true)}
-                            style={{ padding: '8px 24px', backgroundColor: '#fff', border: '1px solid #cbd5e1', borderRadius: '6px', cursor: 'pointer', fontSize: '0.9rem', color: '#475569', fontWeight: '600' }}
-                          >
-                            Load More
-                          </button>
-                        </div>
-                      );
-                    }
-                    return null;
-                })()}
-              </div>
-            )}
-
+            
             {/* Pre Book Section */}
             <div style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '25px 30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', boxShadow: '0 4px 15px rgba(0,0,0,0.03)' }}>
               <div>
@@ -337,14 +271,6 @@ const TripDetails = () => {
                 {isSoldOut ? 'SOLD OUT' : isPast ? 'UNAVAILABLE' : 'BOOK NOW'}
               </button>
             </div>
-
-            {/* FAQs */}
-            {faqs && faqs.length > 0 && (
-              <div id="faqs" className={styles.sectionMargin} style={{ scrollMarginTop: '90px', backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#1e293b', marginBottom: '20px' }}>FAQs</h3>
-                <CreatorFaqs faqs={faqs} />
-              </div>
-            )}
           </div>
 
           {/* Right Column (Sticky Pricing Sidebar) */}
@@ -371,6 +297,80 @@ const TripDetails = () => {
         </div>
 
         {/* Full Width Sections */}
+
+        {/* Attractions Section */}
+        {(linkedAttractions.length > 0 || attractions.length > 0) && (
+          <div id="attractions" style={{ marginTop: '2rem', backgroundColor: '#fff', padding: '2rem', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#1e293b', margin: 0 }}>Attractions & Activities</h3>
+              {showAllAttractions && (
+                <button 
+                  onClick={() => setShowAllAttractions(false)}
+                  style={{ padding: '6px 16px', backgroundColor: '#fff', border: '1px solid #cbd5e1', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem', color: '#475569', fontWeight: '500' }}
+                >
+                  Collapse All
+                </button>
+              )}
+            </div>
+            <div className={styles.attractionsGrid}>
+              {(() => {
+                const allAttractionsList = [
+                  ...linkedAttractions.map(a => ({...a, type: 'linked'})),
+                  ...attractions.map(a => ({...a, type: 'inline'}))
+                ];
+                const displayedAttractions = showAllAttractions ? allAttractionsList : allAttractionsList.slice(0, 4);
+
+                return displayedAttractions.map((attr, idx) => {
+                  if (attr.type === 'linked') {
+                    const linkTo = attr.slug?.startsWith('/') ? attr.slug : `/attractions/${attr.slug}`;
+                    return (
+                      <div key={`linked-${idx}`} className={styles.attractionCard}>
+                        <a href={linkTo} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                          <img src={attr.image?.startsWith('http') ? attr.image : `${import.meta.env.VITE_BACKEND_URL}${attr.image}`} alt={attr.title} className={styles.attractionImg} />
+                          <h4 className={styles.attractionTitle} style={{ marginTop: '0.75rem' }}>{attr.title}</h4>
+                          <p className={styles.attractionSubtitle}>{attr.overview?.substring(0, 50)}...</p>
+                        </a>
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div key={`inline-${idx}`} className={styles.attractionCard}>
+                        <img src={attr.image} alt={attr.title} className={styles.attractionImg} />
+                        <h4 className={styles.attractionTitle} style={{ marginTop: '0.75rem' }}>{attr.title}</h4>
+                        <p className={styles.attractionSubtitle}>{attr.subtitle}</p>
+                      </div>
+                    );
+                  }
+                });
+              })()}
+            </div>
+            {/* Load More Button */}
+            {(() => {
+                const allLength = linkedAttractions.length + attractions.length;
+                if (allLength > 4 && !showAllAttractions) {
+                  return (
+                    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                      <button 
+                        onClick={() => setShowAllAttractions(true)}
+                        style={{ padding: '8px 24px', backgroundColor: '#fff', border: '1px solid #cbd5e1', borderRadius: '6px', cursor: 'pointer', fontSize: '0.9rem', color: '#475569', fontWeight: '600' }}
+                      >
+                        Load More
+                      </button>
+                    </div>
+                  );
+                }
+                return null;
+            })()}
+          </div>
+        )}
+
+        {/* FAQs */}
+        {faqs && faqs.length > 0 && (
+          <div id="faqs" style={{ marginTop: '2rem', backgroundColor: '#fff', padding: '2rem', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#1e293b', marginBottom: '20px' }}>FAQs</h3>
+            <CreatorFaqs faqs={faqs} />
+          </div>
+        )}
 
         {/* Quick Info - Only show if at least one field exists */}
         {currentTrip.quickInfo && Object.values(currentTrip.quickInfo).some(arr => Array.isArray(arr) && arr.length > 0) && (
