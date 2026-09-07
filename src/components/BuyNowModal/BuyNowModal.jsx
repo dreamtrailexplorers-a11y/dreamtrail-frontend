@@ -34,6 +34,19 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
     if (isOpen) {
       getSiteSettings().then(res => setPreBookingSettings(res.data?.preBookingSettings)).catch(console.error);
       
+      const pendingBuyStr = sessionStorage.getItem('pendingBuy');
+      if (pendingBuyStr) {
+        try {
+          const pendingBuy = JSON.parse(pendingBuyStr);
+          if (pendingBuy && pendingBuy.path === location.pathname) {
+            setActivePackages(pendingBuy.activePackages || []);
+            setQuantities(pendingBuy.quantities || {});
+            sessionStorage.removeItem('pendingBuy');
+            return;
+          }
+        } catch (e) {}
+      }
+
       // Initialize active packages based on selectedPackages
       let initialPkgs = [];
       if (selectedPackages && selectedPackages.length > 0) {
@@ -47,7 +60,7 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
       initialPkgs.forEach((_, i) => { initialQs[i] = 1; });
       setQuantities(initialQs);
     }
-  }, [isOpen, selectedPackages, tripTitle, pricePerPerson]);
+  }, [isOpen, selectedPackages, tripTitle, pricePerPerson, location.pathname]);
 
   if (!isOpen) return null;
 
@@ -87,6 +100,11 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
 
   const handlePay = async (paymentType = 'full') => {
     if (!user) {
+      sessionStorage.setItem('pendingBuy', JSON.stringify({
+        path: location.pathname,
+        activePackages,
+        quantities
+      }));
       navigate('/login', { state: { from: location } });
       return;
     }

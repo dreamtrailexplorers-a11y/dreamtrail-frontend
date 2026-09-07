@@ -70,6 +70,18 @@ const TripDetails = () => {
     const timer = setTimeout(() => {
       setIsEnquiryModalOpen(true);
     }, 5000);
+
+    // Check if we just returned from login after trying to buy
+    const pendingBuyStr = sessionStorage.getItem('pendingBuy');
+    if (pendingBuyStr) {
+      try {
+        const pendingBuy = JSON.parse(pendingBuyStr);
+        if (pendingBuy && pendingBuy.path === window.location.pathname) {
+          setIsBuyModalOpen(true);
+        }
+      } catch (e) {}
+    }
+
     return () => clearTimeout(timer);
   }, [slug]);
 
