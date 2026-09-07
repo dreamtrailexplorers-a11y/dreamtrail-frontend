@@ -131,73 +131,36 @@
   color: #334155;
   line-height: 1.6;
   margin: 0;
-  max-height: 140px;
-  overflow-y: auto;
-  padding-right: 8px; /* space for scrollbar */
-}
-
-/* Custom Scrollbar for Reviews */
-.reviewText::-webkit-scrollbar {
-  width: 4px;
-}
-
-.reviewText::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: 4px;
-}
-
-.reviewText::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-
-.reviewText::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-
-/* Image Grid System */
-.imageGrid {
-  display: grid;
-  gap: 4px;
-  border-radius: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  margin-top: auto;
 }
 
-.gridImage {
-  width: 100%;
-  height: 100%;
+.readMoreLink {
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 5px;
+  display: inline-block;
+}
+
+/* Modal Styles */
+.userAvatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   object-fit: cover;
-  background-color: #f1f5f9;
+  border: 2px solid #e2e8f0;
 }
-
-.imagesCount1 {
-  grid-template-columns: 1fr;
-}
-.imagesCount1 .gridImage {
-  height: 200px;
-}
-
-.imagesCount2 {
-  grid-template-columns: 1fr 1fr;
-}
-.imagesCount2 .gridImage {
-  height: 150px;
-}
-
-.imagesCount3 {
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: 100px 100px;
-}
-.imagesCount3 .gridImage:nth-child(1) {
-  grid-row: 1 / span 2;
-  height: 100%;
-}
-
-.imagesCount4 {
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 120px 120px;
-}
+.modalOverlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+.modalContent { background: white; padding: 25px; border-radius: 12px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: scaleIn 0.2s ease; }
+.modalHeader { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+.modalUserProfile { display: flex; align-items: center; gap: 12px; }
+.closeBtn { background: none; border: none; cursor: pointer; color: #333; padding: 5px; }
+.modalReviewText { font-size: 0.95rem; line-height: 1.6; color: #333; }
+@keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
 @media (max-width: 768px) {
   .reviewsGrid {
