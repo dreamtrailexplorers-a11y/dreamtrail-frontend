@@ -55,12 +55,16 @@ const AddAttraction = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'title') {
-      setFormData({ ...formData, title: value, slug: generateSlug(value) });
-    } else {
-      setFormData({ ...formData, [name]: value });
+    let { name, value } = e.target;
+    if (name === 'slug') {
+      value = value.replace('/attractions/', '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     }
+    if (name === 'title' && !formData.slug) {
+      const autoSlug = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      setFormData(prev => ({ ...prev, title: value, slug: autoSlug }));
+      return;
+    }
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleArrayChange = (e, index, field, subField) => {

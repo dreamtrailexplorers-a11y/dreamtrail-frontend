@@ -229,8 +229,9 @@ const DestinationPage = () => {
             <h2 className={styles.sectionTitle}>Attractions</h2>
             <div className={styles.placesGrid}>
               {attractions.map((place, idx) => {
+                const linkTo = place.slug?.startsWith('/') ? place.slug : `/attractions/${place.slug}`;
                 return (
-                  <Link key={idx} to={`/attractions/${place.slug}`} style={{ textDecoration: 'none' }}>
+                  <Link key={idx} to={linkTo} style={{ textDecoration: 'none' }}>
                     <div className={styles.placeCard}>
                       <div className={styles.placeImgWrapper}>
                         <img src={place.image?.startsWith('http') ? place.image : `${import.meta.env.VITE_BACKEND_URL}${place.image}`} alt={place.title} className={styles.placeImg} />

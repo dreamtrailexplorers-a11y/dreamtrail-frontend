@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './TripPageNav.module.css';
 
-const TripPageNav = ({ trip }) => {
+const TripPageNav = ({ trip, hasAttractions }) => {
   const [activeSection, setActiveSection] = useState('about');
   const [isVisible, setIsVisible] = useState(false);
 
@@ -9,9 +9,14 @@ const TripPageNav = ({ trip }) => {
     { id: 'about', label: 'About' },
     { id: 'packages', label: 'Packages' },
     { id: 'itinerary', label: 'Itinerary' },
-    { id: 'inclusions', label: 'Inclusions' },
-    { id: 'dates', label: 'Dates' }
+    { id: 'inclusions', label: 'Inclusions' }
   ];
+
+  if (hasAttractions || (trip?.attractions && trip.attractions.length > 0)) {
+    navItems.push({ id: 'attractions', label: 'Attractions' });
+  }
+
+  navItems.push({ id: 'dates', label: 'Dates' });
 
   if (trip?.faqs && trip.faqs.length > 0) {
     navItems.push({ id: 'faqs', label: 'FAQs' });

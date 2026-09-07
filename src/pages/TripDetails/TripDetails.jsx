@@ -41,13 +41,14 @@ const TripDetails = () => {
   
   const [reviews, setReviews] = useState([]);
   const [settings, setSettings] = useState(null);
+  const [linkedAttractions, setLinkedAttractions] = useState([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchTripAndReviews = async () => {
       try {
-        const { getTrips, getReviews, getSiteSettings, getDestinations } = await import('../../services/api');
-        const [tripsRes, reviewsRes, settingsRes, destinationsRes] = await Promise.all([getTrips(), getReviews(), getSiteSettings(), getDestinations()]);
+        const { getTrips, getReviews, getSiteSettings, getDestinations, getAttractions } = await import('../../services/api');
+        const [tripsRes, reviewsRes, settingsRes, destinationsRes, attractionsRes] = await Promise.all([getTrips(), getReviews(), getSiteSettings(), getDestinations(), getAttractions()]);
         
         const trip = tripsRes.data.find((t) => t.slug === slug);
         setCurrentTrip(trip || 'not-found');
@@ -55,6 +56,10 @@ const TripDetails = () => {
         if (trip) {
           const dest = destinationsRes.data.find(d => d.name === trip.destination);
           setCurrentDestination(dest || null);
+          
+          if (attractionsRes && attractionsRes.data) {
+            setLinkedAttractions(attractionsRes.data.filter(attr => attr.relatedTrips && attr.relatedTrips.includes(trip._id)));
+          }
         }
         setReviews(reviewsRes.data.filter(r => 
           (r.tripSlug && r.tripSlug === trip.slug) || 
@@ -195,7 +200,7 @@ const TripDetails = () => {
 
       <TripGallery images={galleryImages} />
       
-      <TripPageNav trip={currentTrip} />
+      <TripPageNav trip={currentTrip} hasAttractions={linkedAttractions.length > 0 || attractions.length > 0} />
 
       <div className={styles.mainContainer}>
         <div className={styles.contentLayout}>
@@ -228,6 +233,35 @@ const TripDetails = () => {
             <div id="inclusions" style={{ scrollMarginTop: '90px' }}>
               <TripInclusions inclusions={inclusions} exclusions={exclusions} mapImage={currentTrip.mapImage} />
             </div>
+
+            {/* Attractions Section */}
+            {(linkedAttractions.length > 0 || attractions.length > 0) && (
+              <div id="attractions" className={styles.sectionMargin} style={{ scrollMarginTop: '90px', backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#1e293b', marginBottom: '20px' }}>Attractions & Activities</h3>
+                <div className={styles.attractionsGrid}>
+                  {linkedAttractions.map((attr, idx) => {
+                    const linkTo = attr.slug?.startsWith('/') ? attr.slug : `/attractions/${attr.slug}`;
+                    return (
+                      <div key={`linked-${idx}`} className={styles.attractionCard}>
+                        <a href={linkTo} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                          <img src={attr.image?.startsWith('http') ? attr.image : `${import.meta.env.VITE_BACKEND_URL}${attr.image}`} alt={attr.title} className={styles.attractionImg} />
+                          <h4 className={styles.attractionTitle} style={{ marginTop: '0.75rem' }}>{attr.title}</h4>
+                          <p className={styles.attractionSubtitle}>{attr.overview?.substring(0, 50)}...</p>
+                        </a>
+                      </div>
+                    );
+                  })}
+                  {/* Fallback for inline attractions from Trip.js */}
+                  {attractions.map((attr, idx) => (
+                    <div key={`inline-${idx}`} className={styles.attractionCard}>
+                      <img src={attr.image} alt={attr.title} className={styles.attractionImg} />
+                      <h4 className={styles.attractionTitle} style={{ marginTop: '0.75rem' }}>{attr.title}</h4>
+                      <p className={styles.attractionSubtitle}>{attr.subtitle}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Trip Packages / Departure Dates */}
             <div id="dates" className={styles.sectionMargin} style={{ scrollMarginTop: '90px' }}>

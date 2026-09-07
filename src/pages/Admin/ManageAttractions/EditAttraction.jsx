@@ -89,7 +89,15 @@ const EditAttraction = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+    if (name === 'slug') {
+      value = value.replace('/attractions/', '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    }
+    if (name === 'title' && !formData.slug) {
+      const autoSlug = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      setFormData({ ...formData, title: value, slug: autoSlug });
+      return;
+    }
     if (name === 'title') {
       setFormData({ ...formData, title: value, slug: generateSlug(value) });
     } else {
