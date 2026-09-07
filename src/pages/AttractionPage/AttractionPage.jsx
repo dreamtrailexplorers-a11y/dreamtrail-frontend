@@ -147,30 +147,6 @@ const AttractionPage = () => {
           </section>
         )}
 
-        {/* Similar Attractions */}
-        {similarAttractions.length > 0 && (
-          <section className={styles.section}>
-            <div className={styles.sectionHeader}>
-              <h2 className={styles.sectionTitle}>Similar <span style={{color: '#e60000'}}>Attractions</span></h2>
-              <div className={styles.navButtons}>
-                 <button className={styles.navBtn} onClick={() => {document.getElementById('simSlider').scrollBy({left:-200, behavior:'smooth'})}}>❮</button>
-                 <button className={styles.navBtn} onClick={() => {document.getElementById('simSlider').scrollBy({left:200, behavior:'smooth'})}}>❯</button>
-              </div>
-            </div>
-            <div id="simSlider" className={styles.similarGrid}>
-              {similarAttractions.map(attr => {
-                const linkTo = attr.slug?.startsWith('/') ? attr.slug : `/attractions/${attr.slug}`;
-                return (
-                  <Link key={attr._id} to={linkTo} className={styles.similarCard} onClick={() => window.scrollTo(0, 0)}>
-                    <img src={attr.image?.startsWith('http') ? attr.image : `${import.meta.env.VITE_BACKEND_URL}${attr.image}`} alt={attr.title} className={styles.similarImg} />
-                    <h4 className={styles.similarTitle}>{attr.title}</h4>
-                  </Link>
-                );
-              })}
-            </div>
-          </section>
-        )}
-
         {/* Related Trips */}
         {tourPackages.length > 0 && (
           <section className={styles.section}>
@@ -185,6 +161,32 @@ const AttractionPage = () => {
               {tourPackages.map(trip => (
                 <TrendingCard key={trip._id || trip.id} trip={trip} />
               ))}
+            </div>
+          </section>
+        )}
+
+        {/* Similar Attractions */}
+        {similarAttractions.length > 0 && (
+          <section className={styles.section}>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>Similar <span style={{color: '#e11d48'}}>Attractions</span></h2>
+              <div className={styles.navButtons}>
+                 <button className={styles.navBtn} onClick={() => {document.getElementById('simSlider').scrollBy({left:-250, behavior:'smooth'})}}>❮</button>
+                 <button className={styles.navBtn} onClick={() => {document.getElementById('simSlider').scrollBy({left:250, behavior:'smooth'})}}>❯</button>
+              </div>
+            </div>
+            <div id="simSlider" className={styles.similarGrid}>
+              {similarAttractions.map(attr => {
+                const linkTo = attr.slug?.startsWith('/') ? attr.slug : `/attractions/${attr.slug}`;
+                return (
+                  <Link key={attr._id} to={linkTo} className={styles.similarCard} onClick={() => window.scrollTo(0, 0)}>
+                    <div className={styles.similarImgContainer}>
+                      <img src={attr.image?.startsWith('http') ? attr.image : `${import.meta.env.VITE_BACKEND_URL}${attr.image}`} alt={attr.title} className={styles.similarImg} />
+                    </div>
+                    <h4 className={styles.similarTitle}>{attr.title}</h4>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         )}

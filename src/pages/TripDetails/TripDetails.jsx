@@ -247,8 +247,18 @@ const TripDetails = () => {
 
             {/* Attractions Section */}
             {(linkedAttractions.length > 0 || attractions.length > 0) && (
-              <div id="attractions" className={styles.sectionMargin} style={{ scrollMarginTop: '90px', backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#1e293b', marginBottom: '20px' }}>Attractions & Activities</h3>
+              <div id="attractions" className={styles.sectionMargin} style={{ scrollMarginTop: '90px', backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', marginBottom: '30px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#1e293b', margin: 0 }}>Attractions & Activities</h3>
+                  {showAllAttractions && (
+                    <button 
+                      onClick={() => setShowAllAttractions(false)}
+                      style={{ padding: '6px 16px', backgroundColor: '#fff', border: '1px solid #cbd5e1', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem', color: '#475569', fontWeight: '500' }}
+                    >
+                      Collapse All
+                    </button>
+                  )}
+                </div>
                 <div className={styles.attractionsGrid}>
                   {(() => {
                     const allAttractionsList = [
@@ -284,14 +294,14 @@ const TripDetails = () => {
                 {/* Load More Button */}
                 {(() => {
                     const allLength = linkedAttractions.length + attractions.length;
-                    if (allLength > 4) {
+                    if (allLength > 4 && !showAllAttractions) {
                       return (
                         <div style={{ textAlign: 'center', marginTop: '20px' }}>
                           <button 
-                            onClick={() => setShowAllAttractions(!showAllAttractions)}
+                            onClick={() => setShowAllAttractions(true)}
                             style={{ padding: '8px 24px', backgroundColor: '#fff', border: '1px solid #cbd5e1', borderRadius: '6px', cursor: 'pointer', fontSize: '0.9rem', color: '#475569', fontWeight: '600' }}
                           >
-                            {showAllAttractions ? 'Show Less' : 'Load More'}
+                            Load More
                           </button>
                         </div>
                       );
