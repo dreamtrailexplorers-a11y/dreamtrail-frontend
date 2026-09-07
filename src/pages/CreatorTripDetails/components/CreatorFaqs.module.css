@@ -19,7 +19,7 @@
 }
 
 .icon {
-  color: #e11d48; /* Red color matching screenshot */
+  color: #e60000; /* Red color matching Send Enquiry */
   font-size: 1.25rem;
   margin-top: 2px;
   flex-shrink: 0;
@@ -47,8 +47,8 @@
 }
 
 .loadMoreBtn {
-  background: #e11d48;
-  border: 1px solid #e11d48;
+  background: #e60000;
+  border: 1px solid #e60000;
   color: white;
   padding: 8px 24px;
   border-radius: 6px;
@@ -59,7 +59,7 @@
 }
 
 .loadMoreBtn:hover {
-  background: #be123c;
-  border-color: #be123c;
+  background: #cc0000;
+  border-color: #cc0000;
   color: white;
 }

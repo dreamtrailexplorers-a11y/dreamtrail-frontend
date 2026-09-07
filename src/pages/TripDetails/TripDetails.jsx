@@ -148,6 +148,16 @@ const TripDetails = () => {
     });
   }
 
+  const processedAllPackages = (packageOptions || []).map(opt => {
+    let optPrice = Number(opt.price) || 0;
+    let optOrigPrice = Number(opt.originalPrice) || baseOrig || baseDisc;
+    let finalPrice = (optPrice === 0 || optPrice >= optOrigPrice) ? optOrigPrice : optPrice;
+    return {
+      title: opt.title + (variant && variant.name ? ` with ${variant.name}` : ''),
+      price: finalPrice + variantAddon
+    };
+  });
+
   if (selectedPackages.length > 0) {
     // For sidebar display, show the first package selected, or "Multiple Packages" if > 1
     if (selectedPackages.length === 1) {
@@ -367,6 +377,7 @@ const TripDetails = () => {
           destination={currentDestination ? currentDestination.name : ''}
           selectedDepartureDate={selectedDepartureDate}
           selectedPackages={selectedPackages}
+          allPackages={processedAllPackages}
         />
       )}
 
