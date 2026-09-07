@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FiCheck } from 'react-icons/fi';
 import styles from './TripStayCategory.module.css';
 
 const TripPackageOptions = ({ trip, options = [], selectedOptionIndices = [], onSelectOption, selectedSubOptionIndex, onSelectSubOption }) => {
+  const [isMultiSelect, setIsMultiSelect] = useState(false);
+
   if (!options || options.length === 0) return null;
 
   const variants = trip?.variants || [];
@@ -17,10 +19,20 @@ const TripPackageOptions = ({ trip, options = [], selectedOptionIndices = [], on
   }
 
   const handleToggle = (index) => {
-    if (selectedOptionIndices.includes(index)) {
-      onSelectOption(selectedOptionIndices.filter(i => i !== index));
+    if (isMultiSelect) {
+      if (selectedOptionIndices.includes(index)) {
+        onSelectOption(selectedOptionIndices.filter(i => i !== index));
+      } else {
+        onSelectOption([...selectedOptionIndices, index]);
+      }
     } else {
-      onSelectOption([...selectedOptionIndices, index]);
+      // Single select mode
+      if (selectedOptionIndices.includes(index)) {
+        // If clicking the already selected one, do nothing (or maybe allow deselect?)
+        // Usually radio buttons don't allow deselect, so we do nothing.
+      } else {
+        onSelectOption([index]);
+      }
     }
   };
 
@@ -73,13 +85,36 @@ const TripPackageOptions = ({ trip, options = [], selectedOptionIndices = [], on
                   {finalOrigPrice && <span className={styles.rowOrigPrice}>₹ {finalOrigPrice}</span>}
                   <span className={styles.rowDiscPrice}>₹ {finalPrice}</span>
                 </div>
-                <div style={{ width: '22px', height: '22px', borderRadius: '4px', border: isActive ? '2px solid var(--primary-color)' : '2px solid #cbd5e1', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: isActive ? 'var(--primary-color)' : 'transparent', transition: 'all 0.2s' }}>
-                  {isActive && <FiCheck color="#fff" size={14} strokeWidth={3} />}
+                <div style={{ width: '22px', height: '22px', borderRadius: isMultiSelect ? '4px' : '50%', border: isActive ? '2px solid #e60000' : '2px solid #cbd5e1', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: isActive ? '#e60000' : 'transparent', transition: 'all 0.2s' }}>
+                  {isActive && (isMultiSelect ? <FiCheck color="#fff" size={14} strokeWidth={3} /> : <div style={{width: '8px', height: '8px', backgroundColor: '#fff', borderRadius: '50%'}}></div>)}
                 </div>
               </div>
             </div>
           );
         })}
+      </div>
+
+      <div style={{ marginTop: '15px', display: 'flex', justifyContent: 'flex-start' }}>
+        <button 
+          onClick={() => {
+            if (isMultiSelect && selectedOptionIndices.length > 1) {
+              // If turning off and multiple selected, just keep the first one
+              onSelectOption([selectedOptionIndices[0]]);
+            }
+            setIsMultiSelect(!isMultiSelect);
+          }}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: '#e60000',
+            fontWeight: '600',
+            fontSize: '0.9rem',
+            cursor: 'pointer',
+            padding: 0
+          }}
+        >
+          {isMultiSelect ? '- Single Selection Mode' : '+ Choose Multiple Options'}
+        </button>
       </div>
 
       {(() => {

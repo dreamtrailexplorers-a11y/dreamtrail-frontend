@@ -19,7 +19,7 @@ const loadRazorpay = () => {
   });
 };
 
-const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, destination, selectedDepartureDate, mode = 'both', selectedPackages }) => {
+const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, destination, selectedDepartureDate, mode = 'both', selectedPackages, allPackages }) => {
   const { user, token } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
