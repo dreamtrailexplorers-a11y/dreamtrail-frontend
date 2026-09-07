@@ -2,57 +2,170 @@
   padding: 2rem;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
 .title {
   font-size: 1.5rem;
   font-weight: 700;
   color: #1e293b;
 }
 
-.tableContainer {
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.bookingCard {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
+.bookingCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-.table th, .table td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid #e2e8f0;
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  background-color: #fafbfc;
 }
 
-.table th {
-  background-color: #f8fafc;
+.orderId {
+  font-size: 0.75rem;
+  color: #64748b;
   font-weight: 600;
-  color: #475569;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 0.05em;
+  margin-bottom: 4px;
 }
 
-.table td {
-  color: #334155;
-  font-size: 0.95rem;
+.dateText {
+  font-size: 0.85rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+.cardBody {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.customerInfo {
+  margin-bottom: 15px;
+}
+
+.customerName {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.customerEmail {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.tripInfo {
+  margin-bottom: 15px;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+
+.infoLabel {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.infoValue {
+  color: #1e293b;
+  font-weight: 600;
+  text-align: right;
+}
+
+.financialsBox {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #e2e8f0;
+}
+
+.totalAmount {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cardFooter {
+  padding: 16px 20px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+}
+
+.actionBtns {
+  display: flex;
+  gap: 10px;
+}
+
+.deleteBtn {
+  padding: 8px 12px;
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: background-color 0.2s;
+}
+
+.deleteBtn:hover {
+  background-color: #fecaca;
+}
+
+.whatsappBtn {
+  background-color: #dcfce7;
+  color: #16a34a;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: background-color 0.2s;
+}
+
+.whatsappBtn:hover {
+  background-color: #bbf7d0;
 }
 
 .badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .badgePending {
@@ -60,8 +173,13 @@
   color: #92400e;
 }
 
+.badgePreBooked {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+
 .badgePaid {
-  background-color: #dcfce3;
+  background-color: #dcfce7;
   color: #166534;
 }
 
@@ -71,51 +189,7 @@
 }
 
 @media (max-width: 768px) {
-  .header {
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: flex-start !important;
-  }
-  .header button {
-    flex: 1;
-    justify-content: center;
-  }
-  .table {
-    display: block;
-    width: 100%;
-  }
-  .table thead {
-    display: none;
-  }
-  .table tbody, .table tr {
-    display: block;
-    width: 100%;
-  }
-  .table tr {
-    margin-bottom: 1rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 10px;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  }
-  .table td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px dashed #e2e8f0;
-    text-align: right;
-  }
-  .table td:last-child {
-    border-bottom: none;
-  }
-  .table td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #475569;
-    text-align: left;
-    margin-right: 15px;
-    flex-shrink: 0;
+  .cardsGrid {
+    grid-template-columns: 1fr;
   }
 }
