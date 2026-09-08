@@ -221,13 +221,13 @@ const ManageBlogs = () => {
                     <input name="readTime" value={formData.readTime} onChange={handleChange} placeholder="Read Time (e.g. 5 min read)" required className={styles.inputField} />
                   </div>
                   <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
-                    <label className={styles.inputLabel}>Main Image URL</label>
+                    <label className={styles.inputLabel}>Main Image URL (Optional)</label>
                     <div className={styles.responsiveFlexRow}>
                       <label style={{ cursor: 'pointer', background: '#3498db', color: 'white', padding: '8px 15px', borderRadius: '8px', fontSize: '0.9rem', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center' }}>
                         Upload
                         <input type="file" style={{ display: 'none' }} accept="image/*" onChange={(e) => handleUploadMainImage(e, 'image')} />
                       </label>
-                      <input name="image" value={formData.image} onChange={handleChange} placeholder="Main Cover Image URL" required className={styles.inputField} style={{ flex: 1, backgroundColor: '#ffffff' }} />
+                      <input name="image" value={formData.image} onChange={handleChange} placeholder="Main Cover Image URL (Optional)" className={styles.inputField} style={{ flex: 1, backgroundColor: '#ffffff' }} />
                     </div>
                   </div>
                   <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>

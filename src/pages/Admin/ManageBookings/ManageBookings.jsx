@@ -349,24 +349,51 @@ const ManageBookings = () => {
                     <span>₹{booking.totalAmount?.toLocaleString('en-IN')}</span>
                   </div>
                   
-                  {booking.paymentDetails && booking.paymentDetails.preBookPaid > 0 && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '6px' }}>
-                      <span style={{ color: '#64748b' }}>Pre-Booked:</span>
-                      <span style={{ fontWeight: 600, color: '#3730a3' }}>₹{booking.paymentDetails.preBookPaid.toLocaleString('en-IN')}</span>
+                  {Boolean(booking.paymentDetails?.preBookPaid && booking.paymentDetails.preBookPaid > 0) && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', marginBottom: '6px' }}>
+                      <span style={{ color: '#475569', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span>Pre-Booked:</span>
+                        <span style={{ fontSize: '0.78rem', color: '#64748b' }}>({formatDate(booking.createdAt)})</span>
+                      </span>
+                      <span style={{ fontWeight: 600, color: '#3730a3' }}>
+                        ₹{booking.paymentDetails.preBookPaid.toLocaleString('en-IN')}
+                      </span>
                     </div>
                   )}
 
-                  {(booking.paymentStatus === 'Pre-Booked' || booking.paymentStatus === 'Pending') && booking.paymentDetails?.balanceDue > 0 && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: '#ef4444' }}>
+                  {(booking.paymentStatus === 'Pre-Booked' || booking.paymentStatus === 'Pending') && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', color: '#ef4444', marginTop: '4px' }}>
                       <span style={{ fontWeight: 500 }}>Balance Due:</span>
-                      <span style={{ fontWeight: 700 }}>₹{booking.paymentDetails.balanceDue.toLocaleString('en-IN')}</span>
+                      <span style={{ fontWeight: 700 }}>
+                        ₹{(booking.paymentDetails?.balanceDue ?? Math.max(0, (booking.totalAmount || 0) - (booking.paymentDetails?.preBookPaid || 0))).toLocaleString('en-IN')}
+                      </span>
                     </div>
                   )}
                   
-                  {booking.paymentStatus === 'Fully Paid' && booking.paymentDetails?.balancePaid && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: '#16a34a' }}>
-                      <span style={{ fontWeight: 500 }}>Balance Paid:</span>
-                      <span style={{ fontWeight: 700 }}>₹{booking.paymentDetails.balancePaid.toLocaleString('en-IN')}</span>
+                  {booking.paymentStatus === 'Fully Paid' && Boolean(booking.paymentDetails?.preBookPaid && booking.paymentDetails.preBookPaid > 0) && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', color: '#16a34a', marginTop: '4px' }}>
+                      <span style={{ fontWeight: 500, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span>Balance Paid:</span>
+                        <span style={{ fontSize: '0.78rem', color: '#15803d', fontWeight: 'normal' }}>
+                          ({booking.paymentDetails?.balancePaidAt ? formatDate(booking.paymentDetails.balancePaidAt) : formatDate(booking.updatedAt || booking.createdAt)})
+                        </span>
+                      </span>
+                      <span style={{ fontWeight: 700 }}>
+                        ₹{((booking.paymentDetails?.balancePaid && booking.paymentDetails.balancePaid > 0)
+                          ? booking.paymentDetails.balancePaid
+                          : Math.max(0, (booking.totalAmount || 0) - (booking.paymentDetails?.preBookPaid || 0))
+                        ).toLocaleString('en-IN')}
+                      </span>
+                    </div>
+                  )}
+
+                  {booking.paymentStatus === 'Fully Paid' && (!booking.paymentDetails?.preBookPaid || booking.paymentDetails.preBookPaid <= 0) && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', color: '#16a34a', marginTop: '4px' }}>
+                      <span style={{ fontWeight: 500, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span>Paid:</span>
+                        <span style={{ fontSize: '0.78rem', color: '#15803d', fontWeight: 'normal' }}>({formatDate(booking.createdAt)})</span>
+                      </span>
+                      <span style={{ fontWeight: 700 }}>₹{booking.totalAmount?.toLocaleString('en-IN')}</span>
                     </div>
                   )}
                 </div>

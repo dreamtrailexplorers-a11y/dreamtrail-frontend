@@ -1,4 +1,4 @@
-﻿.sidebarHeader {
+.sidebarHeader {
   display: block;
 }
 
@@ -80,6 +80,7 @@
   padding: 40px 60px;
   overflow-y: auto;
   background: #f8fafc;
+  min-width: 0;
 }
 
 .pageHeader {

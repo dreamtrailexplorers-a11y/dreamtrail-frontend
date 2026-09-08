@@ -445,8 +445,8 @@
   flex-wrap: wrap;
 }
 
-/* Responsive Breakpoints: sm & md show Cards, lg shows Table */
-@media (max-width: 1024px) {
+/* Responsive Breakpoints: sm & md (<= 1250px) show Cards, wide desktop (> 1250px) shows Table */
+@media (max-width: 1250px) {
   .tableContainer {
     display: none;
   }
@@ -454,7 +454,7 @@
   .cardsContainer {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
     width: 100%;
   }
 }

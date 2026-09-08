@@ -65,12 +65,15 @@ const BlogsPage = () => {
                   target="_blank" 
                   rel="noopener noreferrer"
                 >
-                  <div className={styles.featuredImageWrapper}>
-                    <img 
-                      src={cleanImageUrl(featuredBlog.image) || "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80"} 
-                      alt={featuredBlog.title} 
-                      className={styles.featuredImage} 
-                    />
+                  <div className={styles.featuredImageWrapper} style={{ backgroundColor: '#f1f5f9' }}>
+                    {cleanImageUrl(featuredBlog.image)?.trim() && (
+                      <img 
+                        src={cleanImageUrl(featuredBlog.image)} 
+                        alt={featuredBlog.title} 
+                        className={styles.featuredImage} 
+                        onError={(e) => { e.target.style.display = 'none'; }}
+                      />
+                    )}
                     <div className={styles.featuredOverlay}></div>
                   </div>
                   <div className={styles.featuredInfo}>
@@ -81,11 +84,29 @@ const BlogsPage = () => {
                     <h3 className={styles.featuredTitle}>{featuredBlog.title}</h3>
                     <p className={styles.featuredExcerpt}>{featuredBlog.excerpt}</p>
                     <div className={styles.featuredAuthor}>
-                      <img
-                        src={cleanImageUrl(featuredBlog.authorAvatar) || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80"}
-                        alt={featuredBlog.author}
-                        className={styles.authorAvatar}
-                      />
+                      {cleanImageUrl(featuredBlog.authorAvatar)?.trim() ? (
+                        <img
+                          src={cleanImageUrl(featuredBlog.authorAvatar)}
+                          alt={featuredBlog.author}
+                          className={styles.authorAvatar}
+                          onError={(e) => { e.target.style.display = 'none'; }}
+                        />
+                      ) : (
+                        <div 
+                          className={styles.authorAvatar} 
+                          style={{ 
+                            backgroundColor: '#e2e8f0', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            fontSize: '0.8rem', 
+                            fontWeight: 600, 
+                            color: '#64748b' 
+                          }}
+                        >
+                          {featuredBlog.author ? featuredBlog.author.trim().charAt(0).toUpperCase() : 'U'}
+                        </div>
+                      )}
                       <span className={styles.authorName}>by {featuredBlog.author}</span>
                     </div>
                   </div>

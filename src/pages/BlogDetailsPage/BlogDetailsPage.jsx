@@ -45,12 +45,19 @@ const BlogDetailsPage = () => {
           <div className={styles.breadcrumb}>Blog / {blog.title}</div>
           <h1 className={styles.title}>{blog.title}</h1>
           <div className={styles.authorMeta}>
-            <img
-              src={cleanImageUrl(blog.authorAvatar)}
-              alt={blog.author}
-              className={styles.authorAvatar}
-              style={{ width: '32px', height: '32px', borderRadius: '50%', marginRight: '8px', objectFit: 'cover' }}
-            />
+            {cleanImageUrl(blog.authorAvatar)?.trim() ? (
+              <img
+                src={cleanImageUrl(blog.authorAvatar)}
+                alt={blog.author}
+                className={styles.authorAvatar}
+                style={{ width: '32px', height: '32px', borderRadius: '50%', marginRight: '8px', objectFit: 'cover' }}
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
+            ) : (
+              <div style={{ width: '32px', height: '32px', borderRadius: '50%', marginRight: '8px', backgroundColor: '#e2e8f0', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, fontSize: '0.85rem', color: '#64748b' }}>
+                {blog.author ? blog.author.trim().charAt(0).toUpperCase() : 'U'}
+              </div>
+            )}
             <span className={styles.authorName}>{blog.author}</span>
             <span className={styles.metaDot}>•</span>
             <span className={styles.date}>{new Date(blog.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: '2-digit' })}</span>
@@ -63,9 +70,16 @@ const BlogDetailsPage = () => {
         <article className={styles.articleContent}>
           
           {/* Main Cover (from the blog schema) */}
-          <figure className={styles.fullImageBlock} style={{ marginBottom: '30px' }}>
-            <img src={cleanImageUrl(blog.image)} alt={blog.title} className={styles.image} />
-          </figure>
+          {cleanImageUrl(blog.image)?.trim() && (
+            <figure className={styles.fullImageBlock} style={{ marginBottom: '30px' }}>
+              <img 
+                src={cleanImageUrl(blog.image)} 
+                alt={blog.title} 
+                className={styles.image} 
+                onError={(e) => { e.target.closest('figure').style.display = 'none'; }}
+              />
+            </figure>
+          )}
 
           {/* Intro Excerpt */}
           <p className={styles.paragraph} style={{ fontSize: '1.2rem', fontWeight: '500', fontStyle: 'italic', color: '#555' }}>
@@ -115,12 +129,32 @@ const BlogDetailsPage = () => {
         <div className={styles.publishedBySection}>
           <h3 className={styles.publishedByTitle}>Published By</h3>
           <div className={styles.authorProfile}>
-            <img 
-              src={cleanImageUrl(blog.authorAvatar)} 
-              alt={blog.author} 
-              className={styles.authorAvatarLg} 
-              style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover' }}
-            />
+            {cleanImageUrl(blog.authorAvatar)?.trim() ? (
+              <img 
+                src={cleanImageUrl(blog.authorAvatar)} 
+                alt={blog.author} 
+                className={styles.authorAvatarLg} 
+                style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover' }}
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
+            ) : (
+              <div 
+                style={{ 
+                  width: '60px', 
+                  height: '60px', 
+                  borderRadius: '50%', 
+                  backgroundColor: '#e2e8f0', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  fontWeight: 600, 
+                  fontSize: '1.4rem', 
+                  color: '#64748b' 
+                }}
+              >
+                {blog.author ? blog.author.trim().charAt(0).toUpperCase() : 'U'}
+              </div>
+            )}
             <div className={styles.authorDetails}>
               <h4 className={styles.authorNameBold}>{blog.author}</h4>
               <p className={styles.authorRole}>Content Creator</p>

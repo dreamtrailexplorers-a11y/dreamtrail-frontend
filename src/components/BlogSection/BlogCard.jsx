@@ -5,17 +5,21 @@ import { cleanImageUrl } from '../../utils/cleanUrl';
 
 const BlogCard = ({ blog }) => {
   const blogSlug = blog.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+  const imageUrl = cleanImageUrl(blog.image)?.trim();
+  const authorAvatarUrl = cleanImageUrl(blog.authorAvatar)?.trim();
 
   return (
     <Link to={`/blog/${blogSlug}`} style={{ textDecoration: 'none', color: 'inherit' }} target="_blank" rel="noopener noreferrer">
       <div className={styles.cardContainer}>
-        <div className={styles.imageWrapper}>
-          <img 
-            src={cleanImageUrl(blog.image) || "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80"} 
-            alt={blog.title} 
-            onError={(e) => e.target.src = "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80"}
-            className={styles.cardImage} 
-          />
+        <div className={styles.imageWrapper} style={{ backgroundColor: '#f1f5f9' }}>
+          {imageUrl && (
+            <img 
+              src={imageUrl} 
+              alt={blog.title} 
+              onError={(e) => { e.target.style.display = 'none'; }}
+              className={styles.cardImage} 
+            />
+          )}
         </div>
 
         <div className={styles.cardContent}>
@@ -23,12 +27,29 @@ const BlogCard = ({ blog }) => {
           <p className={styles.cardExcerpt}>{blog.excerpt}</p>
 
           <div className={styles.authorFooter}>
-            <img
-              src={cleanImageUrl(blog.authorAvatar) || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80"}
-              alt={blog.author}
-              onError={(e) => e.target.src = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80"}
-              className={styles.authorAvatar}
-            />
+            {authorAvatarUrl ? (
+              <img
+                src={authorAvatarUrl}
+                alt={blog.author}
+                onError={(e) => { e.target.style.display = 'none'; }}
+                className={styles.authorAvatar}
+              />
+            ) : (
+              <div 
+                className={styles.authorAvatar} 
+                style={{ 
+                  backgroundColor: '#e2e8f0', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  fontSize: '0.8rem', 
+                  fontWeight: 600, 
+                  color: '#64748b' 
+                }}
+              >
+                {blog.author ? blog.author.trim().charAt(0).toUpperCase() : 'U'}
+              </div>
+            )}
             <div className={styles.authorMeta}>
               <span className={styles.authorName}>by {blog.author}</span>
               <span className={styles.readTime}>{blog.readTime}</span>
