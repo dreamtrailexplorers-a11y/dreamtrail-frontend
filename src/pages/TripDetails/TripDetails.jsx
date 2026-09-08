@@ -91,6 +91,17 @@ const TripDetails = () => {
     return () => clearTimeout(timer);
   }, [slug]);
 
+  useEffect(() => {
+    if (quickInfoModal.isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [quickInfoModal.isOpen]);
+
   const handleOpenEnquiry = () => setIsEnquiryModalOpen(true);
 
   if (!currentTrip) return <Loader fullScreen={true} />;
