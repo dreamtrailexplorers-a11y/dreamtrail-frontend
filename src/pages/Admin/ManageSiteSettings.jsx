@@ -557,7 +557,7 @@ const ManageSiteSettings = () => {
       case 'Footer':
         return (
           <>
-            <form onSubmit={(e) => handleSectionSubmit(e, ['copyrightText'], 'Footer')} className={styles.card}>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['copyrightText', 'madeWithText'], 'Footer')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Footer</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -566,6 +566,16 @@ const ManageSiteSettings = () => {
           <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
             <label className={styles.inputLabel}>Copyright Text</label>
             <input name="copyrightText" value={formData.copyrightText || ''} onChange={handleChange} className={styles.inputField} />
+          </div>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel}>Bottom Right Tagline / Made With Text</label>
+            <input 
+              name="madeWithText" 
+              value={formData.madeWithText !== undefined ? formData.madeWithText : 'Made with ❤️ in India 🇮🇳'} 
+              onChange={handleChange} 
+              placeholder="Made with ❤️ in India 🇮🇳" 
+              className={styles.inputField} 
+            />
           </div>
         </div>
       </form>

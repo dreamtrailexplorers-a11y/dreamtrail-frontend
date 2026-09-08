@@ -11,6 +11,32 @@ import { FiMapPin } from 'react-icons/fi';
 import { getSiteSettings, getTrips } from '../../services/api';
 import styles from './Footer.module.css';
 
+const IndianFlag = () => (
+  <svg 
+    style={{ width: '19px', height: '13px', display: 'inline-block', verticalAlign: '-1px', borderRadius: '2px', marginLeft: '5px', boxShadow: '0 0 1px rgba(0,0,0,0.5)', flexShrink: 0 }} 
+    viewBox="0 0 900 600"
+    role="img"
+    aria-label="India Flag"
+  >
+    <rect width="900" height="200" fill="#FF9933"/>
+    <rect y="200" width="900" height="200" fill="#FFFFFF"/>
+    <rect y="400" width="900" height="200" fill="#138808"/>
+    <circle cx="450" cy="300" r="80" fill="none" stroke="#000080" strokeWidth="20"/>
+    <circle cx="450" cy="300" r="20" fill="#000080"/>
+    {Array.from({ length: 24 }).map((_, i) => (
+      <line 
+        key={i}
+        x1="450" 
+        y1="300" 
+        x2={450 + 80 * Math.cos((i * 15 * Math.PI) / 180)} 
+        y2={300 + 80 * Math.sin((i * 15 * Math.PI) / 180)} 
+        stroke="#000080" 
+        strokeWidth="4"
+      />
+    ))}
+  </svg>
+);
+
 const Footer = () => {
   const [settings, setSettings] = useState(null);
   const [trips, setTrips] = useState([]);
@@ -175,9 +201,27 @@ const Footer = () => {
 
         {/* Bottom Copyright */}
         <div className={styles.bottomBar}>
-          <span>{settings?.copyrightText || '© 2026 DreamTrail Experiences Private Limited. All rights reserved.'}</span>
+          <span>{settings?.copyrightText || '© 2026 Dreamtrail Explorers. All rights reserved.'}</span>
           <span className={styles.indiaTag}>
-            Made with ❤️ in India 🇮🇳
+            {(() => {
+              const text = settings?.madeWithText || 'Made with ❤️ in India 🇮🇳';
+              if (text.includes('🇮🇳')) {
+                const parts = text.split('🇮🇳');
+                return (
+                  <>
+                    <span>{parts[0]}</span>
+                    <IndianFlag />
+                    {parts[1] && <span>{parts[1]}</span>}
+                  </>
+                );
+              }
+              return (
+                <>
+                  <span>{text}</span>
+                  {text.toLowerCase().includes('india') && <IndianFlag />}
+                </>
+              );
+            })()}
           </span>
         </div>
       </footer>
