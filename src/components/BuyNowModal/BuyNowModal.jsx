@@ -23,6 +23,20 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
   const { user, token } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const getDaysLeft = () => {
+    if (!selectedDepartureDate || selectedDepartureDate === 'N/A') return null;
+    try {
+      const dates = selectedDepartureDate.split(' to ');
+      const start = new Date(dates[0]);
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      return Math.ceil((start - today) / (1000 * 60 * 60 * 24));
+    } catch(e) { return null; }
+  };
+  const daysLeft = getDaysLeft();
+  const actualMode = (daysLeft !== null && daysLeft <= 45) ? 'full' : mode;
+
   
   // Replace single persons with quantities mapped by package index
   const [quantities, setQuantities] = useState({});
@@ -310,7 +324,7 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-            {mode !== 'pre-book' && (
+            {actualMode !== 'pre-book' && (
               <button 
                 className={styles.payBtn} 
                 onClick={() => handlePay('full')} 
@@ -321,11 +335,11 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
               </button>
             )}
             
-            {mode === 'both' && (
+            {actualMode === 'both' && (
               <div style={{ textAlign: 'center', color: '#64748b', fontSize: '0.9rem' }}>OR</div>
             )}
 
-            {mode !== 'full' && (
+            {actualMode !== 'full' && (
               <>
                 <button 
                   className={styles.payBtn} 

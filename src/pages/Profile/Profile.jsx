@@ -129,6 +129,27 @@ const Profile = () => {
     );
   }
 
+  const getTripStatus = (dateString) => {
+    if (!dateString || dateString === 'N/A') return { status: 'Unspecified', color: '#64748b', bg: '#f1f5f9' };
+    
+    try {
+      const dates = dateString.split(' to ');
+      const endDate = dates.length > 1 ? new Date(dates[1]) : new Date(dates[0]);
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      
+      if (endDate < today) {
+        return { status: 'Completed', color: '#475569', bg: '#f1f5f9' };
+      } else if (new Date(dates[0]) <= today && endDate >= today) {
+        return { status: 'Ongoing', color: '#0369a1', bg: '#e0f2fe' };
+      } else {
+        return { status: 'Upcoming', color: '#047857', bg: '#d1fae5' };
+      }
+    } catch (e) {
+      return { status: 'Upcoming', color: '#047857', bg: '#d1fae5' };
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -173,82 +194,96 @@ const Profile = () => {
             <p style={{ color: '#64748b' }}>You have no bookings yet.</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {bookings.map(booking => (
-                <div key={booking._id} style={{ border: '1px solid #cbd5e1', borderRadius: '8px', padding: '1.5rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
-                    <div>
-                      <h3 style={{ margin: '0 0 0.5rem 0', color: '#0f172a' }}>{booking.tripTitle}</h3>
-                      <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.9rem', color: '#475569' }}>
-                        <strong>Trip Date:</strong> {booking.departureDate || 'N/A'}
-                      </p>
-                      <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.9rem', color: '#475569' }}>
-                        <strong>Booking Date:</strong> {new Date(booking.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                      </p>
-                      <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.9rem', color: '#475569' }}>
-                        <strong>Persons:</strong> {booking.numberOfPersons}
-                      </p>
-                      <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.9rem', color: '#475569' }}>
-                        <strong>Total Trip Cost:</strong> ₹{booking.totalAmount?.toLocaleString('en-IN')}
-                      </p>
-                      {booking.paymentDetails?.preBookPaid > 0 && (
-                        <div style={{ marginTop: '0.5rem', padding: '0.5rem', backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '4px' }}>
-                          <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.85rem', color: '#166534' }}>
-                            <strong>Pre-Book Paid:</strong> ₹{booking.paymentDetails.preBookPaid.toLocaleString('en-IN')} (₹{Math.round(booking.paymentDetails.preBookPaid / booking.numberOfPersons).toLocaleString('en-IN')} / person)
-                          </p>
-                          {booking.paymentStatus === 'Fully Paid' && (
-                             <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.85rem', color: '#166534' }}>
-                               <strong>Balance Paid:</strong> ₹{(booking.paymentDetails.balancePaid || (booking.totalAmount - booking.paymentDetails.preBookPaid)).toLocaleString('en-IN')}
-                             </p>
-                          )}
-                          {booking.paymentStatus === 'Fully Paid' && booking.paymentDetails?.balancePaidAt && (
-                            <p style={{ margin: 0, fontSize: '0.85rem', color: '#166534' }}>
-                              <strong>Balance Paid On:</strong> {new Date(booking.paymentDetails.balancePaidAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                            </p>
-                          )}
-                        </div>
-                      )}
-                    </div>
+              {bookings.map(booking => {
+                const titleParts = booking.tripTitle.split(' - ');
+                const mainTitle = titleParts[0];
+                const variantDetails = titleParts.slice(1).join(' - ');
+                const tripStatus = getTripStatus(booking.departureDate);
+                
+                return (
+                  <div key={booking._id} style={{ border: '1px solid #e2e8f0', borderRadius: '12px', padding: '1.5rem', backgroundColor: '#fff', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', position: 'relative', overflow: 'hidden' }}>
                     
-                    <div style={{ textAlign: 'right' }}>
-                      <span style={{ 
-                        display: 'inline-block', 
-                        padding: '0.25rem 0.75rem', 
-                        borderRadius: '99px', 
-                        fontSize: '0.8rem', 
-                        fontWeight: '600',
-                        backgroundColor: booking.paymentStatus === 'Fully Paid' ? '#dcfce7' : booking.paymentStatus === 'Pre-Booked' ? '#fef08a' : '#f1f5f9',
-                        color: booking.paymentStatus === 'Fully Paid' ? '#166534' : booking.paymentStatus === 'Pre-Booked' ? '#854d0e' : '#475569',
-                        marginBottom: '1rem'
-                      }}>
-                        {booking.paymentStatus}
+                    <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'flex-end', maxWidth: '200px' }}>
+                      <span style={{ backgroundColor: tripStatus.bg, color: tripStatus.color, padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                        {tripStatus.status}
                       </span>
-                      
-                      {booking.paymentStatus === 'Pre-Booked' && booking.paymentDetails?.balanceDue > 0 && (
-                        <div>
-                          <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: '#ef4444', fontWeight: '600' }}>
-                            Balance Due: ₹{booking.paymentDetails.balanceDue.toLocaleString('en-IN')}
-                          </p>
-                          <button 
-                            onClick={() => setSelectedBooking(booking)}
-                            style={{ 
-                              backgroundColor: '#10b981', 
-                              color: '#fff', 
-                              border: 'none', 
-                              padding: '0.5rem 1rem', 
-                              borderRadius: '6px', 
-                              fontSize: '0.9rem', 
-                              fontWeight: '600', 
-                              cursor: 'pointer' 
-                            }}
-                          >
-                            Pay Balance Now
-                          </button>
-                        </div>
-                      )}
+                      <span style={{ backgroundColor: booking.paymentStatus === 'Fully Paid' ? '#dcfce7' : '#fee2e2', color: booking.paymentStatus === 'Fully Paid' ? '#166534' : '#991b1b', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>
+                        {booking.paymentStatus === 'Fully Paid' ? 'Fully Paid' : 'Balance Due'}
+                      </span>
                     </div>
+
+                    <div style={{ paddingRight: '220px' }}>
+                      <h3 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontSize: '1.25rem', fontWeight: '700' }}>{mainTitle}</h3>
+                      
+                      {variantDetails && (
+                        <p style={{ margin: '0 0 1rem 0', color: '#64748b', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                          {variantDetails}
+                        </p>
+                      )}
+                      {!variantDetails && <div style={{ marginBottom: '1rem' }}></div>}
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', backgroundColor: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid #f1f5f9' }}>
+                      <div>
+                        <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.5px' }}>Trip Date</p>
+                        <p style={{ margin: 0, fontSize: '0.95rem', color: '#0f172a', fontWeight: '500' }}>{booking.departureDate || 'N/A'}</p>
+                      </div>
+                      
+                      <div>
+                        <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.5px' }}>Booking Date</p>
+                        <p style={{ margin: 0, fontSize: '0.95rem', color: '#0f172a', fontWeight: '500' }}>{new Date(booking.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                      </div>
+
+                      <div>
+                        <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.5px' }}>Travelers</p>
+                        <p style={{ margin: 0, fontSize: '0.95rem', color: '#0f172a', fontWeight: '500' }}>{booking.numberOfPersons} Person(s)</p>
+                      </div>
+
+                      <div>
+                        <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.5px' }}>Total Cost</p>
+                        <p style={{ margin: 0, fontSize: '0.95rem', color: '#0f172a', fontWeight: '700' }}>₹{booking.totalAmount?.toLocaleString('en-IN')}</p>
+                      </div>
+                    </div>
+
+                    {booking.paymentDetails?.preBookPaid > 0 && (
+                      <div style={{ marginTop: '1rem', padding: '0.75rem 1rem', backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '8px', display: 'flex', flexWrap: 'wrap', gap: '1.5rem' }}>
+                        <div>
+                          <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.75rem', color: '#166534', textTransform: 'uppercase', fontWeight: '700' }}>Pre-Book Paid</p>
+                          <p style={{ margin: 0, fontSize: '0.9rem', color: '#15803d', fontWeight: '600' }}>
+                            ₹{booking.paymentDetails.preBookPaid.toLocaleString('en-IN')} 
+                            <span style={{ fontWeight: 'normal', fontSize: '0.8rem', marginLeft: '4px' }}>(₹{Math.round(booking.paymentDetails.preBookPaid / booking.numberOfPersons).toLocaleString('en-IN')} / person)</span>
+                          </p>
+                        </div>
+                        
+                        {booking.paymentStatus === 'Fully Paid' && (
+                          <div>
+                             <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.75rem', color: '#166534', textTransform: 'uppercase', fontWeight: '700' }}>Balance Paid</p>
+                             <p style={{ margin: 0, fontSize: '0.9rem', color: '#15803d', fontWeight: '600' }}>
+                               ₹{(booking.paymentDetails.balancePaid || (booking.totalAmount - booking.paymentDetails.preBookPaid)).toLocaleString('en-IN')}
+                               {booking.paymentDetails?.balancePaidAt && (
+                                 <span style={{ fontWeight: 'normal', fontSize: '0.8rem', marginLeft: '4px' }}>on {new Date(booking.paymentDetails.balancePaidAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                               )}
+                             </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {booking.paymentStatus !== 'Fully Paid' && (
+                      <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+                        <button 
+                          onClick={() => setSelectedBooking(booking)}
+                          style={{ padding: '0.6rem 1.2rem', backgroundColor: '#ef4444', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', transition: 'background 0.2s' }}
+                          onMouseOver={(e) => e.target.style.backgroundColor = '#dc2626'}
+                          onMouseOut={(e) => e.target.style.backgroundColor = '#ef4444'}
+                        >
+                          Pay Balance ₹{booking.paymentDetails?.balanceDue?.toLocaleString('en-IN')}
+                        </button>
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

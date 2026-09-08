@@ -338,18 +338,9 @@ const ManageSiteSettings = () => {
                   <label className={styles.inputLabel}>Pre-Booking Amount (â‚¹)</label>
                   <input type="number" value={formData.preBookingSettings?.amount || 5000} onChange={(e) => setFormData({ ...formData, preBookingSettings: { ...formData.preBookingSettings, amount: Number(e.target.value) }})} className={styles.inputField} />
                 </div>
-                <div className={styles.inputGroup}>
-                  <label className={styles.inputLabel}>Reminder Start Days</label>
-                  <input type="number" value={formData.preBookingSettings?.reminderDaysLeft || 10} onChange={(e) => setFormData({ ...formData, preBookingSettings: { ...formData.preBookingSettings, reminderDaysLeft: Number(e.target.value) }})} className={styles.inputField} />
-                </div>
-                <div className={styles.inputGroup}>
-                  <label className={styles.inputLabel}>Reminder Time 1</label>
-                  <input type="time" value={formData.preBookingSettings?.reminderTime1 || '10:00'} onChange={(e) => setFormData({ ...formData, preBookingSettings: { ...formData.preBookingSettings, reminderTime1: e.target.value }})} className={styles.inputField} />
-                </div>
-                <div className={styles.inputGroup}>
-                  <label className={styles.inputLabel}>Reminder Time 2</label>
-                  <input type="time" value={formData.preBookingSettings?.reminderTime2 || '18:00'} onChange={(e) => setFormData({ ...formData, preBookingSettings: { ...formData.preBookingSettings, reminderTime2: e.target.value }})} className={styles.inputField} />
-                </div>
+                
+                
+                
                 <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
                   <label className={styles.inputLabel}>Refund Policy Text</label>
                   <textarea value={formData.preBookingSettings?.refundPolicyText || ''} onChange={(e) => setFormData({ ...formData, preBookingSettings: { ...formData.preBookingSettings, refundPolicyText: e.target.value }})} className={styles.inputField} style={{ minHeight: '80px' }} />

@@ -35,7 +35,7 @@ const DestinationPage = () => {
         const filteredTrips = tripsRes.data.filter(t => t.destination === destName || t.destination?.toLowerCase() === destName.toLowerCase());
         setAllTrips(filteredTrips);
         
-        setReviews(reviewsRes.data.filter(r => r.location === dest?.name));
+        setReviews(reviewsRes.data.filter(r => (r.destination === dest?.name || r.destination?.toLowerCase() === dest?.name?.toLowerCase())));
 
         if (destName) {
           const attrRes = await getAttractionsByDestination(destName);

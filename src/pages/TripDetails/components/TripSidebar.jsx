@@ -155,7 +155,7 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
       <BuyNowModal 
         isOpen={isBuyModalOpen}
         onClose={() => setIsBuyModalOpen(false)}
-        mode="full"
+        mode="both"
         tripTitle={selectedOptionTitle && selectedOptionTitle !== trip.title ? `${trip.title} (${selectedOptionTitle})` : trip.title}
         pricePerPerson={finalPrice}
         duration={trip.duration}
