@@ -33,14 +33,15 @@ const TripReviews = ({ reviews }) => {
         <div className={styles.sliderContainer}>
           <Swiper
             modules={[Navigation, Autoplay]}
-            spaceBetween={20}
-            slidesPerView={1}
+            spaceBetween={24}
+            slidesPerView={1.15}
             navigation
             autoplay={{ delay: 3500, disableOnInteraction: false }}
             breakpoints={{
-              640: { slidesPerView: 2 },
-              900: { slidesPerView: 3 },
-              1200: { slidesPerView: 3 }
+              540: { slidesPerView: 1.5, spaceBetween: 20 },
+              768: { slidesPerView: 2.2, spaceBetween: 24 },
+              1024: { slidesPerView: 2.5, spaceBetween: 24 },
+              1280: { slidesPerView: 3, spaceBetween: 26 }
             }}
           >
             {reviews.map((rev, idx) => {
