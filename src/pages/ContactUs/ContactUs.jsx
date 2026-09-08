@@ -81,7 +81,7 @@ const ContactUs = () => {
             <div className={styles.infoBlock}>
               <div className={styles.infoLabel}>Mobile:</div>
               <div className={styles.infoText}>
-                +91 {settings?.whatsappNumber || '9099599331'}
+                {settings?.phone || (settings?.whatsappNumber ? (settings.whatsappNumber.startsWith('+91') ? settings.whatsappNumber : `+91 ${settings.whatsappNumber}`) : '+91 90 99 599 331')}
               </div>
             </div>
 

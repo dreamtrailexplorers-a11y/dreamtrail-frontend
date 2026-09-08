@@ -30,6 +30,13 @@ const TripSidebar = ({
   let finalPrice = discPriceNum > 0 ? discPriceNum : origPriceNum;
   let finalOrigPrice = origPriceNum > 0 && origPriceNum > finalPrice ? origPriceNum : null;
 
+  const cleanWhatsapp = (num) => {
+    if (!num) return '919099599331';
+    let digits = String(num).replace(/\D/g, '');
+    if (digits.startsWith('0') && digits.length === 11) digits = `91${digits.slice(1)}`;
+    else if (digits.length === 10) digits = `91${digits}`;
+    return digits || '919099599331';
+  };
 
   return (
     <div className={styles.stickySidebar}>
@@ -165,7 +172,7 @@ const TripSidebar = ({
         <p style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '4px' }}>Have your queries answered by</p>
         <p style={{ fontSize: '0.9rem', fontWeight: '700', marginBottom: '15px' }}>DreamTrail's Destination Experts</p>
         <a 
-          href={`https://wa.me/${whatsappNumber || '9099599331'}`} 
+          href={`https://wa.me/${cleanWhatsapp(whatsappNumber)}`} 
           target="_blank" 
           rel="noreferrer"
           className={styles.connectExpertBtn}

@@ -324,7 +324,7 @@ const TripDetails = () => {
                 duration: selectedSidebarDuration
               }} 
               selectedOptionTitle={selectedSidebarTitle}
-              whatsappNumber={settings?.whatsappNumber}
+              whatsappNumber={settings?.whatsappNumber || settings?.phone}
               onOpenEnquiry={handleOpenEnquiry} 
               onOpenBuyModal={() => setIsBuyModalOpen(true)}
               selectedDepartureDate={selectedDepartureDate}

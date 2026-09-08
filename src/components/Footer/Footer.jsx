@@ -85,13 +85,26 @@ const Footer = () => {
     );
   };
 
+  const getCleanWhatsappNumber = (rawNum) => {
+    if (!rawNum) return '919099599331';
+    let digits = String(rawNum).replace(/\D/g, '');
+    if (digits.startsWith('0') && digits.length === 11) {
+      digits = `91${digits.slice(1)}`;
+    } else if (digits.length === 10) {
+      digits = `91${digits}`;
+    }
+    return digits || '919099599331';
+  };
+
+  const activeWhatsappNumber = getCleanWhatsappNumber(settings?.whatsappNumber || settings?.phone);
+
   return (
     <>
       <footer className={styles.footerWrapper}>
         {/* Pre-Footer Bar with Contact */}
         <div className={styles.preFooterBar}>
           <a
-            href={`https://wa.me/${settings?.whatsappNumber || '9099599331'}`}
+            href={`https://wa.me/${activeWhatsappNumber}`}
             target="_blank"
             rel="noreferrer"
             className={styles.contactGroup}
@@ -102,7 +115,7 @@ const Footer = () => {
             </div>
             <div className={styles.contactText}>
               <span className={styles.contactLabel}>Don't wait any longer, Contact us!</span>
-              <span className={styles.phoneNum}>{settings?.phone || '90 99 599 331'}</span>
+              <span className={styles.phoneNum}>{settings?.phone || settings?.whatsappNumber || '90 99 599 331'}</span>
             </div>
           </a>
 
@@ -237,10 +250,12 @@ const Footer = () => {
 
       {/* Floating WhatsApp Button */}
       <a
-        href={`https://wa.me/${settings?.whatsappNumber || '9099599331'}`}
+        href={`https://wa.me/${activeWhatsappNumber}`}
         target="_blank"
         rel="noreferrer"
         className={styles.floatingWhatsapp}
+        aria-label="Chat on WhatsApp"
+        title="Chat on WhatsApp"
       >
         <FaWhatsapp size={30} />
       </a>

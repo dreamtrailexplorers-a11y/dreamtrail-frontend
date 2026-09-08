@@ -544,16 +544,19 @@ const ManageSiteSettings = () => {
         <div className={styles.formGrid}>
           <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}><label className={styles.inputLabel}>Address</label><textarea name="address" value={formData.address || ''} onChange={handleChange} className={styles.textareaField} rows="4" /></div><div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}><label className={styles.inputLabel}>Google Maps Link</label><input name="mapLink" value={formData.mapLink || ''} onChange={handleChange} className={styles.inputField} placeholder="e.g. https://maps.app.goo.gl/..." /></div>
           <div className={styles.inputGroup}>
-            <label className={styles.inputLabel}>Phone</label>
-            <input name="phone" value={formData.phone || ''} onChange={handleChange} className={styles.inputField} />
+            <label className={styles.inputLabel}>Phone / Mobile Number (Display)</label>
+            <input name="phone" value={formData.phone || ''} onChange={handleChange} className={styles.inputField} placeholder="e.g. 90 99 599 331" />
           </div>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Email</label>
             <input name="email" value={formData.email || ''} onChange={handleChange} className={styles.inputField} />
           </div>
-          <div className={styles.inputGroup}>
-            <label className={styles.inputLabel}>Whatsapp Number</label>
-            <input name="whatsappNumber" value={formData.whatsappNumber || ''} onChange={handleChange} className={styles.inputField} placeholder="e.g. 9099599331" />
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel}>WhatsApp Mobile Number (Floating Button & Chat)</label>
+            <input name="whatsappNumber" value={formData.whatsappNumber || ''} onChange={handleChange} className={styles.inputField} placeholder="e.g. 9099599331 or +91 90995 99331" />
+            <small style={{ color: '#64748b', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>
+              ℹ️ Website ke corner me dikhne wale floating WhatsApp button par yahi number use hoga.
+            </small>
           </div>
         </div>
       </form>
@@ -583,7 +586,7 @@ const ManageSiteSettings = () => {
       case 'Footer':
         return (
           <>
-            <form onSubmit={(e) => handleSectionSubmit(e, ['copyrightText', 'madeWithText'], 'Footer')} className={styles.card}>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['copyrightText', 'madeWithText', 'whatsappNumber'], 'Footer')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Footer</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
@@ -592,6 +595,19 @@ const ManageSiteSettings = () => {
           <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
             <label className={styles.inputLabel}>Copyright Text</label>
             <input name="copyrightText" value={formData.copyrightText || ''} onChange={handleChange} className={styles.inputField} />
+          </div>
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.inputLabel}>WhatsApp Mobile Number (Floating Button)</label>
+            <input 
+              name="whatsappNumber" 
+              value={formData.whatsappNumber !== undefined ? formData.whatsappNumber : ''} 
+              onChange={handleChange} 
+              placeholder="e.g. 9099599331 or +91 90995 99331" 
+              className={styles.inputField} 
+            />
+            <small style={{ color: '#64748b', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>
+              ℹ️ Website ke corner me dikhne wale floating WhatsApp button par yahi number use hoga.
+            </small>
           </div>
           <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
             <label className={styles.inputLabel}>Bottom Right Tagline / Made With Text</label>
