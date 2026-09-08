@@ -23,21 +23,19 @@ const filterTrips = (allTrips, category) => {
     const itineraryStr = JSON.stringify(trip.itinerary || '').toLowerCase();
     const highlightsStr = JSON.stringify(trip.highlights || '').toLowerCase();
 
-    // 1. Direct match on destination or title
-    if (dest.includes(q) || title.includes(q)) return true;
-
-    // 2. Special Spiti mapping (matches Middle Kingdom, Himachal, Spiti)
-    if (q === 'spiti') {
-      if (dest.includes('himachal') || route.includes('spiti') || overview.includes('spiti') || itineraryStr.includes('spiti') || title.includes('spiti')) {
-        return true;
-      }
+    // 1. Special Zanskar mapping: ONLY "DISCOVER HIDDEN HORIZONS" (Leh - Padum - Leh)
+    if (q === 'zanskar') {
+      return trip.slug === 'discover-hidden-horizons' || 
+             (title.includes('hidden horizons') && !title.includes('bhutan')) ||
+             route.includes('padum');
     }
 
-    // 3. Special Zanskar mapping (matches Discover Hidden Horizons, Whispers, Ride Beyond Limit, Conquer Himalayan Heights)
-    if (q === 'zanskar') {
-      if (route.includes('zanskar') || overview.includes('zanskar') || itineraryStr.includes('zanskar') || title.includes('zanskar') || highlightsStr.includes('zanskar')) {
-        return true;
-      }
+    // 2. Direct match on destination or title
+    if (dest.includes(q) || title.includes(q)) return true;
+
+    // 3. Special Spiti mapping (matches Middle Kingdom, Himachal, Spiti)
+    if (q === 'spiti') {
+      return dest.includes('himachal') || route.includes('spiti') || overview.includes('spiti') || itineraryStr.includes('spiti') || title.includes('spiti');
     }
 
     // 4. Special Ladakh mapping
