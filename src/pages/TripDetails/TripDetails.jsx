@@ -249,7 +249,7 @@ const TripDetails = () => {
             <div style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '25px 30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', boxShadow: '0 4px 15px rgba(0,0,0,0.03)' }}>
               <div>
                 <h4 style={{ fontSize: '1.2rem', fontWeight: '800', color: '#1e293b', margin: 0, marginBottom: '5px' }}>Book your seat now!</h4>
-                <p style={{ color: '#475569', margin: 0, fontSize: '0.95rem' }}>Pre Book @ 5000/-</p>
+                <p style={{ color: '#475569', margin: 0, fontSize: '0.95rem' }}>Pre Book @ {settings?.preBookingSettings?.amount || 5000}/-</p>
               </div>
               <button 
                 onClick={() => { if (!isUnavailable) setIsBuyModalOpen(true); }}
@@ -463,7 +463,7 @@ const TripDetails = () => {
         <BuyNowModal 
           isOpen={isBuyModalOpen}
           onClose={() => setIsBuyModalOpen(false)}
-          mode="pre-book"
+          mode="both" initialPreBookingSettings={settings?.preBookingSettings}
           tripTitle={selectedSidebarTitle && selectedSidebarTitle !== currentTrip.title ? `${currentTrip.title} (${selectedSidebarTitle})` : currentTrip.title}
           pricePerPerson={Number(displayDiscPrice) || 0}
           duration={currentTrip.duration}
@@ -524,3 +524,7 @@ const TripDetails = () => {
 };
 
 export default TripDetails;
+
+
+
+

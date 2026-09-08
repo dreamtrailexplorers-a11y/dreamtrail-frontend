@@ -87,18 +87,26 @@ const Footer = () => {
           <div className={styles.socialGroup}>
             <span className={styles.socialLabel}>Be part of our Social Media Journey!</span>
             <div className={styles.socialIcons}>
-              <a href={settings?.instagram || '#'} className={`${styles.socialIconBtn} ${styles.instagram}`} aria-label="Instagram">
-                <FaInstagram />
-              </a>
-              <a href={settings?.facebook || '#'} className={`${styles.socialIconBtn} ${styles.facebook}`} aria-label="Facebook">
-                <FaFacebookF />
-              </a>
-              <a href={settings?.youtube || '#'} className={`${styles.socialIconBtn} ${styles.youtube}`} aria-label="YouTube">
-                <FaYoutube />
-              </a>
-              <a href={settings?.linkedin || '#'} className={`${styles.socialIconBtn} ${styles.linkedin}`} aria-label="LinkedIn">
-                <FaLinkedinIn />
-              </a>
+              {settings?.instagram && settings.instagram !== '#' && (
+                  <a href={settings.instagram} target="_blank" rel="noreferrer" className={`${styles.socialIconBtn} ${styles.instagram}`} aria-label="Instagram">
+                    <FaInstagram />
+                  </a>
+                )}
+                {settings?.facebook && settings.facebook !== '#' && (
+                  <a href={settings.facebook} target="_blank" rel="noreferrer" className={`${styles.socialIconBtn} ${styles.facebook}`} aria-label="Facebook">
+                    <FaFacebookF />
+                  </a>
+                )}
+                {settings?.youtube && settings.youtube !== '#' && (
+                  <a href={settings.youtube} target="_blank" rel="noreferrer" className={`${styles.socialIconBtn} ${styles.youtube}`} aria-label="YouTube">
+                    <FaYoutube />
+                  </a>
+                )}
+                {settings?.linkedin && settings.linkedin !== '#' && (
+                  <a href={settings.linkedin} target="_blank" rel="noreferrer" className={`${styles.socialIconBtn} ${styles.linkedin}`} aria-label="LinkedIn">
+                    <FaLinkedinIn />
+                  </a>
+                )}
             </div>
           </div>
         </div>
@@ -192,6 +200,7 @@ const Footer = () => {
 };
 
 export default Footer;
+
 
 
 

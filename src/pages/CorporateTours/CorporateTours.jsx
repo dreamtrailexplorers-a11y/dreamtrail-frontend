@@ -181,7 +181,7 @@ const CorporateTours = () => {
         </section>
       )}
 
-      {/* STEPS SECTION */}}
+      {/* STEPS SECTION */}
       {data.steps && data.steps.length > 0 && (
         <section className={styles.statsSection}>
           <div className={styles.container}>

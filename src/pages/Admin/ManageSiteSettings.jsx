@@ -546,13 +546,13 @@ const ManageSiteSettings = () => {
       case 'Social Media Links':
         return (
           <>
-            <form onSubmit={(e) => handleSectionSubmit(e, ['instagram', 'facebook', 'youtube', 'linkedin', 'whatsapp'], 'Social Media Links')} className={styles.card}>
+            <form onSubmit={(e) => handleSectionSubmit(e, ['instagram', 'facebook', 'youtube', 'linkedin'], 'Social Media Links')} className={styles.card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <h3 className={styles.cardTitle} style={{ margin: 0, border: 'none', padding: 0 }}>Social Media Links</h3>
           <button type="submit" className={styles.btnPrimary} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Save Section</button>
         </div>
         <div className={styles.formGrid}>
-          {['instagram', 'facebook', 'youtube', 'linkedin', 'whatsapp'].map(platform => (
+          {['instagram', 'facebook', 'youtube', 'linkedin'].map(platform => (
             <div key={platform} className={styles.inputGroup}>
               <label className={styles.inputLabel} style={{ textTransform: 'capitalize' }}>{platform}</label>
               <input name={platform} value={formData[platform] || ''} onChange={handleChange} className={styles.inputField} />
@@ -1664,4 +1664,5 @@ const ManageSiteSettings = () => {
 };
 
 export default ManageSiteSettings;
+
 

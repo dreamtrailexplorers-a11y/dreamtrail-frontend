@@ -19,7 +19,7 @@ const loadRazorpay = () => {
   });
 };
 
-const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, destination, selectedDepartureDate, mode = 'both', selectedPackages, allPackages }) => {
+const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, destination, selectedDepartureDate, mode = 'both', selectedPackages, allPackages, initialPreBookingSettings }) => {
   const { user, token } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,12 +27,16 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
   // Replace single persons with quantities mapped by package index
   const [quantities, setQuantities] = useState({});
   const [loading, setLoading] = useState(null);
-  const [preBookingSettings, setPreBookingSettings] = useState(null);
+  const [preBookingSettings, setPreBookingSettings] = useState(initialPreBookingSettings || null);
   const [activePackages, setActivePackages] = useState([]);
 
   useEffect(() => {
     if (isOpen) {
-      getSiteSettings().then(res => setPreBookingSettings(res.data?.preBookingSettings)).catch(console.error);
+      if (!initialPreBookingSettings && !preBookingSettings) {
+        getSiteSettings().then(res => setPreBookingSettings(res.data?.preBookingSettings)).catch(console.error);
+      } else if (initialPreBookingSettings) {
+        setPreBookingSettings(initialPreBookingSettings);
+      }
       
       const pendingBuyStr = sessionStorage.getItem('pendingBuy');
       if (pendingBuyStr) {
