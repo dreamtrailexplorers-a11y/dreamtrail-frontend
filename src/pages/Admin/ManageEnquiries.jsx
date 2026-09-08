@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getEnquiries, deleteEnquiry } from '../../services/api';
 import styles from './Admin.module.css';
-import { FiTrash2, FiDownload, FiSearch } from 'react-icons/fi';
+import { FiTrash2, FiDownload, FiSearch, FiInfo, FiX } from 'react-icons/fi';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -25,6 +25,7 @@ const ManageEnquiries = () => {
   const [endDate, setEndDate] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
   const [activeTab, setActiveTab] = useState('packages'); // 'packages' | 'contact'
+  const [selectedMessageEnquiry, setSelectedMessageEnquiry] = useState(null);
 
   useEffect(() => {
     fetchEnquiries();
@@ -338,7 +339,49 @@ const ManageEnquiries = () => {
                     </>
                   )}
 
-                  <td data-label="Message">{enq.message}</td>
+                  <td data-label="Message">
+                    {enq.message ? (
+                      <button
+                        type="button"
+                        onClick={() => setSelectedMessageEnquiry(enq)}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          padding: '6px 12px',
+                          backgroundColor: '#f8fafc',
+                          border: '1px solid #cbd5e1',
+                          borderRadius: '6px',
+                          color: '#0f172a',
+                          cursor: 'pointer',
+                          fontSize: '0.85rem',
+                          fontWeight: '500',
+                          maxWidth: '160px',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          transition: 'all 0.2s',
+                          textAlign: 'left'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#f1f5f9';
+                          e.currentTarget.style.borderColor = '#94a3b8';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#f8fafc';
+                          e.currentTarget.style.borderColor = '#cbd5e1';
+                        }}
+                        title="Click to view full message"
+                      >
+                        <FiInfo style={{ color: '#0284c7', flexShrink: 0 }} size={16} />
+                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {enq.message}
+                        </span>
+                      </button>
+                    ) : (
+                      <span style={{ color: '#94a3b8' }}>-</span>
+                    )}
+                  </td>
                   <td data-label="Actions">
 <button onClick={() => handleDelete(enq._id)} className={styles.btnDanger} style={{ padding: '6px' }}>
                       <FiTrash2 />
@@ -348,6 +391,106 @@ const ManageEnquiries = () => {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Message View Modal */}
+      {selectedMessageEnquiry && (
+        <div 
+          className={styles.modalOverlay} 
+          onClick={() => setSelectedMessageEnquiry(null)}
+          style={{ padding: '20px', zIndex: 1100 }}
+        >
+          <div 
+            className={styles.modalContent} 
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: '540px', width: '100%', padding: '24px', position: 'relative' }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid #e2e8f0', paddingBottom: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <FiInfo size={22} style={{ color: '#0284c7' }} />
+                <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#0f172a', fontWeight: '600' }}>
+                  Enquiry Message
+                </h3>
+              </div>
+              <button
+                onClick={() => setSelectedMessageEnquiry(null)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#64748b',
+                  borderRadius: '4px'
+                }}
+                title="Close"
+              >
+                <FiX size={20} />
+              </button>
+            </div>
+
+            {/* Sender Overview Card */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '12px', marginBottom: '16px', background: '#f8fafc', padding: '14px', borderRadius: '8px', fontSize: '0.88rem', border: '1px solid #e2e8f0' }}>
+              <div>
+                <span style={{ color: '#64748b', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: '600', marginBottom: '2px' }}>Name</span>
+                <span style={{ color: '#0f172a', fontWeight: '600' }}>{selectedMessageEnquiry.name || '-'}</span>
+              </div>
+              <div>
+                <span style={{ color: '#64748b', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: '600', marginBottom: '2px' }}>Phone</span>
+                <span style={{ color: '#0f172a' }}>{selectedMessageEnquiry.phone || '-'}</span>
+              </div>
+              <div style={{ gridColumn: '1 / -1' }}>
+                <span style={{ color: '#64748b', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: '600', marginBottom: '2px' }}>Email</span>
+                <span style={{ color: '#0f172a', wordBreak: 'break-all' }}>{selectedMessageEnquiry.email || '-'}</span>
+              </div>
+              {selectedMessageEnquiry.tripTitle && (
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <span style={{ color: '#64748b', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: '600', marginBottom: '2px' }}>Package / Category</span>
+                  <span style={{ color: '#0284c7', fontWeight: '600' }}>{selectedMessageEnquiry.tripTitle}</span>
+                </div>
+              )}
+              <div>
+                <span style={{ color: '#64748b', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: '600', marginBottom: '2px' }}>Date</span>
+                <span style={{ color: '#475569' }}>{formatDate(selectedMessageEnquiry.createdAt)}</span>
+              </div>
+            </div>
+
+            {/* Message Body */}
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', color: '#475569', textTransform: 'uppercase', marginBottom: '6px' }}>
+                Message Content
+              </label>
+              <div style={{
+                backgroundColor: '#ffffff',
+                border: '1px solid #cbd5e1',
+                borderRadius: '8px',
+                padding: '14px',
+                fontSize: '0.92rem',
+                color: '#1e293b',
+                lineHeight: '1.6',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+                maxHeight: '220px',
+                overflowY: 'auto'
+              }}>
+                {selectedMessageEnquiry.message || 'No message provided.'}
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button
+                type="button"
+                onClick={() => setSelectedMessageEnquiry(null)}
+                className={styles.btnSecondary}
+                style={{ padding: '8px 24px', minWidth: '90px' }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
