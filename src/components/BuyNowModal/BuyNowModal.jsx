@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
@@ -17,6 +17,202 @@ const loadRazorpay = () => {
     script.onerror = () => resolve(false);
     document.body.appendChild(script);
   });
+};
+
+const PackageItemDropdown = ({ pkg, idx, allPackages, activePackages, onSelectPackage }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const selectableOptions = (allPackages || []).filter(
+    (opt) => !activePackages.some((ap, apIdx) => apIdx !== idx && ap.title === opt.title)
+  );
+
+  if (!allPackages || allPackages.length <= 1) {
+    return (
+      <div style={{ fontWeight: '700', color: '#1e293b', fontSize: '0.98rem' }}>
+        {pkg.title}
+      </div>
+    );
+  }
+
+  return (
+    <div ref={dropdownRef} style={{ position: 'relative', width: '100%' }}>
+      <div
+        onClick={() => setIsOpen(!isOpen)}
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 14px',
+          borderRadius: isOpen ? '8px 8px 0 0' : '8px',
+          border: isOpen ? '1.5px solid #cc0000' : '1.5px solid #cbd5e1',
+          backgroundColor: '#f8fafc',
+          cursor: 'pointer',
+          userSelect: 'none',
+          transition: 'all 0.2s ease',
+          boxShadow: isOpen ? '0 0 0 3px rgba(204, 0, 0, 0.1)' : 'none'
+        }}
+      >
+        <span style={{ fontSize: '0.9rem', fontWeight: '700', color: '#0f172a', flex: 1, paddingRight: '10px', lineHeight: '1.3' }}>
+          {pkg.title}
+        </span>
+        <span style={{ fontSize: '0.75rem', color: '#64748b', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}>
+          ▼
+        </span>
+      </div>
+
+      {isOpen && (
+        <div style={{
+          position: 'relative',
+          width: '100%',
+          border: '1.5px solid #cc0000',
+          borderTop: 'none',
+          borderRadius: '0 0 8px 8px',
+          backgroundColor: '#ffffff',
+          maxHeight: '180px',
+          overflowY: 'auto',
+          boxShadow: '0 6px 16px rgba(0, 0, 0, 0.08)'
+        }}>
+          {selectableOptions.map((opt, i) => (
+            <div
+              key={i}
+              onClick={() => {
+                onSelectPackage(idx, opt);
+                setIsOpen(false);
+              }}
+              style={{
+                padding: '10px 14px',
+                borderBottom: i < selectableOptions.length - 1 ? '1px solid #f1f5f9' : 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: '12px',
+                backgroundColor: opt.title === pkg.title ? '#fef2f2' : '#ffffff',
+                transition: 'background-color 0.15s ease'
+              }}
+              onMouseEnter={(e) => { if (opt.title !== pkg.title) e.currentTarget.style.backgroundColor = '#f8fafc'; }}
+              onMouseLeave={(e) => { if (opt.title !== pkg.title) e.currentTarget.style.backgroundColor = '#ffffff'; }}
+            >
+              <span style={{ fontSize: '0.88rem', fontWeight: opt.title === pkg.title ? '700' : '600', color: opt.title === pkg.title ? '#cc0000' : '#1e293b', flex: 1, lineHeight: '1.35' }}>
+                {opt.title}
+              </span>
+              <span style={{ fontSize: '0.92rem', fontWeight: '800', color: '#10b981', whiteSpace: 'nowrap' }}>
+                ₹{(Number(opt.price) || 0).toLocaleString('en-IN')}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const CustomAddPackageDropdown = ({ allPackages, activePackages, onAddPackage }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const availablePackages = (allPackages || []).filter(
+    (pkg) => !activePackages.some((ap) => ap.title === pkg.title)
+  );
+
+  if (availablePackages.length === 0) return null;
+
+  return (
+    <div ref={dropdownRef} style={{ marginTop: '12px', paddingTop: '15px', borderTop: '2px dashed #e2e8f0' }}>
+      <label style={{ display: 'block', fontSize: '0.85rem', color: '#475569', fontWeight: '700', marginBottom: '8px' }}>
+        + Add Another Package Option
+      </label>
+      <div style={{ position: 'relative', width: '100%' }}>
+        <div
+          onClick={() => setIsOpen(!isOpen)}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '11px 14px',
+            borderRadius: isOpen ? '8px 8px 0 0' : '8px',
+            border: isOpen ? '1.5px solid #cc0000' : '1.5px solid #cbd5e1',
+            backgroundColor: '#f8fafc',
+            cursor: 'pointer',
+            userSelect: 'none',
+            transition: 'all 0.2s ease',
+            boxShadow: isOpen ? '0 0 0 3px rgba(204, 0, 0, 0.1)' : 'none'
+          }}
+        >
+          <span style={{ fontSize: '0.9rem', fontWeight: '600', color: '#64748b' }}>
+            Select a package to add...
+          </span>
+          <span style={{ fontSize: '0.75rem', color: '#64748b', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}>
+            ▼
+          </span>
+        </div>
+
+        {isOpen && (
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            border: '1.5px solid #cc0000',
+            borderTop: 'none',
+            borderRadius: '0 0 8px 8px',
+            backgroundColor: '#ffffff',
+            maxHeight: '190px',
+            overflowY: 'auto',
+            boxShadow: '0 6px 16px rgba(0, 0, 0, 0.08)'
+          }}>
+            {availablePackages.map((pkg, i) => (
+              <div
+                key={i}
+                onClick={() => {
+                  onAddPackage(pkg);
+                  setIsOpen(false);
+                }}
+                style={{
+                  padding: '11px 14px',
+                  borderBottom: i < availablePackages.length - 1 ? '1px solid #f1f5f9' : 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  gap: '12px',
+                  transition: 'background-color 0.15s ease'
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#fef2f2'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; }}
+              >
+                <span style={{ fontSize: '0.88rem', fontWeight: '600', color: '#1e293b', flex: 1, lineHeight: '1.35' }}>
+                  {pkg.title}
+                </span>
+                <span style={{ fontSize: '0.92rem', fontWeight: '800', color: '#10b981', whiteSpace: 'nowrap' }}>
+                  ₹{(Number(pkg.price) || 0).toLocaleString('en-IN')}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, destination, selectedDepartureDate, mode = 'both', selectedPackages, allPackages, initialPreBookingSettings }) => {
@@ -240,7 +436,7 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
           
           {isMultiPackage ? (
             <div style={{ marginBottom: '20px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxHeight: '350px', overflowY: 'auto', paddingRight: '8px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                 {activePackages.map((pkg, idx) => (
                   <div key={idx} style={{ paddingBottom: '15px', borderBottom: idx < activePackages.length - 1 ? '1px dashed #cbd5e1' : 'none' }}>
                     <div style={{ marginBottom: '10px' }}>
@@ -271,47 +467,17 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
                         )}
                       </div>
 
-                      {allPackages && allPackages.length > 1 ? (
-                        <select 
-                          value={pkg.title}
-                          onChange={(e) => {
-                            const selected = allPackages.find(p => p.title === e.target.value);
-                            if (selected) {
-                              const newPkgs = [...activePackages];
-                              newPkgs[idx] = { title: selected.title, price: selected.price };
-                              setActivePackages(newPkgs);
-                            }
-                          }}
-                          style={{ 
-                            width: '100%', 
-                            padding: '10px 12px', 
-                            borderRadius: '8px', 
-                            border: '1.5px solid #cbd5e1', 
-                            backgroundColor: '#f8fafc', 
-                            fontSize: '0.92rem', 
-                            fontWeight: '600', 
-                            color: '#0f172a', 
-                            outline: 'none', 
-                            cursor: 'pointer' 
-                          }}
-                        >
-                          {!allPackages.some(opt => opt.title === pkg.title) && (
-                            <option value={pkg.title}>{pkg.title}</option>
-                          )}
-                          {allPackages.map((opt, optIdx) => {
-                            const isChosenElsewhere = activePackages.some((ap, apIdx) => apIdx !== idx && ap.title === opt.title);
-                            if (isChosenElsewhere) return null;
-
-                            return (
-                              <option key={optIdx} value={opt.title}>
-                                {opt.title} — ₹{(Number(opt.price) || 0).toLocaleString('en-IN')}
-                              </option>
-                            );
-                          })}
-                        </select>
-                      ) : (
-                        <div style={{ fontWeight: '700', color: '#1e293b', fontSize: '0.98rem' }}>{pkg.title}</div>
-                      )}
+                      <PackageItemDropdown 
+                        pkg={pkg}
+                        idx={idx}
+                        allPackages={allPackages}
+                        activePackages={activePackages}
+                        onSelectPackage={(targetIdx, selected) => {
+                          const newPkgs = [...activePackages];
+                          newPkgs[targetIdx] = { title: selected.title, price: selected.price };
+                          setActivePackages(newPkgs);
+                        }}
+                      />
                     </div>
                     
                     <div className={styles.priceRow} style={{ marginBottom: '10px' }}>
@@ -330,48 +496,15 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
                   </div>
                 ))}
                 
-                {/* Add Package Dropdown */}
-                {allPackages && allPackages.some(p => !activePackages.some(ap => ap.title === p.title)) && (
-                  <div style={{ marginTop: '5px', paddingTop: '15px', borderTop: '2px dashed #e2e8f0', paddingBottom: '5px' }}>
-                    <label style={{ display: 'block', fontSize: '0.85rem', color: '#64748b', fontWeight: '700', marginBottom: '8px' }}>
-                      + Add Another Package Option
-                    </label>
-                    <select 
-                      value=""
-                      onChange={(e) => {
-                        if (!e.target.value) return;
-                        const selectedPkg = allPackages.find(p => p.title === e.target.value);
-                        if (selectedPkg) {
-                          setActivePackages(prev => [...prev, { title: selectedPkg.title, price: selectedPkg.price }]);
-                          setQuantities(prev => ({ ...prev, [activePackages.length]: 1 }));
-                        }
-                      }}
-                      style={{ 
-                        width: '100%', 
-                        padding: '10px 12px', 
-                        borderRadius: '8px', 
-                        border: '1.5px solid #cbd5e1', 
-                        backgroundColor: '#f8fafc', 
-                        fontSize: '0.92rem', 
-                        fontWeight: '600',
-                        color: '#0f172a', 
-                        outline: 'none', 
-                        cursor: 'pointer' 
-                      }}
-                    >
-                      <option value="">Select a package to add...</option>
-                      {allPackages.map((pkg, i) => {
-                        const isAlreadyAdded = activePackages.some(ap => ap.title === pkg.title);
-                        if (isAlreadyAdded) return null;
-                        return (
-                          <option key={i} value={pkg.title}>
-                            {pkg.title} — ₹{(Number(pkg.price) || 0).toLocaleString('en-IN')}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                )}
+                {/* Custom Add Package Dropdown */}
+                <CustomAddPackageDropdown 
+                  allPackages={allPackages}
+                  activePackages={activePackages}
+                  onAddPackage={(selectedPkg) => {
+                    setActivePackages(prev => [...prev, { title: selectedPkg.title, price: selectedPkg.price }]);
+                    setQuantities(prev => ({ ...prev, [activePackages.length]: 1 }));
+                  }}
+                />
               </div>
             </div>
           ) : (

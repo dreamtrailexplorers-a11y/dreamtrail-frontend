@@ -14,8 +14,11 @@
 
 .modalContent {
   background-color: #fff;
-  width: 90%;
-  max-width: 400px;
+  width: 92%;
+  max-width: 480px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -43,6 +46,7 @@
 .modalHeader {
   padding: 20px 25px 15px;
   border-bottom: 1px solid #f1f5f9;
+  flex-shrink: 0;
 }
 
 .modalHeader h2 {
@@ -59,7 +63,9 @@
 }
 
 .modalBody {
-  padding: 25px;
+  padding: 20px 25px 25px;
+  overflow-y: auto;
+  flex: 1;
 }
 
 .priceRow {

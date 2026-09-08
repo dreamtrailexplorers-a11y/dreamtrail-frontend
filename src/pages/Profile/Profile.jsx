@@ -20,6 +20,83 @@ const loadRazorpay = () => {
   });
 };
 
+const parseBookingDetails = (tripTitle, totalPersons = 1) => {
+  if (!tripTitle) return { mainTitle: 'Tour Booking', packages: [] };
+
+  // 1. Check for "Multiple Packages (...)"
+  const multiMatch = tripTitle.match(/Multiple Packages \((.*?)\)\s*$/i);
+  if (multiMatch) {
+    const rawList = multiMatch[1];
+    
+    let cleanName = tripTitle
+      .replace(/ - Multiple Packages \(.*?\)\s*$/i, '')
+      .replace(/\s*\(Multiple Packages Selected\)\s*/i, '')
+      .replace(/\s*-\s*Multiple Packages\s*$/i, '')
+      .trim();
+
+    if (cleanName.includes(' (')) {
+      cleanName = cleanName.split(' (')[0].trim();
+    }
+
+    const packages = [];
+    const parts = rawList.split(/,\s*(?=[^,]+?\s+x\d+)/);
+    parts.forEach(part => {
+      const xMatch = part.match(/^(.*?)\s+x(\d+)$/);
+      if (xMatch) {
+        packages.push({
+          title: xMatch[1].trim(),
+          qty: parseInt(xMatch[2], 10) || 1
+        });
+      } else {
+        packages.push({
+          title: part.trim(),
+          qty: 1
+        });
+      }
+    });
+
+    return {
+      mainTitle: cleanName || 'Tour Booking',
+      packages
+    };
+  }
+
+  // 2. Check for "Trip Name - Variant" or "Trip Name (Variant)"
+  let cleanName = tripTitle;
+  let pkgTitle = null;
+
+  if (tripTitle.includes(' - ')) {
+    const splitDash = tripTitle.split(' - ');
+    cleanName = splitDash[0].trim();
+    pkgTitle = splitDash.slice(1).join(' - ').trim();
+  }
+
+  if (cleanName.includes('(')) {
+    const parenMatch = cleanName.match(/^(.*?)\s*\((.*?)\)\s*$/);
+    if (parenMatch) {
+      cleanName = parenMatch[1].trim();
+      if (!pkgTitle) {
+        pkgTitle = parenMatch[2].trim();
+      }
+    }
+  }
+
+  cleanName = cleanName.replace(/\s*\(Multiple Packages Selected\)\s*/i, '').trim();
+
+  const packages = [];
+  if (pkgTitle && pkgTitle.toLowerCase() !== 'multiple packages' && !pkgTitle.toLowerCase().includes('multiple packages selected')) {
+    packages.push({
+      title: pkgTitle,
+      qty: totalPersons || 1
+    });
+  }
+
+  return {
+    mainTitle: cleanName || tripTitle,
+    packages
+  };
+};
+
 const Profile = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -195,15 +272,13 @@ const Profile = () => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {bookings.map(booking => {
-                const titleParts = booking.tripTitle.split(' - ');
-                const mainTitle = titleParts[0];
-                const variantDetails = titleParts.slice(1).join(' - ');
+                const parsed = parseBookingDetails(booking.tripTitle, booking.numberOfPersons);
                 const tripStatus = getTripStatus(booking.departureDate);
                 
                 return (
                   <div key={booking._id} style={{ border: '1px solid #e2e8f0', borderRadius: '12px', padding: '1.5rem', backgroundColor: '#fff', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', position: 'relative', overflow: 'hidden' }}>
                     
-                    <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'flex-end', maxWidth: '200px' }}>
+                    <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'flex-end', maxWidth: '220px' }}>
                       <span style={{ backgroundColor: tripStatus.bg, color: tripStatus.color, padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         {tripStatus.status}
                       </span>
@@ -212,15 +287,50 @@ const Profile = () => {
                       </span>
                     </div>
 
-                    <div style={{ paddingRight: '220px' }}>
-                      <h3 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontSize: '1.25rem', fontWeight: '700' }}>{mainTitle}</h3>
+                    <div style={{ paddingRight: '230px', marginBottom: '1.25rem' }}>
+                      <h3 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontSize: '1.3rem', fontWeight: '800', lineHeight: '1.3' }}>
+                        {parsed.mainTitle}
+                      </h3>
                       
-                      {variantDetails && (
-                        <p style={{ margin: '0 0 1rem 0', color: '#64748b', fontSize: '0.9rem', lineHeight: '1.5' }}>
-                          {variantDetails}
-                        </p>
+                      {parsed.packages.length > 0 && (
+                        <div style={{ marginTop: '0.75rem' }}>
+                          <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: '6px' }}>
+                            Package Option{parsed.packages.length > 1 ? `s (${parsed.packages.length})` : ''}
+                          </div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                            {parsed.packages.map((pkg, pIdx) => (
+                              <div 
+                                key={pIdx} 
+                                style={{ 
+                                  display: 'flex', 
+                                  justifyContent: 'space-between', 
+                                  alignItems: 'center', 
+                                  backgroundColor: '#f8fafc', 
+                                  border: '1px solid #e2e8f0', 
+                                  borderRadius: '8px', 
+                                  padding: '7px 12px', 
+                                  gap: '12px' 
+                                }}
+                              >
+                                <span style={{ fontSize: '0.88rem', color: '#1e293b', fontWeight: '600', lineHeight: '1.35', flex: 1 }}>
+                                  {pkg.title}
+                                </span>
+                                <span style={{ 
+                                  backgroundColor: '#e2e8f0', 
+                                  color: '#334155', 
+                                  padding: '3px 10px', 
+                                  borderRadius: '12px', 
+                                  fontSize: '0.78rem', 
+                                  fontWeight: '700', 
+                                  whiteSpace: 'nowrap' 
+                                }}>
+                                  {pkg.qty} {pkg.qty > 1 ? 'Persons' : 'Person'}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       )}
-                      {!variantDetails && <div style={{ marginBottom: '1rem' }}></div>}
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', backgroundColor: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid #f1f5f9' }}>
@@ -291,23 +401,43 @@ const Profile = () => {
       <Footer />
 
       {/* BALANCE PAYMENT MODAL */}
-      {selectedBooking && createPortal(
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px'
-        }} onClick={() => setSelectedBooking(null)}>
+      {selectedBooking && (() => {
+        const modalParsed = parseBookingDetails(selectedBooking.tripTitle, selectedBooking.numberOfPersons);
+        return createPortal(
           <div style={{
-            backgroundColor: '#fff', borderRadius: '12px', padding: '2rem', width: '100%', maxWidth: '450px', position: 'relative'
-          }} onClick={e => e.stopPropagation()}>
-            <button 
-              onClick={() => setSelectedBooking(null)}
-              style={{ position: 'absolute', top: '15px', right: '15px', background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: '#64748b' }}
-            >
-              &times;
-            </button>
-            
-            <h2 style={{ fontSize: '1.3rem', marginBottom: '0.5rem', color: '#0f172a' }}>{selectedBooking.tripTitle}</h2>
-            <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Balance Payment Summary</p>
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px'
+          }} onClick={() => setSelectedBooking(null)}>
+            <div style={{
+              backgroundColor: '#fff', borderRadius: '12px', padding: '2rem', width: '100%', maxWidth: '480px', position: 'relative'
+            }} onClick={e => e.stopPropagation()}>
+              <button 
+                onClick={() => setSelectedBooking(null)}
+                style={{ position: 'absolute', top: '15px', right: '15px', background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: '#64748b' }}
+              >
+                &times;
+              </button>
+              
+              <h2 style={{ fontSize: '1.3rem', marginBottom: '0.5rem', color: '#0f172a', fontWeight: '800' }}>{modalParsed.mainTitle}</h2>
+              <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '1.25rem' }}>Balance Payment Summary</p>
+
+              {modalParsed.packages.length > 0 && (
+                <div style={{ marginBottom: '1.25rem' }}>
+                  <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>
+                    Package Option{modalParsed.packages.length > 1 ? `s (${modalParsed.packages.length})` : ''}
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    {modalParsed.packages.map((pkg, idx) => (
+                      <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', padding: '6px 12px', borderRadius: '6px', fontSize: '0.85rem' }}>
+                        <span style={{ fontWeight: '600', color: '#334155', flex: 1, paddingRight: '8px' }}>{pkg.title}</span>
+                        <span style={{ backgroundColor: '#e2e8f0', color: '#334155', padding: '2px 8px', borderRadius: '10px', fontWeight: '700', fontSize: '0.75rem', whiteSpace: 'nowrap' }}>
+                          {pkg.qty} {pkg.qty > 1 ? 'Persons' : 'Person'}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             
             <div style={{ border: '1px solid #e2e8f0', borderRadius: '8px', padding: '1rem', marginBottom: '1.5rem', backgroundColor: '#f8fafc' }}>
               
@@ -359,7 +489,8 @@ const Profile = () => {
             </button>
           </div>
         </div>
-      , document.body)}
+      , document.body);
+      })()}
     </>
   );
 };
