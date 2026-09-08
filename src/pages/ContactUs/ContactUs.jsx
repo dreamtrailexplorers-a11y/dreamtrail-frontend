@@ -74,7 +74,7 @@ const ContactUs = () => {
             <div className={styles.infoBlock}>
               <div className={styles.infoLabel}>Email:</div>
               <div className={styles.infoText}>
-                {settings?.email || 'info@avianexperiences.com'}
+                {settings?.email || 'info@dreamtrailexplorers.com'}
               </div>
             </div>
 
