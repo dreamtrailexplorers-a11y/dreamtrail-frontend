@@ -46,6 +46,32 @@ const StringArrayInput = ({ title, data = [], onChange }) => {
   );
 };
 
+const IndianFlag = () => (
+  <svg 
+    style={{ width: '20px', height: '14px', display: 'inline-block', verticalAlign: '-2px', borderRadius: '2px', marginLeft: '6px', boxShadow: '0 0 1px rgba(0,0,0,0.5)', flexShrink: 0 }} 
+    viewBox="0 0 900 600"
+    role="img"
+    aria-label="India Flag"
+  >
+    <rect width="900" height="200" fill="#FF9933"/>
+    <rect y="200" width="900" height="200" fill="#FFFFFF"/>
+    <rect y="400" width="900" height="200" fill="#138808"/>
+    <circle cx="450" cy="300" r="80" fill="none" stroke="#000080" strokeWidth="20"/>
+    <circle cx="450" cy="300" r="20" fill="#000080"/>
+    {Array.from({ length: 24 }).map((_, i) => (
+      <line 
+        key={i}
+        x1="450" 
+        y1="300" 
+        x2={450 + 80 * Math.cos((i * 15 * Math.PI) / 180)} 
+        y2={300 + 80 * Math.sin((i * 15 * Math.PI) / 180)} 
+        stroke="#000080" 
+        strokeWidth="4"
+      />
+    ))}
+  </svg>
+);
+
 const ManageSiteSettings = () => {
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -576,6 +602,28 @@ const ManageSiteSettings = () => {
               placeholder="Made with ❤️ in India 🇮🇳" 
               className={styles.inputField} 
             />
+            <div style={{ marginTop: '10px', padding: '10px 14px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '0.88rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <span style={{ color: '#64748b', fontWeight: '500' }}>Live Website Preview:</span>
+                <span style={{ color: '#0f172a', fontWeight: '700', display: 'inline-flex', alignItems: 'center' }}>
+                  {(() => {
+                    const text = (formData.madeWithText !== undefined && formData.madeWithText !== '') 
+                      ? formData.madeWithText 
+                      : 'Made with ❤️ in India 🇮🇳';
+                    const cleaned = text.replace(/🇮🇳|\s+IN$/gi, '').trim();
+                    return (
+                      <>
+                        <span>{cleaned}</span>
+                        <IndianFlag />
+                      </>
+                    );
+                  })()}
+                </span>
+              </div>
+              <div style={{ fontSize: '0.78rem', color: '#64748b', lineHeight: '1.4' }}>
+                ℹ️ <strong>Note:</strong> Windows PC ke text box me country flags emoji render nahi hote (letters "IN" dikhte hain), lekin website ke footer par asli Indian flag 🇮🇳 hi dikhayi dega.
+              </div>
+            </div>
           </div>
         </div>
       </form>

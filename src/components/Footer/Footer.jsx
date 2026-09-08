@@ -215,6 +215,15 @@ const Footer = () => {
                   </>
                 );
               }
+              if (/\s+IN$/i.test(text)) {
+                const cleanText = text.replace(/\s+IN$/i, '');
+                return (
+                  <>
+                    <span>{cleanText}</span>
+                    <IndianFlag />
+                  </>
+                );
+              }
               return (
                 <>
                   <span>{text}</span>
