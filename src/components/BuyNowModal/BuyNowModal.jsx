@@ -274,9 +274,13 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
                       style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1', backgroundColor: '#f8fafc', fontSize: '0.9rem', outline: 'none' }}
                     >
                       <option value="">Select a package to add...</option>
-                      {allPackages.map((pkg, i) => (
-                        <option key={i} value={i}>{pkg.title} - ₹{Number(pkg.price).toLocaleString('en-IN')}</option>
-                      ))}
+                      {allPackages.map((pkg, i) => {
+                        const isAlreadyAdded = activePackages.some(ap => ap.title === pkg.title);
+                        if (isAlreadyAdded) return null;
+                        return (
+                          <option key={i} value={i}>{pkg.title} - ₹{Number(pkg.price).toLocaleString('en-IN')}</option>
+                        );
+                      })}
                     </select>
                   </div>
                 )}

@@ -938,9 +938,9 @@ const ManageSiteSettings = () => {
                         onClick={() => handleRemovePolicyBlock('careersBlocks', idx)}
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
-                      >
-                        Ãƒâ€”
-                      </button>
+                        >
+                          &times;
+                        </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
                         <input 
@@ -1006,9 +1006,9 @@ const ManageSiteSettings = () => {
                         onClick={() => handleRemovePolicyBlock('contactUsBlocks', idx)}
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
-                      >
-                        Ãƒâ€”
-                      </button>
+                        >
+                          &times;
+                        </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
                         <input 
@@ -1074,9 +1074,9 @@ const ManageSiteSettings = () => {
                         onClick={() => handleRemovePolicyBlock('termsBlocks', idx)}
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
-                      >
-                        Ãƒâ€”
-                      </button>
+                        >
+                          &times;
+                        </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
                         <input 
@@ -1142,9 +1142,9 @@ const ManageSiteSettings = () => {
                         onClick={() => handleRemovePolicyBlock('privacyPolicyBlocks', idx)}
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
-                      >
-                        Ãƒâ€”
-                      </button>
+                        >
+                          &times;
+                        </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
                         <input 
@@ -1343,9 +1343,9 @@ const ManageSiteSettings = () => {
                         onClick={() => handleRemovePolicyBlock('paymentDetailsBlocks', idx)}
                         style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}
                         title="Remove Block"
-                      >
-                        Ãƒâ€”
-                      </button>
+                        >
+                          &times;
+                        </button>
                       
                       {block.blockType === 'title' || block.blockType === 'subtitle' ? (
                         <input 
