@@ -31,11 +31,11 @@ const TripSidebar = ({
   let finalOrigPrice = origPriceNum > 0 && origPriceNum > finalPrice ? origPriceNum : null;
 
   const cleanWhatsapp = (num) => {
-    if (!num) return '919099599331';
-    let digits = String(num).replace(/\D/g, '');
+    const target = num || '9875129341';
+    let digits = String(target).replace(/\D/g, '');
     if (digits.startsWith('0') && digits.length === 11) digits = `91${digits.slice(1)}`;
     else if (digits.length === 10) digits = `91${digits}`;
-    return digits || '919099599331';
+    return digits || '919875129341';
   };
 
   return (

@@ -43,19 +43,13 @@ const Footer = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchSettingsAndTrips = async () => {
-      try {
-        const [settingsRes, tripsRes] = await Promise.all([
-          getSiteSettings(),
-          getTrips()
-        ]);
-        setSettings(settingsRes.data);
-        setTrips(tripsRes.data);
-      } catch (err) {
-        console.error('Failed to load settings or trips', err);
-      }
-    };
-    fetchSettingsAndTrips();
+    getSiteSettings()
+      .then(res => setSettings(res.data))
+      .catch(err => console.error('Failed to load settings', err));
+
+    getTrips()
+      .then(res => setTrips(res.data))
+      .catch(err => console.error('Failed to load trips', err));
   }, []);
 
   const handleTourLinkClick = (e, link) => {
@@ -86,14 +80,14 @@ const Footer = () => {
   };
 
   const getCleanWhatsappNumber = (rawNum) => {
-    if (!rawNum) return '919099599331';
-    let digits = String(rawNum).replace(/\D/g, '');
+    const target = rawNum || '9875129341';
+    let digits = String(target).replace(/\D/g, '');
     if (digits.startsWith('0') && digits.length === 11) {
       digits = `91${digits.slice(1)}`;
     } else if (digits.length === 10) {
       digits = `91${digits}`;
     }
-    return digits || '919099599331';
+    return digits || '919875129341';
   };
 
   const activeWhatsappNumber = getCleanWhatsappNumber(settings?.whatsappNumber || settings?.phone);
@@ -115,7 +109,7 @@ const Footer = () => {
             </div>
             <div className={styles.contactText}>
               <span className={styles.contactLabel}>Don't wait any longer, Contact us!</span>
-              <span className={styles.phoneNum}>{settings?.phone || settings?.whatsappNumber || '90 99 599 331'}</span>
+              <span className={styles.phoneNum}>{settings?.phone || settings?.whatsappNumber || '98751 29341'}</span>
             </div>
           </a>
 
