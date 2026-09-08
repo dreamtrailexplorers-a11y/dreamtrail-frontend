@@ -342,6 +342,149 @@
   transform: translateY(-1px);
 }
 
+.btnDelete {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btnDelete:hover {
+  background-color: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+  transform: translateY(-1px);
+}
+
+/* Cards View for sm & md */
+.cardsContainer {
+  display: none;
+}
+
+.reminderCard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 0.85rem;
+}
+
+.cardUrgencyArea {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.cardBody {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 0.85rem;
+}
+
+.cardTripDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cardFinancials {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cardSectionLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+  margin-bottom: 0.25rem;
+}
+
+.cardBalanceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.cardBalanceLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Responsive Breakpoints: sm & md show Cards, lg shows Table */
+@media (max-width: 1024px) {
+  .tableContainer {
+    display: none;
+  }
+
+  .cardsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .cardBody {
+    grid-template-columns: 1fr;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .cardUrgencyArea {
+    align-items: flex-start;
+  }
+
+  .cardFooter {
+    display: flex;
+    width: 100%;
+  }
+
+  .cardFooter button {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
 /* Empty State */
 .emptyState {
   padding: 4rem 2rem;
@@ -377,3 +520,4 @@
   margin: 0 auto;
   line-height: 1.5;
 }
+

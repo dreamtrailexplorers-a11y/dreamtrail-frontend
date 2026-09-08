@@ -5,6 +5,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import api from '../../services/api';
 import { createPortal } from 'react-dom';
+import styles from './Profile.module.css';
 
 const loadRazorpay = () => {
   return new Promise((resolve) => {
@@ -227,103 +228,117 @@ const Profile = () => {
     }
   };
 
+  const formatTripDate = (dateString) => {
+    if (!dateString || dateString === 'N/A') return 'N/A';
+    try {
+      const parts = dateString.split(' to ');
+      if (parts.length === 2) {
+        const d1 = new Date(parts[0].trim());
+        const d2 = new Date(parts[1].trim());
+        if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
+          const opt = { day: 'numeric', month: 'short', year: 'numeric' };
+          return `${d1.toLocaleDateString('en-IN', opt)} - ${d2.toLocaleDateString('en-IN', opt)}`;
+        }
+      }
+      const d = new Date(dateString);
+      if (!isNaN(d.getTime())) {
+        return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+    } catch (e) {}
+    return dateString;
+  };
+
   return (
     <>
       <Navbar />
-      <div style={{ maxWidth: '800px', margin: '4rem auto', padding: '0 2rem', minHeight: '60vh' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '2rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>My Profile</h1>
+      <div className={styles.profileContainer}>
+        {/* Header */}
+        <div className={styles.profileHeader}>
+          <h1 className={styles.profileTitle}>My Profile</h1>
           <button 
             onClick={handleLogout}
-            style={{ backgroundColor: '#ef4444', color: '#fff', border: 'none', padding: '0.5rem 1.25rem', borderRadius: '8px', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}
+            className={styles.logoutBtn}
           >
             Logout
           </button>
         </div>
         
-        <div style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '1rem', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>Personal Details</h2>
+        {/* Personal Details */}
+        <div className={styles.sectionCard}>
+          <h2 className={styles.sectionHeading}>Personal Details</h2>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            <div>
-              <p style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '0.25rem' }}>Full Name</p>
-              <p style={{ fontSize: '1.05rem', fontWeight: '600', color: '#334155' }}>{user.name}</p>
+          <div className={styles.personalDetailsGrid}>
+            <div className={styles.detailItem}>
+              <p className={styles.detailLabel}>Full Name</p>
+              <p className={styles.detailValue}>{user.name}</p>
             </div>
-            <div>
-              <p style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '0.25rem' }}>Email Address</p>
-              <p style={{ fontSize: '1.05rem', fontWeight: '600', color: '#334155' }}>{user.email}</p>
+            <div className={styles.detailItem}>
+              <p className={styles.detailLabel}>Email Address</p>
+              <p className={styles.detailValue}>{user.email}</p>
             </div>
             {user.phone && (
-              <div>
-                <p style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '0.25rem' }}>Phone Number</p>
-                <p style={{ fontSize: '1.05rem', fontWeight: '600', color: '#334155' }}>{user.phone}</p>
+              <div className={styles.detailItem}>
+                <p className={styles.detailLabel}>Phone Number</p>
+                <p className={styles.detailValue}>{user.phone}</p>
               </div>
             )}
           </div>
         </div>
 
-        <div style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '1rem', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>My Bookings</h2>
+        {/* My Bookings */}
+        <div className={styles.sectionCard}>
+          <h2 className={styles.sectionHeading}>My Bookings</h2>
           
           {loading ? (
-            <p>Loading bookings...</p>
+            <p style={{ color: '#64748b' }}>Loading bookings...</p>
           ) : bookings.length === 0 ? (
             <p style={{ color: '#64748b' }}>You have no bookings yet.</p>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className={styles.bookingsList}>
               {bookings.map(booking => {
                 const parsed = parseBookingDetails(booking.tripTitle, booking.numberOfPersons);
                 const tripStatus = getTripStatus(booking.departureDate);
                 
                 return (
-                  <div key={booking._id} style={{ border: '1px solid #e2e8f0', borderRadius: '12px', padding: '1.5rem', backgroundColor: '#fff', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', position: 'relative', overflow: 'hidden' }}>
+                  <div key={booking._id} className={styles.bookingCard}>
                     
-                    <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'flex-end', maxWidth: '220px' }}>
-                      <span style={{ backgroundColor: tripStatus.bg, color: tripStatus.color, padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    {/* Status Badges */}
+                    <div className={styles.badgesWrapper}>
+                      <span 
+                        className={styles.badge}
+                        style={{ backgroundColor: tripStatus.bg, color: tripStatus.color }}
+                      >
                         {tripStatus.status}
                       </span>
-                      <span style={{ backgroundColor: booking.paymentStatus === 'Fully Paid' ? '#dcfce7' : '#fee2e2', color: booking.paymentStatus === 'Fully Paid' ? '#166534' : '#991b1b', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>
+                      <span 
+                        className={styles.badge}
+                        style={{ 
+                          backgroundColor: booking.paymentStatus === 'Fully Paid' ? '#dcfce7' : '#fee2e2', 
+                          color: booking.paymentStatus === 'Fully Paid' ? '#166534' : '#991b1b' 
+                        }}
+                      >
                         {booking.paymentStatus === 'Fully Paid' ? 'Fully Paid' : 'Balance Due'}
                       </span>
                     </div>
 
-                    <div style={{ paddingRight: '230px', marginBottom: '1.25rem' }}>
-                      <h3 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontSize: '1.3rem', fontWeight: '800', lineHeight: '1.3' }}>
+                    {/* Trip Main Header */}
+                    <div className={styles.tripHeader}>
+                      <h3 className={styles.tripMainTitle}>
                         {parsed.mainTitle}
                       </h3>
                       
                       {parsed.packages.length > 0 && (
-                        <div style={{ marginTop: '0.75rem' }}>
-                          <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: '6px' }}>
+                        <div className={styles.packageSection}>
+                          <div className={styles.packageLabel}>
                             Package Option{parsed.packages.length > 1 ? `s (${parsed.packages.length})` : ''}
                           </div>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                          <div className={styles.packageList}>
                             {parsed.packages.map((pkg, pIdx) => (
-                              <div 
-                                key={pIdx} 
-                                style={{ 
-                                  display: 'flex', 
-                                  justifyContent: 'space-between', 
-                                  alignItems: 'center', 
-                                  backgroundColor: '#f8fafc', 
-                                  border: '1px solid #e2e8f0', 
-                                  borderRadius: '8px', 
-                                  padding: '7px 12px', 
-                                  gap: '12px' 
-                                }}
-                              >
-                                <span style={{ fontSize: '0.88rem', color: '#1e293b', fontWeight: '600', lineHeight: '1.35', flex: 1 }}>
+                              <div key={pIdx} className={styles.packageItem}>
+                                <span className={styles.packageTitle}>
                                   {pkg.title}
                                 </span>
-                                <span style={{ 
-                                  backgroundColor: '#e2e8f0', 
-                                  color: '#334155', 
-                                  padding: '3px 10px', 
-                                  borderRadius: '12px', 
-                                  fontSize: '0.78rem', 
-                                  fontWeight: '700', 
-                                  whiteSpace: 'nowrap' 
-                                }}>
+                                <span className={styles.packageQty}>
                                   {pkg.qty} {pkg.qty > 1 ? 'Persons' : 'Person'}
                                 </span>
                               </div>
@@ -333,59 +348,64 @@ const Profile = () => {
                       )}
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', backgroundColor: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid #f1f5f9' }}>
-                      <div>
-                        <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.5px' }}>Trip Date</p>
-                        <p style={{ margin: 0, fontSize: '0.95rem', color: '#0f172a', fontWeight: '500' }}>{booking.departureDate || 'N/A'}</p>
+                    {/* Details Info Grid */}
+                    <div className={styles.infoGrid}>
+                      <div className={styles.infoItem}>
+                        <p className={styles.infoLabel}>Trip Date</p>
+                        <p className={styles.infoValue}>{formatTripDate(booking.departureDate)}</p>
                       </div>
                       
-                      <div>
-                        <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.5px' }}>Booking Date</p>
-                        <p style={{ margin: 0, fontSize: '0.95rem', color: '#0f172a', fontWeight: '500' }}>{new Date(booking.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                      <div className={styles.infoItem}>
+                        <p className={styles.infoLabel}>Booking Date</p>
+                        <p className={styles.infoValue}>{new Date(booking.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                       </div>
 
-                      <div>
-                        <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.5px' }}>Travelers</p>
-                        <p style={{ margin: 0, fontSize: '0.95rem', color: '#0f172a', fontWeight: '500' }}>{booking.numberOfPersons} Person(s)</p>
+                      <div className={styles.infoItem}>
+                        <p className={styles.infoLabel}>Travelers</p>
+                        <p className={styles.infoValue}>{booking.numberOfPersons} Person(s)</p>
                       </div>
 
-                      <div>
-                        <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.5px' }}>Total Cost</p>
-                        <p style={{ margin: 0, fontSize: '0.95rem', color: '#0f172a', fontWeight: '700' }}>₹{booking.totalAmount?.toLocaleString('en-IN')}</p>
+                      <div className={styles.infoItem}>
+                        <p className={styles.infoLabel}>Total Cost</p>
+                        <p className={`${styles.infoValue} ${styles.costHighlight}`}>₹{booking.totalAmount?.toLocaleString('en-IN')}</p>
                       </div>
                     </div>
 
+                    {/* Pre-book Paid breakdown */}
                     {booking.paymentDetails?.preBookPaid > 0 && (
-                      <div style={{ marginTop: '1rem', padding: '0.75rem 1rem', backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '8px', display: 'flex', flexWrap: 'wrap', gap: '1.5rem' }}>
-                        <div>
-                          <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.75rem', color: '#166534', textTransform: 'uppercase', fontWeight: '700' }}>Pre-Book Paid</p>
-                          <p style={{ margin: 0, fontSize: '0.9rem', color: '#15803d', fontWeight: '600' }}>
+                      <div className={styles.paidSummaryBox}>
+                        <div className={styles.paidItem}>
+                          <p className={styles.paidLabel}>Pre-Book Paid</p>
+                          <p className={styles.paidValue}>
                             ₹{booking.paymentDetails.preBookPaid.toLocaleString('en-IN')} 
-                            <span style={{ fontWeight: 'normal', fontSize: '0.8rem', marginLeft: '4px' }}>(₹{Math.round(booking.paymentDetails.preBookPaid / booking.numberOfPersons).toLocaleString('en-IN')} / person)</span>
+                            <span className={styles.paidSub}>
+                              (₹{Math.round(booking.paymentDetails.preBookPaid / booking.numberOfPersons).toLocaleString('en-IN')} / person)
+                            </span>
                           </p>
                         </div>
                         
                         {booking.paymentStatus === 'Fully Paid' && (
-                          <div>
-                             <p style={{ margin: '0 0 0.25rem 0', fontSize: '0.75rem', color: '#166534', textTransform: 'uppercase', fontWeight: '700' }}>Balance Paid</p>
-                             <p style={{ margin: 0, fontSize: '0.9rem', color: '#15803d', fontWeight: '600' }}>
-                               ₹{(booking.paymentDetails.balancePaid || (booking.totalAmount - booking.paymentDetails.preBookPaid)).toLocaleString('en-IN')}
-                               {booking.paymentDetails?.balancePaidAt && (
-                                 <span style={{ fontWeight: 'normal', fontSize: '0.8rem', marginLeft: '4px' }}>on {new Date(booking.paymentDetails.balancePaidAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                               )}
-                             </p>
+                          <div className={styles.paidItem}>
+                            <p className={styles.paidLabel}>Balance Paid</p>
+                            <p className={styles.paidValue}>
+                              ₹{(booking.paymentDetails.balancePaid || (booking.totalAmount - booking.paymentDetails.preBookPaid)).toLocaleString('en-IN')}
+                              {booking.paymentDetails?.balancePaidAt && (
+                                <span className={styles.paidSub}>
+                                  on {new Date(booking.paymentDetails.balancePaidAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                </span>
+                              )}
+                            </p>
                           </div>
                         )}
                       </div>
                     )}
 
+                    {/* Pay Balance Action */}
                     {booking.paymentStatus !== 'Fully Paid' && (
-                      <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+                      <div className={styles.cardActionArea}>
                         <button 
                           onClick={() => setSelectedBooking(booking)}
-                          style={{ padding: '0.6rem 1.2rem', backgroundColor: '#ef4444', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', transition: 'background 0.2s' }}
-                          onMouseOver={(e) => e.target.style.backgroundColor = '#dc2626'}
-                          onMouseOut={(e) => e.target.style.backgroundColor = '#ef4444'}
+                          className={styles.payBalanceBtn}
                         >
                           Pay Balance ₹{booking.paymentDetails?.balanceDue?.toLocaleString('en-IN')}
                         </button>
@@ -409,7 +429,7 @@ const Profile = () => {
             backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px'
           }} onClick={() => setSelectedBooking(null)}>
             <div style={{
-              backgroundColor: '#fff', borderRadius: '12px', padding: '2rem', width: '100%', maxWidth: '480px', position: 'relative'
+              backgroundColor: '#fff', borderRadius: '14px', padding: '1.5rem', width: '100%', maxWidth: '480px', maxHeight: '90vh', overflowY: 'auto', position: 'relative', boxSizing: 'border-box'
             }} onClick={e => e.stopPropagation()}>
               <button 
                 onClick={() => setSelectedBooking(null)}

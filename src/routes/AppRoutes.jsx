@@ -1,5 +1,5 @@
-﻿import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import Home from '../pages/Home/Home';
 import TripDetails from '../pages/TripDetails/TripDetails';
 import CreatorTripDetails from '../pages/CreatorTripDetails/CreatorTripDetails';
@@ -26,11 +26,17 @@ import ContactUs from '../pages/ContactUs/ContactUs';
 import CancellationPolicy from '../pages/CancellationPolicy/CancellationPolicy';
 import CorporateTours from '../pages/CorporateTours/CorporateTours';
 
+const TourRedirect = () => {
+  const { filterName } = useParams();
+  return <Navigate to={`/tour-packages?filter=${encodeURIComponent(filterName || '')}`} replace />;
+};
+
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/tour-packages" element={<TourPackages />} />
+      <Route path="/tour/:filterName" element={<TourRedirect />} />
       <Route path="/upcoming-trips/:month" element={<UpcomingTripsPage />} />
       <Route path="/group-trips" element={<Navigate to="/category/Group%20Tours" replace />} />
       <Route path="/category/:categoryName" element={<CategoryPage />} />

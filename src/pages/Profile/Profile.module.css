@@ -1,0 +1,466 @@
+.profileContainer {
+  max-width: 800px;
+  margin: 3.5rem auto;
+  padding: 0 1.5rem;
+  min-height: 60vh;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #1e293b;
+}
+
+/* Header */
+.profileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.profileTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.logoutBtn {
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  padding: 0.55rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.logoutBtn:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+}
+
+/* Section Cards */
+.sectionCard {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.sectionHeading {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 1.25rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 0.75rem;
+}
+
+/* Personal Details */
+.personalDetailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detailLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.detailValue {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #334155;
+  margin: 0;
+  word-break: break-word;
+}
+
+/* Bookings List */
+.bookingsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.bookingCard {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Desktop Badge Position */
+.badgesWrapper {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 240px;
+}
+
+.badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Trip Header */
+.tripHeader {
+  padding-right: 240px;
+  margin-bottom: 1.25rem;
+}
+
+.tripMainTitle {
+  margin: 0 0 0.5rem 0;
+  color: #0f172a;
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+/* Packages */
+.packageSection {
+  margin-top: 0.75rem;
+}
+
+.packageLabel {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 6px;
+}
+
+.packageList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.packageItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  gap: 12px;
+}
+
+.packageTitle {
+  font-size: 0.88rem;
+  color: #1e293b;
+  font-weight: 600;
+  line-height: 1.35;
+  flex: 1;
+}
+
+.packageQty {
+  background-color: #e2e8f0;
+  color: #334155;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Details Grid */
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  background-color: #f8fafc;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  border: 1px solid #f1f5f9;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.infoLabel {
+  margin: 0;
+  font-size: 0.72rem;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.infoValue {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #0f172a;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.costHighlight {
+  color: #0f172a;
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+/* Payment Status Box */
+.paidSummaryBox {
+  margin-top: 1rem;
+  padding: 0.85rem 1.15rem;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.paidItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.paidLabel {
+  margin: 0;
+  font-size: 0.72rem;
+  color: #166534;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.paidValue {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #15803d;
+  font-weight: 700;
+}
+
+.paidSub {
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: #166534;
+  margin-left: 4px;
+}
+
+/* Action Area */
+.cardActionArea {
+  margin-top: 1.25rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.payBalanceBtn {
+  padding: 0.65rem 1.35rem;
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.payBalanceBtn:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+}
+
+/* ============================================================ */
+/* MOBILE REDESIGN (sm screens <= 640px)                        */
+/* ============================================================ */
+@media (max-width: 640px) {
+  .profileContainer {
+    margin: 1.5rem auto 3.5rem auto;
+    padding: 0 1rem;
+  }
+
+  .profileHeader {
+    margin-bottom: 1.25rem;
+  }
+
+  .profileTitle {
+    font-size: 1.5rem;
+  }
+
+  .logoutBtn {
+    padding: 0.45rem 1rem;
+    font-size: 0.82rem;
+  }
+
+  /* Personal Details on sm */
+  .sectionCard {
+    padding: 1.25rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.25rem;
+  }
+
+  .sectionHeading {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .personalDetailsGrid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .detailItem {
+    padding-bottom: 0.65rem;
+    border-bottom: 1px dashed #f1f5f9;
+  }
+
+  .detailItem:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .detailLabel {
+    font-size: 0.72rem;
+  }
+
+  .detailValue {
+    font-size: 0.95rem;
+  }
+
+  /* Bookings Cards on sm */
+  .bookingCard {
+    padding: 1.15rem 1rem;
+    border-radius: 12px;
+  }
+
+  /* Reset absolute positioning for badges on sm so title gets 100% width */
+  .badgesWrapper {
+    position: static;
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+    max-width: 100%;
+  }
+
+  .badge {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    letter-spacing: 0.3px;
+  }
+
+  /* Trip Header on sm has NO right padding and full width */
+  .tripHeader {
+    padding-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .tripMainTitle {
+    font-size: 1.15rem;
+    line-height: 1.4;
+    margin: 0;
+    color: #0f172a;
+    word-break: break-word;
+  }
+
+  .packageSection {
+    margin-top: 0.75rem;
+  }
+
+  .packageItem {
+    padding: 7px 10px;
+    gap: 8px;
+  }
+
+  .packageTitle {
+    font-size: 0.82rem;
+  }
+
+  .packageQty {
+    font-size: 0.72rem;
+    padding: 2px 8px;
+  }
+
+  /* 2-column clean info grid on sm */
+  .infoGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem 0.75rem;
+    padding: 0.85rem;
+    border-radius: 8px;
+  }
+
+  .infoLabel {
+    font-size: 0.68rem;
+  }
+
+  .infoValue {
+    font-size: 0.88rem;
+    line-height: 1.35;
+  }
+
+  .costHighlight {
+    font-size: 1rem;
+  }
+
+  /* Pre-book Paid on sm */
+  .paidSummaryBox {
+    margin-top: 0.85rem;
+    padding: 0.75rem 0.85rem;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .paidValue {
+    font-size: 0.85rem;
+  }
+
+  .paidSub {
+    display: block;
+    margin-left: 0;
+    margin-top: 2px;
+    font-size: 0.75rem;
+  }
+
+  /* Pay Balance Button on sm - Full Width & High Visibility */
+  .cardActionArea {
+    margin-top: 1rem;
+  }
+
+  .payBalanceBtn {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.25);
+  }
+}

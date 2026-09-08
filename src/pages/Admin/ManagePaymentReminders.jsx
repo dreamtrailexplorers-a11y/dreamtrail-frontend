@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import styles from './ManagePaymentReminders.module.css';
-import { FiMail, FiClock, FiSearch, FiAlertTriangle, FiCheckCircle, FiDollarSign, FiMessageSquare } from 'react-icons/fi';
+import { FiMail, FiClock, FiSearch, FiAlertTriangle, FiCheckCircle, FiDollarSign, FiMessageSquare, FiTrash2 } from 'react-icons/fi';
 
 const ManagePaymentReminders = () => {
   const [bookings, setBookings] = useState([]);
@@ -114,6 +114,19 @@ const ManagePaymentReminders = () => {
       `Hello ${travelerName}, this is a reminder from DreamTrail Explorers regarding your booking for *${tripName}* (Departure: ${depDate}).\n\nYour balance due amount is *₹${balance}*.\nAs per policy, full payment must be completed 45 days prior to departure. Kindly clear the pending balance to confirm your seat.\n\nThank you,\nDreamTrail Explorers`
     );
     window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
+  };
+
+  const handleDelete = async (bookingId) => {
+    if (!window.confirm('Are you sure you want to delete this booking?')) return;
+
+    try {
+      await api.delete(`/bookings/${bookingId}`);
+      setBookings(prev => prev.filter(b => b._id !== bookingId));
+      alert('Booking deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting booking:', error);
+      alert(error.response?.data?.message || 'Failed to delete booking.');
+    }
   };
 
   // Filtered Bookings based on search & filterType
@@ -244,7 +257,8 @@ const ManagePaymentReminders = () => {
           </p>
         </div>
       ) : (
-        <div className={styles.tableContainer}>
+        <>
+          <div className={styles.tableContainer}>
           <div className={styles.tableScroll}>
             <table className={styles.table}>
               <thead>
@@ -347,6 +361,16 @@ const ManagePaymentReminders = () => {
                             <FiMessageSquare size={15} />
                             WhatsApp
                           </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(booking._id)}
+                            className={styles.btnDelete}
+                            title="Delete booking"
+                          >
+                            <FiTrash2 size={15} />
+                            Delete
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -356,6 +380,106 @@ const ManagePaymentReminders = () => {
             </table>
           </div>
         </div>
+
+        {/* Cards View for sm & md screens */}
+        <div className={styles.cardsContainer}>
+          {filteredBookings.map(booking => {
+            const days = booking.daysLeft;
+            const isOverdue = days <= 45;
+            const daysToDeadline = days - 45;
+
+            const formattedDepDate = typeof booking.departureDate === 'object' && booking.departureDate !== null
+              ? `${booking.departureDate.start} to ${booking.departureDate.end}`
+              : (booking.departureDate || 'N/A');
+
+            return (
+              <div key={booking._id} className={styles.reminderCard}>
+                <div className={styles.cardHeader}>
+                  <div>
+                    <div className={styles.travelerName}>
+                      {booking.user?.name || booking.paymentDetails?.name || 'Unknown Traveler'}
+                    </div>
+                    <div className={styles.travelerMeta}>
+                      <span>{booking.user?.email || booking.paymentDetails?.email || 'No Email'}</span>
+                      <span>{booking.user?.phone || booking.paymentDetails?.contact || 'No Phone'}</span>
+                    </div>
+                  </div>
+                  <div className={styles.cardUrgencyArea}>
+                    <span className={`${styles.urgencyPill} ${isOverdue ? styles.pillCritical : styles.pillWarning}`}>
+                      <FiClock size={13} /> {days} Days Left
+                    </span>
+                    <div style={{ fontSize: '0.78rem', color: isOverdue ? '#dc2626' : '#ea580c', fontWeight: '600', marginTop: '4px', textAlign: 'right' }}>
+                      {isOverdue ? '⚠️ 45-day deadline passed' : `⏳ ${daysToDeadline} days until 45-day deadline`}
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.cardBody}>
+                  <div className={styles.cardTripDetails}>
+                    <div className={styles.cardSectionLabel}>Trip Details</div>
+                    <div className={styles.tripTitle}>
+                      {booking.tripTitle ? booking.tripTitle.split(' - ')[0] : 'Trip'}
+                    </div>
+                    <div className={styles.tripMeta}>
+                      <span>📅 {formattedDepDate}</span>
+                      <span>👥 {booking.numberOfPersons || 1} Person(s)</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.cardFinancials}>
+                    <div className={styles.cardSectionLabel}>Financials</div>
+                    <div className={styles.totalAmount}>
+                      Total: ₹{Number(booking.totalAmount || 0).toLocaleString('en-IN')}
+                    </div>
+                    <div className={styles.paidAmount}>
+                      Paid: ₹{Number(booking.paymentDetails?.preBookPaid || 0).toLocaleString('en-IN')}
+                    </div>
+                    <div className={styles.cardBalanceRow}>
+                      <span className={styles.cardBalanceLabel}>Balance Due:</span>
+                      <span className={styles.balanceDue}>
+                        ₹{Number(booking.paymentDetails?.balanceDue || 0).toLocaleString('en-IN')}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.cardFooter}>
+                  <button
+                    type="button"
+                    onClick={() => handleSendReminder(booking._id)}
+                    disabled={sendingId === booking._id}
+                    className={styles.btnMail}
+                    title="Send payment reminder email"
+                  >
+                    <FiMail size={15} />
+                    {sendingId === booking._id ? 'Sending...' : 'Send Mail'}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleWhatsAppReminder(booking)}
+                    className={styles.btnWhatsapp}
+                    title="Send payment reminder on WhatsApp"
+                  >
+                    <FiMessageSquare size={15} />
+                    WhatsApp
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(booking._id)}
+                    className={styles.btnDelete}
+                    title="Delete booking"
+                  >
+                    <FiTrash2 size={15} />
+                    Delete
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        </>
       )}
     </div>
   );

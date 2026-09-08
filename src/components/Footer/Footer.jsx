@@ -34,26 +34,16 @@ const Footer = () => {
 
   const handleTourLinkClick = (e, link) => {
     e.preventDefault();
-    const searchLabel = link.label.toLowerCase();
-    const destTrips = trips.filter(t =>
-      (t.destination && t.destination.toLowerCase().includes(searchLabel)) ||
-      (t.title && t.title.toLowerCase().includes(searchLabel))
-    );
-
-    if (destTrips.length === 1) {
-      navigate(`/tours/${destTrips[0].slug || destTrips[0]._id}`);
-    } else if (destTrips.length > 1) {
-      navigate(`/destinations/${link.label.toLowerCase().replace(/\s+/g, '-')}`);
-    } else {
-      navigate(link.url);
-    }
+    const label = link.label.trim();
+    navigate(`/tour-packages?filter=${encodeURIComponent(label)}`);
   };
 
   const renderTourLink = (link, idx) => {
+    const filterUrl = `/tour-packages?filter=${encodeURIComponent(link.label.trim())}`;
     return (
       <a
         key={idx}
-        href={link.url}
+        href={filterUrl}
         onClick={(e) => handleTourLinkClick(e, link)}
         className={styles.linkItem}
         style={{ cursor: 'pointer' }}
@@ -151,19 +141,25 @@ const Footer = () => {
               </>
             )}
 
-            {(settings?.footerToursAsia?.length > 0) && (
-              <>
-                <div className={styles.subHeadingCol}>ASIA</div>
-                <div className={styles.tourGrid}>
-                  <div className={styles.tourCol}>
-                    {settings.footerToursAsia.slice(0, Math.ceil(settings.footerToursAsia.length / 2)).map((link, idx) => renderTourLink(link, idx + 200))}
+            {(() => {
+              const asiaLinks = (settings?.footerToursAsia || []).filter(
+                l => l.label?.toLowerCase()?.trim() !== 'nepal' && !l.url?.toLowerCase()?.includes('nepal')
+              );
+              if (asiaLinks.length === 0) return null;
+              return (
+                <>
+                  <div className={styles.subHeadingCol}>ASIA</div>
+                  <div className={styles.tourGrid}>
+                    <div className={styles.tourCol}>
+                      {asiaLinks.slice(0, Math.ceil(asiaLinks.length / 2)).map((link, idx) => renderTourLink(link, idx + 200))}
+                    </div>
+                    <div className={styles.tourCol}>
+                      {asiaLinks.slice(Math.ceil(asiaLinks.length / 2)).map((link, idx) => renderTourLink(link, idx + 300))}
+                    </div>
                   </div>
-                  <div className={styles.tourCol}>
-                    {settings.footerToursAsia.slice(Math.ceil(settings.footerToursAsia.length / 2)).map((link, idx) => renderTourLink(link, idx + 300))}
-                  </div>
-                </div>
-              </>
-            )}
+                </>
+              );
+            })()}
           </div>
 
           {/* Other Links Col */}

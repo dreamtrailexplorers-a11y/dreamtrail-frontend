@@ -203,16 +203,6 @@ const DestinationPage = () => {
           </section>
         )}
 
-        {/* About Section */}
-        {aboutText && (
-          <section className={styles.aboutSection}>
-            <h2 className={styles.sectionTitle}>About {title}</h2>
-            <p className={styles.aboutText}>
-              {aboutText} <span className={styles.readMore}>Read More</span>
-            </p>
-          </section>
-        )}
-
         {/* Attractions Section */}
         {attractions.length > 0 && (
           <section id="attractions" className={styles.section}>
