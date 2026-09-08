@@ -298,11 +298,16 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
                           {!allPackages.some(opt => opt.title === pkg.title) && (
                             <option value={pkg.title}>{pkg.title}</option>
                           )}
-                          {allPackages.map((opt, optIdx) => (
-                            <option key={optIdx} value={opt.title}>
-                              {opt.title} — ₹{(Number(opt.price) || 0).toLocaleString('en-IN')}
-                            </option>
-                          ))}
+                          {allPackages.map((opt, optIdx) => {
+                            const isChosenElsewhere = activePackages.some((ap, apIdx) => apIdx !== idx && ap.title === opt.title);
+                            if (isChosenElsewhere) return null;
+
+                            return (
+                              <option key={optIdx} value={opt.title}>
+                                {opt.title} — ₹{(Number(opt.price) || 0).toLocaleString('en-IN')}
+                              </option>
+                            );
+                          })}
                         </select>
                       ) : (
                         <div style={{ fontWeight: '700', color: '#1e293b', fontSize: '0.98rem' }}>{pkg.title}</div>
@@ -325,34 +330,46 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
                   </div>
                 ))}
                 
-                {/* Add Another Package Option button */}
-                {allPackages && allPackages.length > activePackages.length && (
-                  <div style={{ marginTop: '5px', paddingTop: '12px', borderTop: '2px dashed #e2e8f0', paddingBottom: '5px' }}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const nextPkg = allPackages.find(ap => !activePackages.some(p => p.title === ap.title)) || allPackages[0];
-                        setActivePackages(prev => [...prev, { title: nextPkg.title, price: nextPkg.price }]);
-                        setQuantities(prev => ({ ...prev, [activePackages.length]: 1 }));
-                      }}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        border: '1.5px dashed #cc0000',
-                        backgroundColor: '#fff5f5',
-                        color: '#cc0000',
-                        fontSize: '0.88rem',
-                        fontWeight: '700',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease',
-                        textAlign: 'center'
-                      }}
-                      onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#ffebeb'; }}
-                      onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#fff5f5'; }}
-                    >
+                {/* Add Package Dropdown */}
+                {allPackages && allPackages.some(p => !activePackages.some(ap => ap.title === p.title)) && (
+                  <div style={{ marginTop: '5px', paddingTop: '15px', borderTop: '2px dashed #e2e8f0', paddingBottom: '5px' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', color: '#64748b', fontWeight: '700', marginBottom: '8px' }}>
                       + Add Another Package Option
-                    </button>
+                    </label>
+                    <select 
+                      value=""
+                      onChange={(e) => {
+                        if (!e.target.value) return;
+                        const selectedPkg = allPackages.find(p => p.title === e.target.value);
+                        if (selectedPkg) {
+                          setActivePackages(prev => [...prev, { title: selectedPkg.title, price: selectedPkg.price }]);
+                          setQuantities(prev => ({ ...prev, [activePackages.length]: 1 }));
+                        }
+                      }}
+                      style={{ 
+                        width: '100%', 
+                        padding: '10px 12px', 
+                        borderRadius: '8px', 
+                        border: '1.5px solid #cbd5e1', 
+                        backgroundColor: '#f8fafc', 
+                        fontSize: '0.92rem', 
+                        fontWeight: '600',
+                        color: '#0f172a', 
+                        outline: 'none', 
+                        cursor: 'pointer' 
+                      }}
+                    >
+                      <option value="">Select a package to add...</option>
+                      {allPackages.map((pkg, i) => {
+                        const isAlreadyAdded = activePackages.some(ap => ap.title === pkg.title);
+                        if (isAlreadyAdded) return null;
+                        return (
+                          <option key={i} value={pkg.title}>
+                            {pkg.title} — ₹{(Number(pkg.price) || 0).toLocaleString('en-IN')}
+                          </option>
+                        );
+                      })}
+                    </select>
                   </div>
                 )}
               </div>
