@@ -7,7 +7,7 @@ import { submitEnquiry } from '../../../services/api';
 import BuyNowModal from '../../../components/BuyNowModal/BuyNowModal';
 import { AuthContext } from '../../../context/AuthContext';
 
-const CreatorSidebarForm = ({ trip }) => {
+const CreatorSidebarForm = ({ trip, allPackages }) => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -144,6 +144,7 @@ const CreatorSidebarForm = ({ trip }) => {
         pricePerPerson={trip?.discountedPrice || 0}
         duration={trip?.duration || 'N/A'}
         destination={trip?.destination?.name || 'N/A'}
+        allPackages={allPackages}
       />
     </div>
   );

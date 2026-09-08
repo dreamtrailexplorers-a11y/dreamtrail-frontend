@@ -187,7 +187,7 @@ const CreatorTripDetails = () => {
 
           {/* Right Column (Sticky Form Sidebar) */}
           <div className={styles.rightColumn}>
-            <CreatorSidebarForm trip={currentTrip} />
+            <CreatorSidebarForm trip={currentTrip} allPackages={processedAllPackages} />
           </div>
 
         </div>

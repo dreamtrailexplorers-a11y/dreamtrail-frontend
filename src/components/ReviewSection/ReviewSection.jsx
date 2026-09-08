@@ -9,21 +9,25 @@ import ReviewCard from './ReviewCard';
 import { getReviews } from '../../services/api';
 import styles from './ReviewSection.module.css';
 
-const ReviewSection = () => {
+const ReviewSection = ({ reviews, title }) => {
   const [reviewsList, setReviewsList] = useState([]);
   const [selectedReview, setSelectedReview] = useState(null);
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const { data } = await getReviews();
-        setReviewsList(data);
-      } catch (error) {
-        console.error('Failed to fetch reviews:', error);
-      }
-    };
-    fetchReviews();
-  }, []);
+    if (reviews) {
+      setReviewsList(reviews);
+    } else {
+      const fetchReviews = async () => {
+        try {
+          const { data } = await getReviews();
+          setReviewsList(data);
+        } catch (error) {
+          console.error('Failed to fetch reviews:', error);
+        }
+      };
+      fetchReviews();
+    }
+  }, [reviews]);
 
   useEffect(() => {
     if (selectedReview) {
@@ -42,7 +46,7 @@ const ReviewSection = () => {
     <>
       <section className={styles.reviewSection}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Reviews</h2>
+          <h2 className={styles.sectionTitle}>{title || 'Reviews'}</h2>
           <button className={styles.viewAllBtn}>
             View All <FiChevronRight size={18} />
           </button>

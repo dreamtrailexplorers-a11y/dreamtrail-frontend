@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar';
+import ReviewSection from '../../components/ReviewSection/ReviewSection';
 import CategoryMenu from '../../components/CategoryMenu/CategoryMenu';
 import TrendingCard from '../../components/TrendingSection/TrendingCard';
 import CreatorFaqs from '../CreatorTripDetails/components/CreatorFaqs';
@@ -89,24 +90,13 @@ const DestinationPage = () => {
       {/* Sticky In-Page Nav */}
       <div className={styles.stickyNavContainer}>
         <div className={styles.stickyNavInner}>
-          <button onClick={() => handleScrollTo('flight-packages')} className={styles.stickyNavItem}>
-            <FiSend className={styles.navIcon} /> Flight Packages
-          </button>
-          <button onClick={() => handleScrollTo('tour-packages')} className={styles.stickyNavItem}>
-            <FaCarSide className={styles.navIcon} /> Motorcycle Tours
-          </button>
-          <button onClick={() => handleScrollTo('group-trips')} className={styles.stickyNavItem}>
-            <FiUsers className={styles.navIcon} /> Group Tours
-          </button>
-          <button onClick={() => handleScrollTo('honeymoon')} className={styles.stickyNavItem}>
-            <FiBriefcase className={styles.navIcon} /> Honeymoon
-          </button>
-          <button onClick={() => handleScrollTo('unique-experiences')} className={styles.stickyNavItem}>
-            <FiStar className={styles.navIcon} /> Unique Experiences
-          </button>
-          <button onClick={() => handleScrollTo('attractions')} className={styles.stickyNavItem}>
-            <FiMapPin className={styles.navIcon} /> Attractions
-          </button>
+
+          {flightPackages.length > 0 && (<button onClick={() => handleScrollTo('flight-packages')} className={styles.stickyNavItem}><FiSend className={styles.navIcon} /> Flight Packages</button>)}
+          {motorcycleTours.length > 0 && (<button onClick={() => handleScrollTo('tour-packages')} className={styles.stickyNavItem}><FaCarSide className={styles.navIcon} /> Motorcycle Tours</button>)}
+          {groupTrips.length > 0 && (<button onClick={() => handleScrollTo('group-trips')} className={styles.stickyNavItem}><FiUsers className={styles.navIcon} /> Group Tours</button>)}
+          {honeymoonPackages.length > 0 && (<button onClick={() => handleScrollTo('honeymoon')} className={styles.stickyNavItem}><FiBriefcase className={styles.navIcon} /> Honeymoon</button>)}
+          {uniqueExperiences.length > 0 && (<button onClick={() => handleScrollTo('unique-experiences')} className={styles.stickyNavItem}><FiStar className={styles.navIcon} /> Unique Experiences</button>)}
+          {attractions.length > 0 && (<button onClick={() => handleScrollTo('attractions')} className={styles.stickyNavItem}><FiMapPin className={styles.navIcon} /> Attractions</button>)}
         </div>
       </div>
 
@@ -261,48 +251,9 @@ const DestinationPage = () => {
       </main>
 
       {/* Customer Reviews (Full Width) */}
-      <div className={styles.reviewsWrapper}>
-        <div className={styles.mainContainer} style={{ padding: '0 1.5rem', marginBottom: '2rem' }}>
-          <h2 className={styles.sectionTitle}>Travellers Reviews</h2>
-          <div className={styles.reviewsMasonry}>
-            {reviews.length > 0 ? reviews.map(review => (
-              <div key={review._id || review.id} className={styles.reviewCard}>
-                <div className={styles.reviewHeader}>
-                  {review.avatar ? (
-                    <img src={review.avatar} alt={review.author} className={styles.avatarImg} />
-                  ) : (
-                    <div className={styles.avatarLetter}>
-                      {review.author?.charAt(0) || 'U'}
-                    </div>
-                  )}
-                  <div className={styles.reviewMeta}>
-                    <div className={styles.reviewAuthor}>
-                      {review.author} <span className={styles.privateTag}>private</span>
-                    </div>
-                    <div className={styles.reviewBooked}>
-                      Booked: <strong>{title}</strong> ↗
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.reviewRating}>
-                  {'⭐'.repeat(review.rating || 5)} <span className={styles.reviewTime}>1 month ago</span>
-                </div>
-                  <p className={styles.reviewText}>
-                    {review.review}
-                  </p>
-                  
-                  <div className={styles.reviewPhotosGrid} style={{ gridTemplateColumns: (review.tripImages?.length > 0 ? review.tripImages : (review.tripImage ? [review.tripImage] : [])).length === 1 ? '1fr' : '1fr 1fr', display: (review.tripImages?.length > 0 ? review.tripImages : (review.tripImage ? [review.tripImage] : [])).length > 0 ? 'grid' : 'none' }}>
-                    {(review.tripImages?.length > 0 ? review.tripImages : (review.tripImage ? [review.tripImage] : [])).slice(0, 4).map((img, i) => (
-                      <img key={i} src={img} alt="Trip Memory" className={styles.reviewTripImg} />
-                    ))}
-                  </div>
-                </div>
-            )) : <p>No reviews yet for {title}.</p>}
-          </div>
-        </div>
-      </div>
+        {reviews.length > 0 && <ReviewSection reviews={reviews} title="Travellers Reviews" />}
 
-      {/* SEO Links Section */}
+        {/* SEO Links Section */}
       <section className={styles.seoSection}>
         <div className={styles.seoContainer}>
           {popularCities.length > 0 && (
@@ -318,31 +269,9 @@ const DestinationPage = () => {
             </>
           )}
 
-          {domesticDestinations.length > 0 && (
-            <>
-              <h3 className={styles.seoTitle} style={{ marginTop: '3rem' }}>Popular Domestic Destinations</h3>
-              <div className={styles.seoLinks}>
-                {domesticDestinations.map(dest => (
-                  <Link key={dest._id} to={`/destinations/${dest.slug || dest.name.toLowerCase().replace(/\s+/g, '-')}`} className={styles.seoLink}>
-                    {dest.name}
-                  </Link>
-                ))}
-              </div>
-            </>
-          )}
+          
 
-          {internationalDestinations.length > 0 && (
-            <>
-              <h3 className={styles.seoTitle} style={{ marginTop: '3rem' }}>Popular International Destinations</h3>
-              <div className={styles.seoLinks}>
-                {internationalDestinations.map(dest => (
-                  <Link key={dest._id} to={`/destinations/${dest.slug || dest.name.toLowerCase().replace(/\s+/g, '-')}`} className={styles.seoLink}>
-                    {dest.name}
-                  </Link>
-                ))}
-              </div>
-            </>
-          )}
+          
         </div>
       </section>
 

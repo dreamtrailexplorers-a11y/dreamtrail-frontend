@@ -3,7 +3,7 @@ import { FiCheck, FiPhone, FiMessageSquare, FiDownload, FiChevronDown, FiChevron
 import styles from './TripSidebar.module.css';
 import BuyNowModal from '../../../components/BuyNowModal/BuyNowModal';
 
-const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry, selectedDepartureDate, destinationInfo, selectedPackages, isUnavailable, isSoldOut, isPast }) => {
+const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry, selectedDepartureDate, destinationInfo, selectedPackages, isUnavailable, isSoldOut, isPast, allPackages }) => {
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
   const [expandedWhyUs, setExpandedWhyUs] = useState(null);
   
@@ -162,6 +162,7 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
         destination={trip.destination?.name || trip.destination || ''}
         selectedDepartureDate={selectedDepartureDate}
         selectedPackages={selectedPackages}
+        allPackages={allPackages}
       />
     </div>
   );
