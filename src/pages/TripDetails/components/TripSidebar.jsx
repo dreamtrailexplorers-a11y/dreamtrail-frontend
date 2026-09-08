@@ -3,7 +3,22 @@ import { FiCheck, FiPhone, FiMessageSquare, FiDownload, FiChevronDown, FiChevron
 import styles from './TripSidebar.module.css';
 import BuyNowModal from '../../../components/BuyNowModal/BuyNowModal';
 
-const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry, selectedDepartureDate, destinationInfo, selectedPackages, isUnavailable, isSoldOut, isPast, allPackages }) => {
+const TripSidebar = ({ 
+  trip, 
+  selectedOptionTitle, 
+  whatsappNumber, 
+  onOpenEnquiry, 
+  onOpenBuyModal,
+  selectedDepartureDate, 
+  destinationInfo, 
+  selectedPackages, 
+  isUnavailable, 
+  isSoldOut, 
+  isPast, 
+  allPackages, 
+  initialPreBookingSettings,
+  isPreBookingAllowed
+}) => {
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
   const [expandedWhyUs, setExpandedWhyUs] = useState(null);
   
@@ -67,7 +82,15 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
             Send Enquiry
           </button>
           <button 
-            onClick={() => { if(!isUnavailable) setIsBuyModalOpen(true); }}
+            onClick={() => { 
+              if (!isUnavailable) {
+                if (onOpenBuyModal) {
+                  onOpenBuyModal();
+                } else {
+                  setIsBuyModalOpen(true);
+                }
+              }
+            }}
             className={styles.sidebarBuyBtn}
             style={{ 
               flex: 1, 
@@ -155,14 +178,15 @@ const TripSidebar = ({ trip, selectedOptionTitle, whatsappNumber, onOpenEnquiry,
       <BuyNowModal 
         isOpen={isBuyModalOpen}
         onClose={() => setIsBuyModalOpen(false)}
-        mode="both"
-        tripTitle={selectedOptionTitle && selectedOptionTitle !== trip.title ? `${trip.title} (${selectedOptionTitle})` : trip.title}
+        mode={isPreBookingAllowed ? 'both' : 'full'}
+        tripTitle={trip.title}
         pricePerPerson={finalPrice}
         duration={trip.duration}
         destination={trip.destination?.name || trip.destination || ''}
         selectedDepartureDate={selectedDepartureDate}
         selectedPackages={selectedPackages}
         allPackages={allPackages}
+        initialPreBookingSettings={initialPreBookingSettings}
       />
     </div>
   );

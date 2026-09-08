@@ -180,15 +180,26 @@ const TripDetails = () => {
   const getDaysLeft = () => {
     if (!selectedDepartureDate || selectedDepartureDate === 'N/A') return null;
     try {
-      const dates = selectedDepartureDate.split(' to ');
-      const start = new Date(dates[0]);
+      let startStr = null;
+      if (typeof selectedDepartureDate === 'object' && selectedDepartureDate !== null) {
+        startStr = selectedDepartureDate.start;
+      } else if (typeof selectedDepartureDate === 'string') {
+        const parts = selectedDepartureDate.split(' to ');
+        startStr = parts[0]?.trim();
+      }
+      if (!startStr) return null;
+
+      const start = new Date(startStr);
+      if (isNaN(start.getTime())) return null;
+
       const today = new Date();
-      today.setHours(0,0,0,0);
-      return Math.ceil((start - today) / (1000 * 60 * 60 * 24));
+      today.setHours(0, 0, 0, 0);
+      start.setHours(0, 0, 0, 0);
+      return Math.ceil((start.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
     } catch(e) { return null; }
   };
   const daysLeft = getDaysLeft();
-  const isPreBookingAllowed = daysLeft === null || daysLeft > 45;
+  const isPreBookingAllowed = daysLeft !== null && daysLeft > 45;
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -242,8 +253,7 @@ const TripDetails = () => {
 
 
             <div id="itinerary" style={{ scrollMarginTop: '90px' }}>
-              <TripItinerary itineraryDays={itineraryDays} onOpenEnquiry={handleOpenEnquiry}
-                allPackages={processedAllPackages} />
+              <TripItinerary itineraryDays={itineraryDays} onOpenEnquiry={handleOpenEnquiry} />
             </div>
             
             <div id="inclusions" style={{ scrollMarginTop: '90px' }}>
@@ -264,7 +274,11 @@ const TripDetails = () => {
             <div style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '25px 30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', boxShadow: '0 4px 15px rgba(0,0,0,0.03)' }}>
               <div>
                 <h4 style={{ fontSize: '1.2rem', fontWeight: '800', color: '#1e293b', margin: 0, marginBottom: '5px' }}>Book your seat now!</h4>
-                {isPreBookingAllowed && <p style={{ color: '#475569', margin: 0, fontSize: '0.95rem' }}>Pre Book @ {settings?.preBookingSettings?.amount || 5000}/-</p>}
+                {isPreBookingAllowed ? (
+                  <p style={{ color: '#475569', margin: 0, fontSize: '0.95rem' }}>Pre Book @ {settings?.preBookingSettings?.amount || 5000}/-</p>
+                ) : (
+                  <p style={{ color: '#475569', margin: 0, fontSize: '0.95rem' }}>Full payment required (Departure within 45 days)</p>
+                )}
               </div>
               <button 
                 onClick={() => { if (!isUnavailable) setIsBuyModalOpen(true); }}
@@ -301,8 +315,12 @@ const TripDetails = () => {
               selectedOptionTitle={selectedSidebarTitle}
               whatsappNumber={settings?.whatsappNumber}
               onOpenEnquiry={handleOpenEnquiry} 
+              onOpenBuyModal={() => setIsBuyModalOpen(true)}
               selectedDepartureDate={selectedDepartureDate}
               selectedPackages={selectedPackages}
+              allPackages={processedAllPackages}
+              initialPreBookingSettings={settings?.preBookingSettings}
+              isPreBookingAllowed={isPreBookingAllowed}
               isUnavailable={isUnavailable}
               isSoldOut={isSoldOut}
               isPast={isPast}
@@ -478,8 +496,9 @@ const TripDetails = () => {
         <BuyNowModal 
           isOpen={isBuyModalOpen}
           onClose={() => setIsBuyModalOpen(false)}
-          mode="both" initialPreBookingSettings={settings?.preBookingSettings}
-          tripTitle={selectedSidebarTitle && selectedSidebarTitle !== currentTrip.title ? `${currentTrip.title} (${selectedSidebarTitle})` : currentTrip.title}
+          mode={isPreBookingAllowed ? 'both' : 'full'}
+          initialPreBookingSettings={settings?.preBookingSettings}
+          tripTitle={currentTrip.title}
           pricePerPerson={Number(displayDiscPrice) || 0}
           duration={currentTrip.duration}
           destination={currentDestination ? currentDestination.name : ''}

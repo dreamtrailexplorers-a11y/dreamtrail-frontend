@@ -27,15 +27,27 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
   const getDaysLeft = () => {
     if (!selectedDepartureDate || selectedDepartureDate === 'N/A') return null;
     try {
-      const dates = selectedDepartureDate.split(' to ');
-      const start = new Date(dates[0]);
+      let startStr = null;
+      if (typeof selectedDepartureDate === 'object' && selectedDepartureDate !== null) {
+        startStr = selectedDepartureDate.start;
+      } else if (typeof selectedDepartureDate === 'string') {
+        const parts = selectedDepartureDate.split(' to ');
+        startStr = parts[0]?.trim();
+      }
+      if (!startStr) return null;
+
+      const start = new Date(startStr);
+      if (isNaN(start.getTime())) return null;
+
       const today = new Date();
-      today.setHours(0,0,0,0);
-      return Math.ceil((start - today) / (1000 * 60 * 60 * 24));
+      today.setHours(0, 0, 0, 0);
+      start.setHours(0, 0, 0, 0);
+      return Math.ceil((start.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
     } catch(e) { return null; }
   };
   const daysLeft = getDaysLeft();
-  const actualMode = (daysLeft !== null && daysLeft <= 45) ? 'full' : mode;
+  const isPreBookingAllowed = daysLeft !== null && daysLeft > 45;
+  const actualMode = isPreBookingAllowed ? mode : 'full';
 
   
   // Replace single persons with quantities mapped by package index
@@ -69,6 +81,8 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
       let initialPkgs = [];
       if (selectedPackages && selectedPackages.length > 0) {
         initialPkgs = [...selectedPackages];
+      } else if (allPackages && allPackages.length > 0) {
+        initialPkgs = [allPackages[0]];
       } else {
         initialPkgs = [{ title: tripTitle, price: pricePerPerson }];
       }
@@ -78,15 +92,16 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
       initialPkgs.forEach((_, i) => { initialQs[i] = 1; });
       setQuantities(initialQs);
     }
-  }, [isOpen, selectedPackages, tripTitle, pricePerPerson, location.pathname]);
+  }, [isOpen, selectedPackages, allPackages, tripTitle, pricePerPerson, location.pathname]);
 
   if (!isOpen) return null;
 
+  const cleanTripTitle = tripTitle ? tripTitle.split(' (')[0].split(' - ')[0] : '';
   const isMultiPackage = activePackages.length > 0;
 
   let totalAmount = 0;
   let totalPersons = 0;
-  let combinedTripTitle = tripTitle;
+  let combinedTripTitle = cleanTripTitle || tripTitle;
 
   if (isMultiPackage) {
     activePackages.forEach((pkg, idx) => {
@@ -97,9 +112,9 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
     
     if (activePackages.length > 1) {
        const packageDetails = activePackages.map((pkg, idx) => `${pkg.title} x${quantities[idx] || 1}`).join(', ');
-       combinedTripTitle = `${tripTitle.split(' - ')[0]} - Multiple Packages (${packageDetails})`;
+       combinedTripTitle = `${cleanTripTitle || tripTitle} - Multiple Packages (${packageDetails})`;
     } else if (activePackages.length === 1) {
-       combinedTripTitle = `${tripTitle.split(' - ')[0]} - ${activePackages[0].title}`;
+       combinedTripTitle = `${cleanTripTitle || tripTitle} - ${activePackages[0].title}`;
     }
   } else {
     totalAmount = (Number(pricePerPerson) || 0) * (quantities.default || 1);
@@ -212,11 +227,11 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
         <button className={styles.closeBtn} onClick={onClose}>&times;</button>
         
         <div className={styles.modalHeader}>
-          <h2>{tripTitle}</h2>
+          <h2>{cleanTripTitle || tripTitle}</h2>
           <p>{duration} | {destination}</p>
           {selectedDepartureDate && (
             <p style={{ marginTop: '5px', fontSize: '0.85rem', color: '#10b981', fontWeight: '600' }}>
-              Departure: {selectedDepartureDate.start} to {selectedDepartureDate.end}
+              Departure: {typeof selectedDepartureDate === 'string' ? selectedDepartureDate : `${selectedDepartureDate.start} to ${selectedDepartureDate.end}`}
             </p>
           )}
         </div>
@@ -228,27 +243,69 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
               <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxHeight: '350px', overflowY: 'auto', paddingRight: '8px' }}>
                 {activePackages.map((pkg, idx) => (
                   <div key={idx} style={{ paddingBottom: '15px', borderBottom: idx < activePackages.length - 1 ? '1px dashed #cbd5e1' : 'none' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                      <div style={{ fontWeight: '600', color: '#1e293b' }}>{pkg.title}</div>
-                      {activePackages.length > 1 && (
-                        <button 
-                          onClick={() => {
-                            const newPkgs = [...activePackages];
-                            newPkgs.splice(idx, 1);
-                            setActivePackages(newPkgs);
-                            
-                            const newQs = { ...quantities };
-                            delete newQs[idx];
-                            // Re-index quantities
-                            const reindexedQs = {};
-                            newPkgs.forEach((_, i) => {
-                              reindexedQs[i] = i >= idx ? newQs[i + 1] : newQs[i];
-                            });
-                            setQuantities(reindexedQs);
+                    <div style={{ marginBottom: '10px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                        <label style={{ fontSize: '0.82rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                          Package Option {activePackages.length > 1 ? `#${idx + 1}` : ''}
+                        </label>
+                        {activePackages.length > 1 && (
+                          <button 
+                            type="button"
+                            onClick={() => {
+                              const newPkgs = [...activePackages];
+                              newPkgs.splice(idx, 1);
+                              setActivePackages(newPkgs);
+                              
+                              const newQs = { ...quantities };
+                              delete newQs[idx];
+                              // Re-index quantities
+                              const reindexedQs = {};
+                              newPkgs.forEach((_, i) => {
+                                reindexedQs[i] = i >= idx ? newQs[i + 1] : newQs[i];
+                              });
+                              setQuantities(reindexedQs);
+                            }}
+                            style={{ background: 'none', border: 'none', color: '#ef4444', fontSize: '0.82rem', fontWeight: '700', cursor: 'pointer', padding: '0 4px', display: 'flex', alignItems: 'center', gap: '2px' }}
+                            title="Remove package"
+                          >&times; Remove</button>
+                        )}
+                      </div>
+
+                      {allPackages && allPackages.length > 1 ? (
+                        <select 
+                          value={pkg.title}
+                          onChange={(e) => {
+                            const selected = allPackages.find(p => p.title === e.target.value);
+                            if (selected) {
+                              const newPkgs = [...activePackages];
+                              newPkgs[idx] = { title: selected.title, price: selected.price };
+                              setActivePackages(newPkgs);
+                            }
                           }}
-                          style={{ background: 'none', border: 'none', color: '#ef4444', fontSize: '1.2rem', cursor: 'pointer', padding: '0 5px', lineHeight: 1 }}
-                          title="Remove package"
-                        >&times;</button>
+                          style={{ 
+                            width: '100%', 
+                            padding: '10px 12px', 
+                            borderRadius: '8px', 
+                            border: '1.5px solid #cbd5e1', 
+                            backgroundColor: '#f8fafc', 
+                            fontSize: '0.92rem', 
+                            fontWeight: '600', 
+                            color: '#0f172a', 
+                            outline: 'none', 
+                            cursor: 'pointer' 
+                          }}
+                        >
+                          {!allPackages.some(opt => opt.title === pkg.title) && (
+                            <option value={pkg.title}>{pkg.title}</option>
+                          )}
+                          {allPackages.map((opt, optIdx) => (
+                            <option key={optIdx} value={opt.title}>
+                              {opt.title} — ₹{(Number(opt.price) || 0).toLocaleString('en-IN')}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <div style={{ fontWeight: '700', color: '#1e293b', fontSize: '0.98rem' }}>{pkg.title}</div>
                       )}
                     </div>
                     
@@ -257,7 +314,7 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
                       <span className={styles.priceValue}>₹ {(Number(pkg.price) || 0).toLocaleString('en-IN')}</span>
                     </div>
 
-                    <div className={styles.personSelector}>
+                    <div className={styles.personSelector} style={{ marginBottom: '0' }}>
                       <span className={styles.selectorLabel}>Number of Persons</span>
                       <div className={styles.counter}>
                         <button className={styles.counterBtn} onClick={() => handleDecrement(idx)}>-</button>
@@ -268,34 +325,34 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
                   </div>
                 ))}
                 
-                {/* Add Package Dropdown */}
-                {allPackages && allPackages.length > 0 && (
-                  <div style={{ marginTop: '5px', paddingTop: '15px', borderTop: '2px dashed #e2e8f0', paddingBottom: '5px' }}>
-                    <label style={{ display: 'block', fontSize: '0.85rem', color: '#64748b', fontWeight: '600', marginBottom: '8px' }}>
-                      + Add Another Package Option
-                    </label>
-                    <select 
-                      value=""
-                      onChange={(e) => {
-                        if (!e.target.value) return;
-                        const pkgIdx = parseInt(e.target.value);
-                        const selectedPkg = allPackages[pkgIdx];
-                        if (selectedPkg) {
-                          setActivePackages(prev => [...prev, { title: selectedPkg.title, price: selectedPkg.price }]);
-                          setQuantities(prev => ({ ...prev, [activePackages.length]: 1 }));
-                        }
+                {/* Add Another Package Option button */}
+                {allPackages && allPackages.length > activePackages.length && (
+                  <div style={{ marginTop: '5px', paddingTop: '12px', borderTop: '2px dashed #e2e8f0', paddingBottom: '5px' }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const nextPkg = allPackages.find(ap => !activePackages.some(p => p.title === ap.title)) || allPackages[0];
+                        setActivePackages(prev => [...prev, { title: nextPkg.title, price: nextPkg.price }]);
+                        setQuantities(prev => ({ ...prev, [activePackages.length]: 1 }));
                       }}
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1', backgroundColor: '#f8fafc', fontSize: '0.9rem', outline: 'none' }}
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px',
+                        borderRadius: '8px',
+                        border: '1.5px dashed #cc0000',
+                        backgroundColor: '#fff5f5',
+                        color: '#cc0000',
+                        fontSize: '0.88rem',
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        textAlign: 'center'
+                      }}
+                      onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#ffebeb'; }}
+                      onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#fff5f5'; }}
                     >
-                      <option value="">Select a package to add...</option>
-                      {allPackages.map((pkg, i) => {
-                        const isAlreadyAdded = activePackages.some(ap => ap.title === pkg.title);
-                        if (isAlreadyAdded) return null;
-                        return (
-                          <option key={i} value={i}>{pkg.title} - ₹{Number(pkg.price).toLocaleString('en-IN')}</option>
-                        );
-                      })}
-                    </select>
+                      + Add Another Package Option
+                    </button>
                   </div>
                 )}
               </div>
