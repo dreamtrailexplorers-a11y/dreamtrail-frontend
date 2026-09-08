@@ -10,62 +10,99 @@
   align-items: center;
   z-index: 1100;
   backdrop-filter: blur(4px);
+  padding: 16px;
 }
 
 .modalContent {
   background-color: #fff;
-  width: 92%;
-  max-width: 480px;
-  max-height: 92vh;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
   position: relative;
   animation: slideUp 0.3s ease-out;
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .closeBtn {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 14px;
+  right: 14px;
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: #64748b;
   cursor: pointer;
   z-index: 10;
+  line-height: 1;
+  padding: 4px;
+}
+
+.closeBtn:hover {
+  color: #0f172a;
 }
 
 .modalHeader {
-  padding: 20px 25px 15px;
+  padding: 18px 22px 14px;
   border-bottom: 1px solid #f1f5f9;
   flex-shrink: 0;
 }
 
 .modalHeader h2 {
-  font-size: 1.25rem;
+  font-size: 1.18rem;
   font-weight: 800;
   color: #0f172a;
-  margin: 0 0 5px 0;
+  margin: 0 0 4px 0;
+  line-height: 1.3;
 }
 
 .modalHeader p {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #64748b;
   margin: 0;
 }
 
 .modalBody {
-  padding: 20px 25px 25px;
+  padding: 16px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.packagesScrollContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 240px;
   overflow-y: auto;
-  flex: 1;
+  padding-right: 4px;
+  margin-bottom: 14px;
+}
+
+.packagesScrollContainer::-webkit-scrollbar {
+  width: 4px;
+}
+
+.packagesScrollContainer::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.packagesScrollContainer::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.packagesScrollContainer::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 .priceRow {
@@ -140,19 +177,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding-top: 20px;
-  border-top: 1px dashed #cbd5e1;
+  margin-bottom: 14px;
+  padding-top: 14px;
+  border-top: 1.5px solid #f1f5f9;
 }
 
 .totalLabel {
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: #0f172a;
   font-weight: 800;
 }
 
 .totalValue {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 900;
   color: #e60000;
 }
@@ -161,19 +198,19 @@
   width: 100%;
   background-color: #e60000;
   color: #ffffff;
-  padding: 1rem;
+  padding: 0.85rem 1rem;
   border-radius: 8px;
-  font-size: 1.1rem;
+  font-size: 1.02rem;
   font-weight: 800;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(230, 0, 0, 0.25);
+  box-shadow: 0 4px 12px rgba(230, 0, 0, 0.22);
   transition: all 0.2s ease;
 }
 
 .payBtn:hover {
   background-color: #cc0000;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .payBtn:disabled {

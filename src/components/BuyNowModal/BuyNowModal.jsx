@@ -39,7 +39,7 @@ const PackageItemDropdown = ({ pkg, idx, allPackages, activePackages, onSelectPa
 
   if (!allPackages || allPackages.length <= 1) {
     return (
-      <div style={{ fontWeight: '700', color: '#1e293b', fontSize: '0.98rem' }}>
+      <div style={{ fontWeight: '700', color: '#0f172a', fontSize: '0.9rem', lineHeight: '1.3' }}>
         {pkg.title}
       </div>
     );
@@ -53,20 +53,20 @@ const PackageItemDropdown = ({ pkg, idx, allPackages, activePackages, onSelectPa
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '10px 14px',
-          borderRadius: isOpen ? '8px 8px 0 0' : '8px',
-          border: isOpen ? '1.5px solid #cc0000' : '1.5px solid #cbd5e1',
-          backgroundColor: '#f8fafc',
+          padding: '8px 12px',
+          borderRadius: isOpen ? '6px 6px 0 0' : '6px',
+          border: isOpen ? '1.5px solid #0f172a' : '1px solid #cbd5e1',
+          backgroundColor: '#ffffff',
           cursor: 'pointer',
           userSelect: 'none',
-          transition: 'all 0.2s ease',
-          boxShadow: isOpen ? '0 0 0 3px rgba(204, 0, 0, 0.1)' : 'none'
+          transition: 'all 0.15s ease',
+          boxShadow: isOpen ? '0 0 0 2px rgba(15, 23, 42, 0.08)' : 'none'
         }}
       >
-        <span style={{ fontSize: '0.9rem', fontWeight: '700', color: '#0f172a', flex: 1, paddingRight: '10px', lineHeight: '1.3' }}>
+        <span style={{ fontSize: '0.88rem', fontWeight: '700', color: '#0f172a', flex: 1, paddingRight: '8px', lineHeight: '1.3' }}>
           {pkg.title}
         </span>
-        <span style={{ fontSize: '0.75rem', color: '#64748b', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}>
+        <span style={{ fontSize: '0.7rem', color: '#64748b', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}>
           ▼
         </span>
       </div>
@@ -75,13 +75,13 @@ const PackageItemDropdown = ({ pkg, idx, allPackages, activePackages, onSelectPa
         <div style={{
           position: 'relative',
           width: '100%',
-          border: '1.5px solid #cc0000',
+          border: '1.5px solid #0f172a',
           borderTop: 'none',
-          borderRadius: '0 0 8px 8px',
+          borderRadius: '0 0 6px 6px',
           backgroundColor: '#ffffff',
-          maxHeight: '180px',
+          maxHeight: '160px',
           overflowY: 'auto',
-          boxShadow: '0 6px 16px rgba(0, 0, 0, 0.08)'
+          boxShadow: '0 6px 16px rgba(0, 0, 0, 0.1)'
         }}>
           {selectableOptions.map((opt, i) => (
             <div
@@ -91,23 +91,23 @@ const PackageItemDropdown = ({ pkg, idx, allPackages, activePackages, onSelectPa
                 setIsOpen(false);
               }}
               style={{
-                padding: '10px 14px',
+                padding: '9px 12px',
                 borderBottom: i < selectableOptions.length - 1 ? '1px solid #f1f5f9' : 'none',
                 cursor: 'pointer',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                gap: '12px',
-                backgroundColor: opt.title === pkg.title ? '#fef2f2' : '#ffffff',
-                transition: 'background-color 0.15s ease'
+                gap: '10px',
+                backgroundColor: opt.title === pkg.title ? '#f1f5f9' : '#ffffff',
+                transition: 'background-color 0.12s ease'
               }}
               onMouseEnter={(e) => { if (opt.title !== pkg.title) e.currentTarget.style.backgroundColor = '#f8fafc'; }}
               onMouseLeave={(e) => { if (opt.title !== pkg.title) e.currentTarget.style.backgroundColor = '#ffffff'; }}
             >
-              <span style={{ fontSize: '0.88rem', fontWeight: opt.title === pkg.title ? '700' : '600', color: opt.title === pkg.title ? '#cc0000' : '#1e293b', flex: 1, lineHeight: '1.35' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: opt.title === pkg.title ? '700' : '600', color: opt.title === pkg.title ? '#0f172a' : '#334155', flex: 1, lineHeight: '1.3' }}>
                 {opt.title}
               </span>
-              <span style={{ fontSize: '0.92rem', fontWeight: '800', color: '#10b981', whiteSpace: 'nowrap' }}>
+              <span style={{ fontSize: '0.88rem', fontWeight: '800', color: '#10b981', whiteSpace: 'nowrap' }}>
                 ₹{(Number(opt.price) || 0).toLocaleString('en-IN')}
               </span>
             </div>
@@ -139,10 +139,7 @@ const CustomAddPackageDropdown = ({ allPackages, activePackages, onAddPackage })
   if (availablePackages.length === 0) return null;
 
   return (
-    <div ref={dropdownRef} style={{ marginTop: '12px', paddingTop: '15px', borderTop: '2px dashed #e2e8f0' }}>
-      <label style={{ display: 'block', fontSize: '0.85rem', color: '#475569', fontWeight: '700', marginBottom: '8px' }}>
-        + Add Another Package Option
-      </label>
+    <div ref={dropdownRef} style={{ marginTop: '2px' }}>
       <div style={{ position: 'relative', width: '100%' }}>
         <div
           onClick={() => setIsOpen(!isOpen)}
@@ -150,20 +147,22 @@ const CustomAddPackageDropdown = ({ allPackages, activePackages, onAddPackage })
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: '11px 14px',
-            borderRadius: isOpen ? '8px 8px 0 0' : '8px',
-            border: isOpen ? '1.5px solid #cc0000' : '1.5px solid #cbd5e1',
-            backgroundColor: '#f8fafc',
+            padding: '9px 12px',
+            borderRadius: isOpen ? '6px 6px 0 0' : '6px',
+            border: isOpen ? '1.5px solid #0f172a' : '1.5px dashed #cbd5e1',
+            backgroundColor: isOpen ? '#ffffff' : '#f8fafc',
             cursor: 'pointer',
             userSelect: 'none',
-            transition: 'all 0.2s ease',
-            boxShadow: isOpen ? '0 0 0 3px rgba(204, 0, 0, 0.1)' : 'none'
+            transition: 'all 0.15s ease',
+            boxShadow: isOpen ? '0 0 0 2px rgba(15, 23, 42, 0.08)' : 'none'
           }}
+          onMouseEnter={(e) => { if (!isOpen) e.currentTarget.style.borderColor = '#94a3b8'; }}
+          onMouseLeave={(e) => { if (!isOpen) e.currentTarget.style.borderColor = '#cbd5e1'; }}
         >
-          <span style={{ fontSize: '0.9rem', fontWeight: '600', color: '#64748b' }}>
-            Select a package to add...
+          <span style={{ fontSize: '0.85rem', fontWeight: '700', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <span style={{ color: '#e60000', fontSize: '1rem', lineHeight: 1 }}>+</span> Add Another Package Option
           </span>
-          <span style={{ fontSize: '0.75rem', color: '#64748b', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}>
+          <span style={{ fontSize: '0.7rem', color: '#64748b', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}>
             ▼
           </span>
         </div>
@@ -172,13 +171,13 @@ const CustomAddPackageDropdown = ({ allPackages, activePackages, onAddPackage })
           <div style={{
             position: 'relative',
             width: '100%',
-            border: '1.5px solid #cc0000',
+            border: '1.5px solid #0f172a',
             borderTop: 'none',
-            borderRadius: '0 0 8px 8px',
+            borderRadius: '0 0 6px 6px',
             backgroundColor: '#ffffff',
-            maxHeight: '190px',
+            maxHeight: '160px',
             overflowY: 'auto',
-            boxShadow: '0 6px 16px rgba(0, 0, 0, 0.08)'
+            boxShadow: '0 6px 16px rgba(0, 0, 0, 0.1)'
           }}>
             {availablePackages.map((pkg, i) => (
               <div
@@ -188,22 +187,22 @@ const CustomAddPackageDropdown = ({ allPackages, activePackages, onAddPackage })
                   setIsOpen(false);
                 }}
                 style={{
-                  padding: '11px 14px',
+                  padding: '9px 12px',
                   borderBottom: i < availablePackages.length - 1 ? '1px solid #f1f5f9' : 'none',
                   cursor: 'pointer',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  gap: '12px',
-                  transition: 'background-color 0.15s ease'
+                  gap: '10px',
+                  transition: 'background-color 0.12s ease'
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#fef2f2'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#f8fafc'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; }}
               >
-                <span style={{ fontSize: '0.88rem', fontWeight: '600', color: '#1e293b', flex: 1, lineHeight: '1.35' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: '600', color: '#1e293b', flex: 1, lineHeight: '1.3' }}>
                   {pkg.title}
                 </span>
-                <span style={{ fontSize: '0.92rem', fontWeight: '800', color: '#10b981', whiteSpace: 'nowrap' }}>
+                <span style={{ fontSize: '0.88rem', fontWeight: '800', color: '#10b981', whiteSpace: 'nowrap' }}>
                   ₹{(Number(pkg.price) || 0).toLocaleString('en-IN')}
                 </span>
               </div>
@@ -435,102 +434,176 @@ const BuyNowModal = ({ isOpen, onClose, tripTitle, pricePerPerson, duration, des
         <div className={styles.modalBody}>
           
           {isMultiPackage ? (
-            <div style={{ marginBottom: '20px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                {activePackages.map((pkg, idx) => (
-                  <div key={idx} style={{ paddingBottom: '15px', borderBottom: idx < activePackages.length - 1 ? '1px dashed #cbd5e1' : 'none' }}>
-                    <div style={{ marginBottom: '10px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                        <label style={{ fontSize: '0.82rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                          Package Option {activePackages.length > 1 ? `#${idx + 1}` : ''}
-                        </label>
-                        {activePackages.length > 1 && (
-                          <button 
-                            type="button"
-                            onClick={() => {
-                              const newPkgs = [...activePackages];
-                              newPkgs.splice(idx, 1);
-                              setActivePackages(newPkgs);
-                              
-                              const newQs = { ...quantities };
-                              delete newQs[idx];
-                              // Re-index quantities
-                              const reindexedQs = {};
-                              newPkgs.forEach((_, i) => {
-                                reindexedQs[i] = i >= idx ? newQs[i + 1] : newQs[i];
-                              });
-                              setQuantities(reindexedQs);
-                            }}
-                            style={{ background: 'none', border: 'none', color: '#ef4444', fontSize: '0.82rem', fontWeight: '700', cursor: 'pointer', padding: '0 4px', display: 'flex', alignItems: 'center', gap: '2px' }}
-                            title="Remove package"
-                          >&times; Remove</button>
-                        )}
-                      </div>
-
-                      <PackageItemDropdown 
-                        pkg={pkg}
-                        idx={idx}
-                        allPackages={allPackages}
-                        activePackages={activePackages}
-                        onSelectPackage={(targetIdx, selected) => {
+            <div className={styles.packagesScrollContainer}>
+              {activePackages.map((pkg, idx) => (
+                <div 
+                  key={idx} 
+                  style={{ 
+                    backgroundColor: '#f8fafc', 
+                    border: '1px solid #e2e8f0', 
+                    borderRadius: '10px', 
+                    padding: '10px 12px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '8px'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.74rem', color: '#64748b', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      Package Option {activePackages.length > 1 ? `#${idx + 1}` : ''}
+                    </span>
+                    {activePackages.length > 1 && (
+                      <button 
+                        type="button"
+                        onClick={() => {
                           const newPkgs = [...activePackages];
-                          newPkgs[targetIdx] = { title: selected.title, price: selected.price };
+                          newPkgs.splice(idx, 1);
                           setActivePackages(newPkgs);
+                          
+                          const newQs = { ...quantities };
+                          delete newQs[idx];
+                          const reindexedQs = {};
+                          newPkgs.forEach((_, i) => {
+                            reindexedQs[i] = i >= idx ? newQs[i + 1] : newQs[i];
+                          });
+                          setQuantities(reindexedQs);
                         }}
-                      />
-                    </div>
-                    
-                    <div className={styles.priceRow} style={{ marginBottom: '10px' }}>
-                      <span className={styles.priceLabel}>Price per person</span>
-                      <span className={styles.priceValue}>₹ {(Number(pkg.price) || 0).toLocaleString('en-IN')}</span>
+                        style={{ 
+                          background: 'none', 
+                          border: 'none', 
+                          color: '#ef4444', 
+                          fontSize: '0.78rem', 
+                          fontWeight: '700', 
+                          cursor: 'pointer', 
+                          padding: '1px 6px',
+                          borderRadius: '4px',
+                          transition: 'background-color 0.15s'
+                        }}
+                        onMouseEnter={e => e.currentTarget.style.backgroundColor = '#fee2e2'}
+                        onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                        title="Remove package"
+                      >&times; Remove</button>
+                    )}
+                  </div>
+
+                  <PackageItemDropdown 
+                    pkg={pkg}
+                    idx={idx}
+                    allPackages={allPackages}
+                    activePackages={activePackages}
+                    onSelectPackage={(targetIdx, selected) => {
+                      const newPkgs = [...activePackages];
+                      newPkgs[targetIdx] = { title: selected.title, price: selected.price };
+                      setActivePackages(newPkgs);
+                    }}
+                  />
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '2px' }}>
+                    <div>
+                      <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: '600', display: 'block' }}>Price / person</span>
+                      <span style={{ fontSize: '1rem', fontWeight: '800', color: '#0f172a' }}>
+                        ₹{(Number(pkg.price) || 0).toLocaleString('en-IN')}
+                      </span>
                     </div>
 
-                    <div className={styles.personSelector} style={{ marginBottom: '0' }}>
-                      <span className={styles.selectorLabel}>Number of Persons</span>
-                      <div className={styles.counter}>
-                        <button className={styles.counterBtn} onClick={() => handleDecrement(idx)}>-</button>
-                        <span className={styles.counterValue}>{quantities[idx] || 1}</span>
-                        <button className={styles.counterBtn} onClick={() => handleIncrement(idx)}>+</button>
-                      </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '8px', padding: '3px 8px' }}>
+                      <button 
+                        type="button"
+                        onClick={() => handleDecrement(idx)}
+                        style={{ 
+                          width: '24px', 
+                          height: '24px', 
+                          borderRadius: '4px', 
+                          border: 'none', 
+                          backgroundColor: '#f1f5f9', 
+                          color: '#0f172a', 
+                          fontSize: '1rem', 
+                          fontWeight: '700', 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center', 
+                          cursor: 'pointer' 
+                        }}
+                      >-</button>
+                      <span style={{ fontSize: '0.92rem', fontWeight: '800', color: '#0f172a', minWidth: '18px', textAlign: 'center' }}>
+                        {quantities[idx] || 1}
+                      </span>
+                      <button 
+                        type="button"
+                        onClick={() => handleIncrement(idx)}
+                        style={{ 
+                          width: '24px', 
+                          height: '24px', 
+                          borderRadius: '4px', 
+                          border: 'none', 
+                          backgroundColor: '#f1f5f9', 
+                          color: '#0f172a', 
+                          fontSize: '1rem', 
+                          fontWeight: '700', 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center', 
+                          cursor: 'pointer' 
+                        }}
+                      >+</button>
                     </div>
                   </div>
-                ))}
-                
-                {/* Custom Add Package Dropdown */}
-                <CustomAddPackageDropdown 
-                  allPackages={allPackages}
-                  activePackages={activePackages}
-                  onAddPackage={(selectedPkg) => {
-                    setActivePackages(prev => [...prev, { title: selectedPkg.title, price: selectedPkg.price }]);
-                    setQuantities(prev => ({ ...prev, [activePackages.length]: 1 }));
-                  }}
-                />
-              </div>
+                </div>
+              ))}
+              
+              {/* Custom Add Package Dropdown */}
+              <CustomAddPackageDropdown 
+                allPackages={allPackages}
+                activePackages={activePackages}
+                onAddPackage={(selectedPkg) => {
+                  setActivePackages(prev => [...prev, { title: selectedPkg.title, price: selectedPkg.price }]);
+                  setQuantities(prev => ({ ...prev, [activePackages.length]: 1 }));
+                }}
+              />
             </div>
           ) : (
-            <>
-              <div className={styles.priceRow}>
-                <span className={styles.priceLabel}>Price per person</span>
-                <span className={styles.priceValue}>₹ {(Number(pricePerPerson) || 0).toLocaleString('en-IN')}</span>
-              </div>
+            <div className={styles.packagesScrollContainer} style={{ maxHeight: 'none' }}>
+              <div style={{
+                backgroundColor: '#f8fafc',
+                border: '1px solid #e2e8f0',
+                borderRadius: '10px',
+                padding: '12px 14px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+                <div>
+                  <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: '600', display: 'block' }}>Price / person</span>
+                  <span style={{ fontSize: '1.05rem', fontWeight: '800', color: '#0f172a' }}>
+                    ₹{(Number(pricePerPerson) || 0).toLocaleString('en-IN')}
+                  </span>
+                </div>
 
-              <div className={styles.personSelector}>
-                <span className={styles.selectorLabel}>Number of Persons</span>
-                <div className={styles.counter}>
-                  <button className={styles.counterBtn} onClick={() => handleDecrement('default')}>-</button>
-                  <span className={styles.counterValue}>{quantities.default || 1}</span>
-                  <button className={styles.counterBtn} onClick={() => handleIncrement('default')}>+</button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '8px', padding: '3px 8px' }}>
+                  <button 
+                    type="button"
+                    onClick={() => handleDecrement('default')}
+                    style={{ width: '24px', height: '24px', borderRadius: '4px', border: 'none', backgroundColor: '#f1f5f9', color: '#0f172a', fontSize: '1rem', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >-</button>
+                  <span style={{ fontSize: '0.92rem', fontWeight: '800', color: '#0f172a', minWidth: '18px', textAlign: 'center' }}>
+                    {quantities.default || 1}
+                  </span>
+                  <button 
+                    type="button"
+                    onClick={() => handleIncrement('default')}
+                    style={{ width: '24px', height: '24px', borderRadius: '4px', border: 'none', backgroundColor: '#f1f5f9', color: '#0f172a', fontSize: '1rem', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >+</button>
                 </div>
               </div>
-            </>
+            </div>
           )}
 
-          <div className={styles.totalRow} style={{ borderTop: isMultiPackage ? '2px solid #e2e8f0' : 'none', paddingTop: isMultiPackage ? '15px' : '0' }}>
+          <div className={styles.totalRow}>
             <span className={styles.totalLabel}>Total Trip Cost</span>
             <span className={styles.totalValue}>₹ {totalAmount.toLocaleString('en-IN')}</span>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {actualMode !== 'pre-book' && (
               <button 
                 className={styles.payBtn} 
