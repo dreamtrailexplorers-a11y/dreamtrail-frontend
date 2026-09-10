@@ -57,19 +57,21 @@ const GroupTripBanner = () => {
                   alt={banner.title || 'Group Trip'}
                   className={styles.bannerImg}
                 />
-                <div className={styles.overlay}>
-                  { banner.subtitle && (
-                    <span className={styles.subtitle}>{banner.subtitle}</span>
-                  )}
-                  { banner.title && (
-                    <h2 className={styles.title}>{banner.title}</h2>
-                  )}
-                  { banner.pillText && (
-                    <div className={styles.pillsRow}>
-                      {banner.pillText}
-                    </div>
-                  )}
-                </div>
+                {(banner.subtitle || banner.title || banner.pillText) && (
+                  <div className={styles.overlay}>
+                    { banner.subtitle && (
+                      <span className={styles.subtitle}>{banner.subtitle}</span>
+                    )}
+                    { banner.title && (
+                      <h2 className={styles.title}>{banner.title}</h2>
+                    )}
+                    { banner.pillText && (
+                      <div className={styles.pillsRow}>
+                        {banner.pillText}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </Link>
           </SwiperSlide>
